@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 7 · Classification metrics in depth - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,10 +68,10 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A 2 by 2 confusion matrix with rows for actual buyer and non-buyer and columns for predicted buyer and non-buyer. An arrow down the predicted-buyer column labels precision; an arrow across the actual-buyer row labels recall.">
         <style>
-          .cmLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
-          .cmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .cmCell { font: 800 13px Inter, sans-serif; fill: #1E1633; }
-          .cmH { font: 700 12px Inter, sans-serif; fill: #1E1633; }
+          .cmLab { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
+          .cmN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .cmCell { font: 800 13px Inter, sans-serif; fill: #12222B; }
+          .cmH { font: 700 12px Inter, sans-serif; fill: #12222B; }
           .cmA { stroke: #F7931E; stroke-width: 2.5; fill: none; marker-end: url(#cmAh); }
         </style>
         <defs>
@@ -87,36 +87,36 @@
         <text class="cmH" x="210" y="198" text-anchor="end">Actual: no</text>
 
         <!-- cells -->
-        <rect x="230" y="86" width="140" height="64" rx="8" fill="#5B21B6"/>
+        <rect x="230" y="86" width="140" height="64" rx="8" fill="#1B5F8C"/>
         <text class="cmCell" x="300" y="112" text-anchor="middle" style="fill:#FFFFFF">TP</text>
-        <text class="cmN" x="300" y="132" text-anchor="middle" style="fill:#F5F3FF">caught buyer</text>
-        <rect x="400" y="86" width="140" height="64" rx="8" fill="#DDD6FE"/>
+        <text class="cmN" x="300" y="132" text-anchor="middle" style="fill:#EAF6FC">caught buyer</text>
+        <rect x="400" y="86" width="140" height="64" rx="8" fill="#A5D8EF"/>
         <text class="cmCell" x="470" y="112" text-anchor="middle">FN</text>
-        <text class="cmN" x="470" y="132" text-anchor="middle" style="fill:#1E1633">missed buyer</text>
-        <rect x="230" y="166" width="140" height="64" rx="8" fill="#DDD6FE"/>
+        <text class="cmN" x="470" y="132" text-anchor="middle" style="fill:#12222B">missed buyer</text>
+        <rect x="230" y="166" width="140" height="64" rx="8" fill="#A5D8EF"/>
         <text class="cmCell" x="300" y="192" text-anchor="middle">FP</text>
-        <text class="cmN" x="300" y="212" text-anchor="middle" style="fill:#1E1633">false alarm</text>
-        <rect x="400" y="166" width="140" height="64" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="cmN" x="300" y="212" text-anchor="middle" style="fill:#12222B">false alarm</text>
+        <rect x="400" y="166" width="140" height="64" rx="8" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <text class="cmCell" x="470" y="192" text-anchor="middle">TN</text>
         <text class="cmN" x="470" y="212" text-anchor="middle">correct pass</text>
 
         <!-- precision: down the predicted-buyer column -->
         <line class="cmA" x1="300" y1="238" x2="300" y2="286"/>
         <text class="cmLab" x="300" y="306" text-anchor="middle" style="fill:#F7931E">Precision = TP / (TP + FP)</text>
-        <text class="cmN" x="300" y="324" text-anchor="middle" style="fill:#1E1633">down the "predicted buyer" column</text>
+        <text class="cmN" x="300" y="324" text-anchor="middle" style="fill:#12222B">down the "predicted buyer" column</text>
 
         <!-- recall: across the actual-buyer row -->
         <line class="cmA" x1="556" y1="118" x2="620" y2="118"/>
         <text class="cmLab" x="636" y="114" style="fill:#F7931E">Recall = TP / (TP + FN)</text>
-        <text class="cmN" x="636" y="132" style="fill:#1E1633">across the "actual buyer" row</text>
+        <text class="cmN" x="636" y="132" style="fill:#12222B">across the "actual buyer" row</text>
 
-        <text class="cmN" x="636" y="176" style="fill:#1E1633; font-weight:700">F1</text>
-        <text class="cmN" x="636" y="194" style="fill:#1E1633">harmonic mean of the two</text>
-        <text class="cmN" x="636" y="220" style="fill:#1E1633; font-weight:700">ROC-AUC</text>
-        <text class="cmN" x="636" y="238" style="fill:#1E1633">summarises every threshold at once</text>
+        <text class="cmN" x="636" y="176" style="fill:#12222B; font-weight:700">F1</text>
+        <text class="cmN" x="636" y="194" style="fill:#12222B">harmonic mean of the two</text>
+        <text class="cmN" x="636" y="220" style="fill:#12222B; font-weight:700">ROC-AUC</text>
+        <text class="cmN" x="636" y="238" style="fill:#12222B">summarises every threshold at once</text>
 
         <rect x="30" y="332" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="cmN" x="52" y="343" style="fill:#1E1633">Precision reads a column, recall reads a row - same TP cell, different denominators. That is why moving the threshold trades one for the other.</text>
+        <text class="cmN" x="52" y="343" style="fill:#12222B">Precision reads a column, recall reads a row - same TP cell, different denominators. That is why moving the threshold trades one for the other.</text>
       </svg>
       <figcaption>🔍 Click to zoom - precision reads a column, recall reads a row</figcaption>
     </figure>
@@ -315,6 +315,6 @@ plt.plot(rec, prec); plt.xlabel("recall"); plt.ylabel("precision"); plt.show()</
 </main>
 
 <script src="../assets/ml-live.js?v=3"></script>
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leader session 2 · How a model learns, and how it goes wrong - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,37 +68,37 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A deck of example cards is split into a large training pile that flows into a model that learns, and a small held-out test pile that flows into an honest grade.">
         <style>
-          .a2xL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .a2xL { font: 700 13px Inter, sans-serif; fill: #12222B; }
           .a2xT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
-          .a2xN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .a2xCard { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .a2xA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#a2Ah); }
+          .a2xN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .a2xCard { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .a2xA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#a2Ah); }
         </style>
         <defs>
-          <marker id="a2Ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="a2Ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
         <text class="a2xL" x="30" y="26">All the past examples (labelled visits)</text>
         <rect class="a2xCard" x="30" y="40" width="120" height="30" rx="5"/>
         <rect class="a2xCard" x="38" y="48" width="120" height="30" rx="5"/>
-        <rect class="a2xCard" x="46" y="56" width="120" height="30" rx="5"/><text class="a2xN" x="60" y="76" style="fill:#1E1633">visit + bought?</text>
+        <rect class="a2xCard" x="46" y="56" width="120" height="30" rx="5"/><text class="a2xN" x="60" y="76" style="fill:#12222B">visit + bought?</text>
 
         <line class="a2xA" x1="176" y1="70" x2="236" y2="46"/>
         <line class="a2xA" x1="176" y1="70" x2="236" y2="230"/>
 
-        <text class="a2xL" x="250" y="34" style="fill:#5B21B6">TRAIN pile (~80%)</text>
-        <rect class="a2xCard" x="250" y="44" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="70" style="fill:#1E1633">the big stack the</text><text class="a2xN" x="266" y="88" style="fill:#1E1633">model studies</text>
+        <text class="a2xL" x="250" y="34" style="fill:#1B5F8C">TRAIN pile (~80%)</text>
+        <rect class="a2xCard" x="250" y="44" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="70" style="fill:#12222B">the big stack the</text><text class="a2xN" x="266" y="88" style="fill:#12222B">model studies</text>
         <line class="a2xA" x1="400" y1="74" x2="470" y2="74"/>
-        <rect x="472" y="50" width="150" height="48" rx="10" fill="#7C3AED"/><text class="a2xT" x="500" y="79">Model learns</text>
+        <rect x="472" y="50" width="150" height="48" rx="10" fill="#2C86BD"/><text class="a2xT" x="500" y="79">Model learns</text>
 
         <text class="a2xL" x="250" y="216" style="fill:#F7931E">TEST pile (~20%, held out)</text>
-        <rect class="a2xCard" x="250" y="226" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="252" style="fill:#1E1633">locked away - the</text><text class="a2xN" x="266" y="270" style="fill:#1E1633">model never sees it</text>
+        <rect class="a2xCard" x="250" y="226" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="252" style="fill:#12222B">locked away - the</text><text class="a2xN" x="266" y="270" style="fill:#12222B">model never sees it</text>
         <line class="a2xA" x1="400" y1="256" x2="470" y2="256"/>
-        <rect x="472" y="232" width="150" height="48" rx="10" fill="#5B21B6"/><text class="a2xT" x="494" y="261">Honest grade</text>
+        <rect x="472" y="232" width="150" height="48" rx="10" fill="#1B5F8C"/><text class="a2xT" x="494" y="261">Honest grade</text>
         <text class="a2xN" x="640" y="252" style="fill:#F7931E">← the only score</text>
         <text class="a2xN" x="640" y="270" style="fill:#F7931E">you can trust</text>
 
         <rect x="30" y="304" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="a2xN" x="52" y="315" style="fill:#1E1633">Split first, study second, grade on the part it never saw. Grading on the training data is like handing students the exam answers to memorise.</text>
+        <text class="a2xN" x="52" y="315" style="fill:#12222B">Split first, study second, grade on the part it never saw. Grading on the training data is like handing students the exam answers to memorise.</text>
       </svg>
       <figcaption>🔍 Click to zoom - train on one pile, grade on a pile the model never saw</figcaption>
     </figure>
@@ -144,34 +144,34 @@
       <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three mini panels of dots. Left: a straight line missing a curve, labelled underfit high bias. Middle: a smooth curve following the trend, labelled sweet spot. Right: a wiggly line through every dot, labelled overfit high variance.">
         <style>
           .a2yTitle { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
-          .a2yLab { font: 700 11.5px Inter, sans-serif; fill: #5B21B6; }
-          .a2yN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .a2yDot { fill: #7C3AED; }
+          .a2yLab { font: 700 11.5px Inter, sans-serif; fill: #1B5F8C; }
+          .a2yN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .a2yDot { fill: #2C86BD; }
           .a2yFit { fill: none; stroke: #F7931E; stroke-width: 2.5; }
         </style>
         <!-- underfit -->
-        <rect x="30" y="40" width="255" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <rect x="30" y="40" width="255" height="30" rx="12" fill="#7C3AED"/><text class="a2yTitle" x="48" y="61">Underfit</text>
+        <rect x="30" y="40" width="255" height="170" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <rect x="30" y="40" width="255" height="30" rx="12" fill="#2C86BD"/><text class="a2yTitle" x="48" y="61">Underfit</text>
         <circle class="a2yDot" cx="70" cy="180" r="4"/><circle class="a2yDot" cx="105" cy="150" r="4"/><circle class="a2yDot" cx="140" cy="160" r="4"/><circle class="a2yDot" cx="175" cy="115" r="4"/><circle class="a2yDot" cx="210" cy="130" r="4"/><circle class="a2yDot" cx="245" cy="95" r="4"/>
         <line class="a2yFit" x1="62" y1="175" x2="252" y2="110"/>
         <text class="a2yLab" x="48" y="200">high bias · too simple</text>
 
         <!-- sweet spot -->
-        <rect x="312" y="40" width="255" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <rect x="312" y="40" width="255" height="30" rx="12" fill="#5B21B6"/><text class="a2yTitle" x="330" y="61">Just right</text>
+        <rect x="312" y="40" width="255" height="170" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <rect x="312" y="40" width="255" height="30" rx="12" fill="#1B5F8C"/><text class="a2yTitle" x="330" y="61">Just right</text>
         <circle class="a2yDot" cx="352" cy="180" r="4"/><circle class="a2yDot" cx="387" cy="150" r="4"/><circle class="a2yDot" cx="422" cy="160" r="4"/><circle class="a2yDot" cx="457" cy="115" r="4"/><circle class="a2yDot" cx="492" cy="130" r="4"/><circle class="a2yDot" cx="527" cy="95" r="4"/>
         <path class="a2yFit" d="M348,178 Q400,140 457,128 T534,100"/>
         <text class="a2yLab" x="330" y="200">sweet spot · balanced</text>
 
         <!-- overfit -->
-        <rect x="594" y="40" width="256" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="594" y="40" width="256" height="170" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <rect x="594" y="40" width="256" height="30" rx="12" fill="#F7931E"/><text class="a2yTitle" x="612" y="61">Overfit</text>
         <circle class="a2yDot" cx="634" cy="180" r="4"/><circle class="a2yDot" cx="669" cy="150" r="4"/><circle class="a2yDot" cx="704" cy="160" r="4"/><circle class="a2yDot" cx="739" cy="115" r="4"/><circle class="a2yDot" cx="774" cy="130" r="4"/><circle class="a2yDot" cx="809" cy="95" r="4"/>
         <path class="a2yFit" d="M634,180 L669,150 L704,160 L739,115 L774,130 L809,95"/>
         <text class="a2yLab" x="612" y="200">high variance · memorised</text>
 
         <rect x="30" y="262" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="a2yN" x="52" y="273" style="fill:#1E1633">Underfit misses the trend (bad on both sets); overfit chases every dot including the noise (great on train, bad on test). You want the balanced middle.</text>
+        <text class="a2yN" x="52" y="273" style="fill:#12222B">Underfit misses the trend (bad on both sets); overfit chases every dot including the noise (great on train, bad on test). You want the balanced middle.</text>
       </svg>
       <figcaption>🔍 Click to zoom - too simple, just right, too complex</figcaption>
     </figure>
@@ -294,6 +294,6 @@
 </main>
 
 <script src="../assets/ml-live.js?v=3"></script>
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 6 · Cross-validation and tuning - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,12 +68,12 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five rows representing 5-fold cross-validation. In each row a different fifth is highlighted as the validation fold while the other four fifths are training folds. A separate sealed test set sits apart.">
         <style>
-          .cvLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
-          .cvN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .cvLab { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
+          .cvN { font: 600 11px Inter, sans-serif; fill: #52707E; }
           .cvT { font: 700 11px Inter, sans-serif; fill: #FFFFFF; }
-          .cvTr { fill: #DDD6FE; stroke: #FFFFFF; stroke-width: 2; }
-          .cvVa { fill: #5B21B6; stroke: #FFFFFF; stroke-width: 2; }
-          .cvTe { fill: #F5F3FF; stroke: #F7931E; stroke-width: 2; stroke-dasharray: 5 3; }
+          .cvTr { fill: #A5D8EF; stroke: #FFFFFF; stroke-width: 2; }
+          .cvVa { fill: #1B5F8C; stroke: #FFFFFF; stroke-width: 2; }
+          .cvTe { fill: #EAF6FC; stroke: #F7931E; stroke-width: 2; stroke-dasharray: 5 3; }
         </style>
         <text class="cvLab" x="30" y="24">5-fold CV on the training data - each fold serves as validation once</text>
 
@@ -91,17 +91,17 @@
         <rect class="cvTr" x="140" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="234" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="328" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="422" y="172" width="92" height="24" rx="4"/><rect class="cvVa" x="516" y="172" width="92" height="24" rx="4"/>
 
         <!-- legend -->
-        <rect class="cvVa" x="140" y="216" width="20" height="16" rx="3"/><text class="cvN" x="166" y="229" style="fill:#1E1633">validation fold</text>
-        <rect class="cvTr" x="290" y="216" width="20" height="16" rx="3"/><text class="cvN" x="316" y="229" style="fill:#1E1633">training folds</text>
+        <rect class="cvVa" x="140" y="216" width="20" height="16" rx="3"/><text class="cvN" x="166" y="229" style="fill:#12222B">validation fold</text>
+        <rect class="cvTr" x="290" y="216" width="20" height="16" rx="3"/><text class="cvN" x="316" y="229" style="fill:#12222B">training folds</text>
 
         <!-- sealed test set -->
         <rect class="cvTe" x="656" y="44" width="194" height="152" rx="8"/>
         <text class="cvLab" x="676" y="112" style="fill:#F7931E">TEST SET</text>
-        <text class="cvN" x="676" y="132" style="fill:#1E1633">sealed · opened</text>
-        <text class="cvN" x="676" y="148" style="fill:#1E1633">once, at the end</text>
+        <text class="cvN" x="676" y="132" style="fill:#12222B">sealed · opened</text>
+        <text class="cvN" x="676" y="148" style="fill:#12222B">once, at the end</text>
 
         <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="cvN" x="52" y="303" style="fill:#1E1633">Average the 5 validation scores for a steadier grade; the spread tells you how lucky a single split could have been. The test set never enters CV.</text>
+        <text class="cvN" x="52" y="303" style="fill:#12222B">Average the 5 validation scores for a steadier grade; the spread tells you how lucky a single split could have been. The test set never enters CV.</text>
       </svg>
       <figcaption>🔍 Click to zoom - each fold validates once; the test set stays sealed</figcaption>
     </figure>
@@ -287,6 +287,6 @@ print("final held-out test R2 = %.2f" % best.score(X_test, y_test))
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

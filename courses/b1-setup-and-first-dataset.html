@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 1 · Setup and your first dataset - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,31 +68,31 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One Lumen sessions table feeds two supervised tasks: a classifier predicting the converted column and a regressor predicting the order_value column, both from the same feature columns.">
         <style>
-          .stL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .stL { font: 700 13px Inter, sans-serif; fill: #12222B; }
           .stT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
-          .stN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .stBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .stA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#stAh); }
+          .stN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .stBox { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .stA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#stAh); }
         </style>
         <defs>
-          <marker id="stAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="stAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
         <text class="stL" x="30" y="26">One table: rows = sessions, columns = features + two targets</text>
         <rect class="stBox" x="30" y="40" width="300" height="150" rx="10"/>
-        <text class="stN" x="46" y="64" style="fill:#1E1633; font-weight:700">FEATURES (X)</text>
+        <text class="stN" x="46" y="64" style="fill:#12222B; font-weight:700">FEATURES (X)</text>
         <text class="stN" x="46" y="86">prior_30d_spend · channel · device</text>
         <text class="stN" x="46" y="104">new_vs_returning · product_category</text>
         <text class="stN" x="46" y="122">pages_viewed · session_hour (noise)</text>
-        <line x1="46" y1="136" x2="314" y2="136" stroke="#DDD6FE" stroke-width="1"/>
-        <text class="stN" x="46" y="158" style="fill:#5B21B6; font-weight:700">TARGETS (y)</text>
+        <line x1="46" y1="136" x2="314" y2="136" stroke="#A5D8EF" stroke-width="1"/>
+        <text class="stN" x="46" y="158" style="fill:#1B5F8C; font-weight:700">TARGETS (y)</text>
         <text class="stN" x="46" y="178">converted (0/1) · order_value ($)</text>
 
         <line class="stA" x1="330" y1="90" x2="410" y2="70"/>
         <line class="stA" x1="330" y1="140" x2="410" y2="210"/>
 
-        <rect x="412" y="44" width="200" height="58" rx="10" fill="#5B21B6"/>
+        <rect x="412" y="44" width="200" height="58" rx="10" fill="#1B5F8C"/>
         <text class="stT" x="430" y="70">Classifier</text>
-        <text class="stN" x="430" y="90" style="fill:#F5F3FF">predict converted (yes/no)</text>
+        <text class="stN" x="430" y="90" style="fill:#EAF6FC">predict converted (yes/no)</text>
         <rect x="412" y="184" width="200" height="58" rx="10" fill="#F7931E"/>
         <text class="stT" x="430" y="210">Regressor</text>
         <text class="stN" x="430" y="230" style="fill:#5A3606">predict order_value ($)</text>
@@ -100,14 +100,14 @@
         <line class="stA" x1="612" y1="73" x2="682" y2="73"/>
         <line class="stA" x1="612" y1="213" x2="682" y2="213"/>
         <rect class="stBox" x="684" y="49" width="166" height="48" rx="10"/>
-        <text class="stN" x="700" y="70" style="fill:#1E1633">"will buy" score</text>
+        <text class="stN" x="700" y="70" style="fill:#12222B">"will buy" score</text>
         <text class="stN" x="700" y="88">for each new visitor</text>
         <rect class="stBox" x="684" y="189" width="166" height="48" rx="10"/>
-        <text class="stN" x="700" y="210" style="fill:#1E1633">"$ this order" for</text>
+        <text class="stN" x="700" y="210" style="fill:#12222B">"$ this order" for</text>
         <text class="stN" x="700" y="228">each likely buyer</text>
 
         <rect x="30" y="286" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="stN" x="52" y="297" style="fill:#1E1633">Same feature columns, two different answer columns - so one dataset teaches both supervised shapes: classification and regression.</text>
+        <text class="stN" x="52" y="297" style="fill:#12222B">Same feature columns, two different answer columns - so one dataset teaches both supervised shapes: classification and regression.</text>
       </svg>
       <figcaption>🔍 Click to zoom - one Lumen table, two prediction tasks</figcaption>
     </figure>
@@ -339,6 +339,6 @@ print("learned slope:", reg.coef_.round(3), "intercept:", round(reg.intercept_, 
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

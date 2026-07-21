@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 10 · Capstone: compare models - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,17 +68,17 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A leaderboard of cross-validation scores shown as bars for three models, feeding a pick-the-winner step, which passes through a single final held-out test gate before shipping.">
         <style>
-          .cpL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .cpN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .cpBar { fill: #7C3AED; }
-          .cpWin { fill: #5B21B6; }
-          .cpA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#cpAh); }
+          .cpL { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .cpN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .cpBar { fill: #2C86BD; }
+          .cpWin { fill: #1B5F8C; }
+          .cpA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#cpAh); }
         </style>
         <defs>
-          <marker id="cpAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="cpAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
         <text class="cpL" x="30" y="26">Leaderboard: cross-validated ROC-AUC (same splits, same metric)</text>
-        <line stroke="#5E5470" stroke-width="1.5" x1="150" y1="60" x2="150" y2="200"/>
+        <line stroke="#52707E" stroke-width="1.5" x1="150" y1="60" x2="150" y2="200"/>
         <text class="cpN" x="30" y="90">Logistic</text>
         <rect class="cpWin" x="150" y="72" width="210" height="26" rx="4"/>
         <text class="cpN" x="30" y="140">Dec. tree (d3)</text>
@@ -88,8 +88,8 @@
         <text class="cpN" x="150" y="220">all near the canon ROC-AUC ~0.71</text>
 
         <line class="cpA" x1="400" y1="130" x2="470" y2="130"/>
-        <rect x="472" y="104" width="130" height="52" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <text class="cpN" x="488" y="128" style="fill:#1E1633; font-weight:700">Pick winner</text>
+        <rect x="472" y="104" width="130" height="52" rx="10" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <text class="cpN" x="488" y="128" style="fill:#12222B; font-weight:700">Pick winner</text>
         <text class="cpN" x="488" y="146">by CV mean +/- std</text>
 
         <line class="cpA" x1="602" y1="130" x2="672" y2="130"/>
@@ -97,10 +97,10 @@
         <text class="cpN" x="690" y="124" style="fill:#FFFFFF; font-weight:700">Held-out test</text>
         <text class="cpN" x="690" y="144" style="fill:#5A3606">scored EXACTLY once</text>
         <line class="cpA" x1="749" y1="162" x2="749" y2="220"/>
-        <rect x="686" y="222" width="126" height="40" rx="10" fill="#5B21B6"/>
+        <rect x="686" y="222" width="126" height="40" rx="10" fill="#1B5F8C"/>
         <text class="cpN" x="702" y="247" style="fill:#FFFFFF; font-weight:700">Ship + monitor</text>
         <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="cpN" x="52" y="303" style="fill:#1E1633">The test gate opens once. Score a model there, then tweak and re-score, and the estimate is no longer honest.</text>
+        <text class="cpN" x="52" y="303" style="fill:#12222B">The test gate opens once. Score a model there, then tweak and re-score, and the estimate is no longer honest.</text>
       </svg>
       <figcaption>🔍 Click to zoom - CV leaderboard, one test gate, then ship</figcaption>
     </figure>
@@ -336,6 +336,6 @@ print(buyers.groupby("segment").mean().round(0))
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

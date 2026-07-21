@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 2 · The train/test split (and the leakage trap) - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,44 +68,44 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One dataset is passed through train_test_split into a large training box, where the model and every transformer are fit, and a small sealed test box, which is scored exactly once at the end.">
         <style>
-          .tsL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .tsL { font: 700 13px Inter, sans-serif; fill: #12222B; }
           .tsT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
-          .tsN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .tsBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .tsA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#tsAh); }
+          .tsN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .tsBox { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .tsA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#tsAh); }
         </style>
         <defs>
-          <marker id="tsAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="tsAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
         <rect class="tsBox" x="24" y="70" width="150" height="86" rx="10"/>
-        <text class="tsN" x="40" y="104" style="fill:#1E1633; font-weight:700">Full data</text>
+        <text class="tsN" x="40" y="104" style="fill:#12222B; font-weight:700">Full data</text>
         <text class="tsN" x="40" y="124">40,000 sessions</text>
         <text class="tsN" x="40" y="142">3.2% convert</text>
 
         <line class="tsA" x1="174" y1="113" x2="238" y2="113"/>
-        <rect x="240" y="82" width="118" height="62" rx="10" fill="#5B21B6"/>
+        <rect x="240" y="82" width="118" height="62" rx="10" fill="#1B5F8C"/>
         <text class="tsT" x="258" y="108">train_test</text>
         <text class="tsT" x="258" y="128">_split</text>
 
         <line class="tsA" x1="358" y1="100" x2="430" y2="70"/>
         <line class="tsA" x1="358" y1="128" x2="430" y2="196"/>
 
-        <rect x="432" y="34" width="300" height="86" rx="10" fill="#7C3AED"/>
+        <rect x="432" y="34" width="300" height="86" rx="10" fill="#2C86BD"/>
         <text class="tsT" x="452" y="62">TRAIN · 75% (30,000)</text>
-        <text class="tsN" x="452" y="84" style="fill:#F5F3FF">fit the model AND every transformer here</text>
-        <text class="tsN" x="452" y="104" style="fill:#F5F3FF">still 3.2% convert (stratified)</text>
+        <text class="tsN" x="452" y="84" style="fill:#EAF6FC">fit the model AND every transformer here</text>
+        <text class="tsN" x="452" y="104" style="fill:#EAF6FC">still 3.2% convert (stratified)</text>
 
         <rect class="tsBox" x="432" y="170" width="230" height="60" rx="10"/>
-        <text class="tsN" x="452" y="196" style="fill:#1E1633; font-weight:700">TEST · 25% (10,000) - sealed</text>
+        <text class="tsN" x="452" y="196" style="fill:#12222B; font-weight:700">TEST · 25% (10,000) - sealed</text>
         <text class="tsN" x="452" y="216">still 3.2% convert (stratified)</text>
 
         <line class="tsA" x1="732" y1="77" x2="792" y2="77"/>
-        <text class="tsN" x="748" y="60" style="fill:#1E1633; font-weight:700">fit here</text>
+        <text class="tsN" x="748" y="60" style="fill:#12222B; font-weight:700">fit here</text>
         <line class="tsA" x1="662" y1="200" x2="792" y2="200"/>
-        <text class="tsN" x="700" y="192" style="fill:#1E1633; font-weight:700">score once</text>
+        <text class="tsN" x="700" y="192" style="fill:#12222B; font-weight:700">score once</text>
 
         <rect x="24" y="264" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="tsN" x="46" y="275" style="fill:#1E1633">The test set is spent once, at the very end. Anything that touches it during training - even a scaler - leaks the answer and fakes your score.</text>
+        <text class="tsN" x="46" y="275" style="fill:#12222B">The test set is spent once, at the very end. Anything that touches it during training - even a scaler - leaks the answer and fakes your score.</text>
       </svg>
       <figcaption>🔍 Click to zoom - split once, fit on train only, score on test once</figcaption>
     </figure>
@@ -306,6 +306,6 @@ pipe.score(X_te_numeric, y_te)   # test is only ever transformed, never fitted</
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

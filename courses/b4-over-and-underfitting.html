@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 4 · Over- and under-fitting - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -70,11 +70,11 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A schematic complexity-versus-error chart: the training-error line falls continuously as complexity rises, while the test-error line forms a U - high at low complexity (underfit), lowest in the middle (sweet spot), and rising again at high complexity (overfit).">
         <style>
-          .ucL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .ucN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .ucAxis { stroke: #CBC2E0; stroke-width: 2; }
-          .ucTrain { fill: none; stroke: #DDD6FE; stroke-width: 3.5; }
-          .ucTest { fill: none; stroke: #5B21B6; stroke-width: 3.5; }
+          .ucL { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .ucN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .ucAxis { stroke: #B4D4E2; stroke-width: 2; }
+          .ucTrain { fill: none; stroke: #A5D8EF; stroke-width: 3.5; }
+          .ucTest { fill: none; stroke: #1B5F8C; stroke-width: 3.5; }
         </style>
         <line class="ucAxis" x1="80" y1="290" x2="830" y2="290"/>
         <line class="ucAxis" x1="80" y1="30" x2="80" y2="290"/>
@@ -82,10 +82,10 @@
         <text class="ucL" x="470" y="326">model complexity (tree depth) →</text>
 
         <!-- regions -->
-        <line x1="300" y1="30" x2="300" y2="290" stroke="#F5F3FF" stroke-width="2"/>
-        <line x1="520" y1="30" x2="520" y2="290" stroke="#F5F3FF" stroke-width="2"/>
-        <text class="ucN" x="130" y="52" style="fill:#5E5470; font-weight:700">underfit</text>
-        <text class="ucN" x="360" y="52" style="fill:#5B21B6; font-weight:700">sweet spot</text>
+        <line x1="300" y1="30" x2="300" y2="290" stroke="#EAF6FC" stroke-width="2"/>
+        <line x1="520" y1="30" x2="520" y2="290" stroke="#EAF6FC" stroke-width="2"/>
+        <text class="ucN" x="130" y="52" style="fill:#52707E; font-weight:700">underfit</text>
+        <text class="ucN" x="360" y="52" style="fill:#1B5F8C; font-weight:700">sweet spot</text>
         <text class="ucN" x="640" y="52" style="fill:#F7931E; font-weight:700">overfit</text>
 
         <!-- test error: U shape -->
@@ -93,17 +93,17 @@
         <!-- train error: monotone down -->
         <path class="ucTrain" d="M110,120 C260,190 420,238 600,262 C700,272 780,278 820,282"/>
 
-        <circle cx="400" cy="242" r="6" fill="#5B21B6"/>
-        <text class="ucN" x="360" y="270" style="fill:#5B21B6; font-weight:700">min test error = pick this depth</text>
+        <circle cx="400" cy="242" r="6" fill="#1B5F8C"/>
+        <text class="ucN" x="360" y="270" style="fill:#1B5F8C; font-weight:700">min test error = pick this depth</text>
 
-        <text class="ucN" x="700" y="90" style="fill:#5B21B6; font-weight:700">test error (held-out)</text>
-        <text class="ucN" x="640" y="270" style="fill:#5E5470; font-weight:700">train error (always falls)</text>
+        <text class="ucN" x="700" y="90" style="fill:#1B5F8C; font-weight:700">test error (held-out)</text>
+        <text class="ucN" x="640" y="270" style="fill:#52707E; font-weight:700">train error (always falls)</text>
 
-        <text class="ucN" x="130" y="150" style="fill:#5E5470">high bias</text>
-        <text class="ucN" x="640" y="150" style="fill:#5E5470">high variance</text>
+        <text class="ucN" x="130" y="150" style="fill:#52707E">high bias</text>
+        <text class="ucN" x="640" y="150" style="fill:#52707E">high variance</text>
 
         <rect x="80" y="336" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="ucN" x="102" y="347" style="fill:#1E1633">The gap between the two lines is overfitting. Train error alone can't warn you - only the held-out test line bends back up.</text>
+        <text class="ucN" x="102" y="347" style="fill:#12222B">The gap between the two lines is overfitting. Train error alone can't warn you - only the held-out test line bends back up.</text>
       </svg>
       <figcaption>🔍 Click to zoom - train error always falls; test error is a U</figcaption>
     </figure>
@@ -293,6 +293,6 @@ plt.xlabel("max_depth"); plt.ylabel("R2"); plt.legend(); plt.show()</pre>
 </main>
 
 <script src="../assets/ml-live.js?v=3"></script>
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

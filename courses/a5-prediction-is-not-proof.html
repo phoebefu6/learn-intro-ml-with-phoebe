@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leader session 5 · Prediction is not proof - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,43 +68,43 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A map with two axes. The horizontal axis runs from simple on the left to complex on the right. The vertical axis runs from interpretable at the top to black-box at the bottom. Linear and logistic regression sit top-left, simple and interpretable. Decision trees sit near the top-middle. Ensembles like random forests and gradient boosting sit lower-right, complex and less interpretable. Neural networks and deep learning sit far bottom-right, most complex and black-box. Clustering sits mid-left as an unsupervised family.">
         <style>
-          .mzAxis { stroke: #5E5470; stroke-width: 1.5; marker-end: url(#mzAh); }
-          .mzLbl { font: 700 11px Inter, sans-serif; fill: #5E5470; }
+          .mzAxis { stroke: #52707E; stroke-width: 1.5; marker-end: url(#mzAh); }
+          .mzLbl { font: 700 11px Inter, sans-serif; fill: #52707E; }
           .mzT { font: 800 12.5px Inter, sans-serif; fill: #FFFFFF; }
-          .mzN { font: 600 10.5px Inter, sans-serif; fill: #1E1633; }
-          .mzNote { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .mzN { font: 600 10.5px Inter, sans-serif; fill: #12222B; }
+          .mzNote { font: 600 11px Inter, sans-serif; fill: #52707E; }
         </style>
         <defs>
-          <marker id="mzAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#5E5470" stroke-width="1.8"/></marker>
+          <marker id="mzAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#52707E" stroke-width="1.8"/></marker>
         </defs>
         <line class="mzAxis" x1="90" y1="360" x2="840" y2="360"/>
         <line class="mzAxis" x1="90" y1="360" x2="90" y2="40"/>
         <text class="mzLbl" x="700" y="384">simple → complex</text>
         <text class="mzLbl" x="30" y="70" transform="rotate(-90 30 200)">black-box → interpretable</text>
 
-        <rect x="110" y="70" width="200" height="60" rx="10" fill="#5B21B6"/>
+        <rect x="110" y="70" width="200" height="60" rx="10" fill="#1B5F8C"/>
         <text class="mzT" x="128" y="96">Linear / logistic</text>
-        <text class="mzN" x="128" y="118" style="fill:#DDD6FE">simple, interpretable, the baseline</text>
+        <text class="mzN" x="128" y="118" style="fill:#A5D8EF">simple, interpretable, the baseline</text>
 
-        <rect x="300" y="150" width="180" height="60" rx="10" fill="#7C3AED"/>
+        <rect x="300" y="150" width="180" height="60" rx="10" fill="#2C86BD"/>
         <text class="mzT" x="318" y="176">Decision trees</text>
-        <text class="mzN" x="318" y="198" style="fill:#DDD6FE">readable rules, overfit easily</text>
+        <text class="mzN" x="318" y="198" style="fill:#A5D8EF">readable rules, overfit easily</text>
 
-        <rect x="520" y="240" width="200" height="66" rx="10" fill="#A78BFA"/>
+        <rect x="520" y="240" width="200" height="66" rx="10" fill="#4FB0DE"/>
         <text class="mzT" x="538" y="266">Ensembles</text>
-        <text class="mzN" x="538" y="286" style="fill:#1E1633">random forests, boosting</text>
-        <text class="mzN" x="538" y="300" style="fill:#1E1633">(XGBoost) - strong, opaque</text>
+        <text class="mzN" x="538" y="286" style="fill:#12222B">random forests, boosting</text>
+        <text class="mzN" x="538" y="300" style="fill:#12222B">(XGBoost) - strong, opaque</text>
 
-        <rect x="600" y="316" width="230" height="60" rx="10" fill="#1E1633"/>
+        <rect x="600" y="316" width="230" height="60" rx="10" fill="#12222B"/>
         <text class="mzT" x="618" y="342">Neural nets / deep learning</text>
-        <text class="mzN" x="618" y="364" style="fill:#DDD6FE">huge data, images/text, black-box</text>
+        <text class="mzN" x="618" y="364" style="fill:#A5D8EF">huge data, images/text, black-box</text>
 
-        <rect x="110" y="230" width="200" height="60" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <text class="mzN" x="128" y="256" style="fill:#5B21B6"><tspan style="font-weight:800">Clustering / k-means</tspan></text>
-        <text class="mzN" x="128" y="278" style="fill:#5E5470">unsupervised - find segments</text>
+        <rect x="110" y="230" width="200" height="60" rx="10" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <text class="mzN" x="128" y="256" style="fill:#1B5F8C"><tspan style="font-weight:800">Clustering / k-means</tspan></text>
+        <text class="mzN" x="128" y="278" style="fill:#52707E">unsupervised - find segments</text>
 
         <rect x="110" y="392" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="mzNote" x="132" y="403" style="fill:#1E1633">Move down-right only when a simpler model has been tried and genuinely falls short. Complexity costs interpretability, and you pay it in trust.</text>
+        <text class="mzNote" x="132" y="403" style="fill:#12222B">Move down-right only when a simpler model has been tried and genuinely falls short. Complexity costs interpretability, and you pay it in trust.</text>
       </svg>
       <figcaption>🔍 Click to zoom - the model families, mapped by complexity and interpretability</figcaption>
     </figure>
@@ -155,36 +155,36 @@
       <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels. On the left, what a model does: features correlate with an outcome, so the model predicts it, but this cannot tell you the cause. On the right, what an experiment does: you deliberately intervene, split into groups, and measure the causal lift.">
         <style>
           .pcT { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
-          .pcH { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .pcN { font: 600 11px Inter, sans-serif; fill: #1E1633; }
-          .pcA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#pcAh); }
-          .pcNote { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .pcH { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .pcN { font: 600 11px Inter, sans-serif; fill: #12222B; }
+          .pcA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#pcAh); }
+          .pcNote { font: 600 11px Inter, sans-serif; fill: #52707E; }
         </style>
         <defs>
-          <marker id="pcAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="pcAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
-        <rect x="30" y="40" width="390" height="270" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="30" y="40" width="390" height="270" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <text class="pcH" x="52" y="70">What a model does: predict</text>
-        <rect x="52" y="90" width="160" height="46" rx="8" fill="#7C3AED"/><text class="pcT" x="72" y="118">Features</text>
+        <rect x="52" y="90" width="160" height="46" rx="8" fill="#2C86BD"/><text class="pcT" x="72" y="118">Features</text>
         <line class="pcA" x1="212" y1="113" x2="272" y2="113"/>
-        <rect x="274" y="90" width="120" height="46" rx="8" fill="#A78BFA"/><text class="pcN" x="288" y="118" style="fill:#1E1633">correlate</text>
+        <rect x="274" y="90" width="120" height="46" rx="8" fill="#4FB0DE"/><text class="pcN" x="288" y="118" style="fill:#12222B">correlate</text>
         <line class="pcA" x1="230" y1="150" x2="230" y2="196"/>
-        <rect x="130" y="200" width="180" height="46" rx="8" fill="#5B21B6"/><text class="pcT" x="150" y="228">Prediction</text>
-        <text class="pcNote" x="52" y="282" style="fill:#1E1633">Answers "who is likely to buy?"</text>
+        <rect x="130" y="200" width="180" height="46" rx="8" fill="#1B5F8C"/><text class="pcT" x="150" y="228">Prediction</text>
+        <text class="pcNote" x="52" y="282" style="fill:#12222B">Answers "who is likely to buy?"</text>
         <text class="pcNote" x="52" y="300" style="fill:#F7931E">Cannot tell you why, or what to change.</text>
 
-        <rect x="460" y="40" width="390" height="270" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="460" y="40" width="390" height="270" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <text class="pcH" x="482" y="70">What an experiment does: prove</text>
         <rect x="482" y="90" width="160" height="46" rx="8" fill="#F7931E"/><text class="pcT" x="502" y="118">Intervene</text>
         <line class="pcA" x1="642" y1="113" x2="702" y2="113"/>
-        <rect x="704" y="90" width="120" height="46" rx="8" fill="#7C3AED"/><text class="pcN" x="716" y="118" style="fill:#1E1633">two groups</text>
+        <rect x="704" y="90" width="120" height="46" rx="8" fill="#2C86BD"/><text class="pcN" x="716" y="118" style="fill:#12222B">two groups</text>
         <line class="pcA" x1="660" y1="150" x2="660" y2="196"/>
-        <rect x="560" y="200" width="200" height="46" rx="8" fill="#5B21B6"/><text class="pcT" x="580" y="228">Causal lift</text>
-        <text class="pcNote" x="482" y="282" style="fill:#1E1633">Answers "what would change buying?"</text>
-        <text class="pcNote" x="482" y="300" style="fill:#5B21B6">The only way to measure a true cause.</text>
+        <rect x="560" y="200" width="200" height="46" rx="8" fill="#1B5F8C"/><text class="pcT" x="580" y="228">Causal lift</text>
+        <text class="pcNote" x="482" y="282" style="fill:#12222B">Answers "what would change buying?"</text>
+        <text class="pcNote" x="482" y="300" style="fill:#1B5F8C">The only way to measure a true cause.</text>
 
         <rect x="30" y="330" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="pcNote" x="52" y="341" style="fill:#1E1633">A model reads the world as it is; an experiment changes the world and watches. To pull a lever, you need the right-hand panel.</text>
+        <text class="pcNote" x="52" y="341" style="fill:#12222B">A model reads the world as it is; an experiment changes the world and watches. To pull a lever, you need the right-hand panel.</text>
       </svg>
       <figcaption>🔍 Click to zoom - a model predicts the world; an experiment changes it</figcaption>
     </figure>
@@ -301,6 +301,6 @@
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

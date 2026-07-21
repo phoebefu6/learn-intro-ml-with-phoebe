@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leader session 4 · Reading a model's report card - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -72,42 +72,42 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 412" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A two-by-two confusion matrix. Rows are actual buyer and actual non-buyer; columns are predicted buyer and predicted non-buyer. The four cells are true positive, false positive, false negative and true negative. Precision reads down the predicted-buyer column; recall reads across the actual-buyer row.">
         <style>
-          .cmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .cmL { font: 700 13px Inter, sans-serif; fill: #12222B; }
           .cmT { font: 800 14px Inter, sans-serif; fill: #FFFFFF; }
           .cmC { font: 600 11.5px Inter, sans-serif; fill: #FFFFFF; }
-          .cmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .cmH { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+          .cmN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .cmH { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
         </style>
         <text class="cmH" x="300" y="34">Predicted: buyer</text>
         <text class="cmH" x="560" y="34">Predicted: no buyer</text>
         <text class="cmH" x="40" y="130" transform="rotate(-90 40 130)">Actually bought</text>
         <text class="cmH" x="40" y="300" transform="rotate(-90 40 300)">Did not buy</text>
 
-        <rect x="270" y="48" width="230" height="130" rx="10" fill="#5B21B6"/>
+        <rect x="270" y="48" width="230" height="130" rx="10" fill="#1B5F8C"/>
         <text class="cmT" x="330" y="98">True positive</text>
         <text class="cmC" x="300" y="124">buyer, correctly flagged</text>
-        <text class="cmC" x="330" y="146" style="fill:#DDD6FE">the wins</text>
+        <text class="cmC" x="330" y="146" style="fill:#A5D8EF">the wins</text>
 
         <rect x="516" y="48" width="230" height="130" rx="10" fill="#F7931E"/>
         <text class="cmT" x="560" y="98">False negative</text>
         <text class="cmC" x="546" y="124">buyer we missed</text>
         <text class="cmC" x="546" y="146" style="fill:#FFFFFF">a lost sale</text>
 
-        <rect x="270" y="192" width="230" height="130" rx="10" fill="#7C3AED"/>
+        <rect x="270" y="192" width="230" height="130" rx="10" fill="#2C86BD"/>
         <text class="cmT" x="316" y="242">False positive</text>
         <text class="cmC" x="292" y="268">flagged, never bought</text>
-        <text class="cmC" x="316" y="290" style="fill:#DDD6FE">a wasted offer</text>
+        <text class="cmC" x="316" y="290" style="fill:#A5D8EF">a wasted offer</text>
 
-        <rect x="516" y="192" width="230" height="130" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="516" y="192" width="230" height="130" rx="10" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <text class="cmL" x="560" y="242">True negative</text>
-        <text class="cmN" x="546" y="268" style="fill:#1E1633">correctly left alone</text>
-        <text class="cmN" x="546" y="290" style="fill:#1E1633">the easy 96.8%</text>
+        <text class="cmN" x="546" y="268" style="fill:#12222B">correctly left alone</text>
+        <text class="cmN" x="546" y="290" style="fill:#12222B">the easy 96.8%</text>
 
-        <text class="cmN" x="270" y="352" style="fill:#5B21B6">↓ precision reads down this column: of those we flagged, how many really bought</text>
+        <text class="cmN" x="270" y="352" style="fill:#1B5F8C">↓ precision reads down this column: of those we flagged, how many really bought</text>
         <text class="cmN" x="270" y="372" style="fill:#F7931E">→ recall reads across the top row: of real buyers, how many we caught</text>
 
         <rect x="30" y="392" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="cmN" x="52" y="403" style="fill:#1E1633">The matrix is the source of truth; every other score is just two of these cells in a ratio.</text>
+        <text class="cmN" x="52" y="403" style="fill:#12222B">The matrix is the source of truth; every other score is just two of these cells in a ratio.</text>
       </svg>
       <figcaption>🔍 Click to zoom - the confusion matrix, and where precision and recall come from</figcaption>
     </figure>
@@ -158,11 +158,11 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An ROC curve sketch. The diagonal line from bottom-left to top-right is a random coin-flip model with area 0.5. A curve bowed up toward the top-left corner is Lumen's model with an area under the curve of about 0.71, a real but modest signal.">
         <style>
-          .rcAxis { stroke: #5E5470; stroke-width: 1.5; }
-          .rcGrid { stroke: #DDD6FE; stroke-width: 1; stroke-dasharray: 4 4; }
-          .rcLbl { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .rcTtl { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .rcNote { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+          .rcAxis { stroke: #52707E; stroke-width: 1.5; }
+          .rcGrid { stroke: #A5D8EF; stroke-width: 1; stroke-dasharray: 4 4; }
+          .rcLbl { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .rcTtl { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .rcNote { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
         </style>
         <text class="rcTtl" x="60" y="34">How well does the model RANK buyers above non-buyers? (ROC-AUC)</text>
         <line class="rcAxis" x1="120" y1="70" x2="120" y2="280"/>
@@ -171,23 +171,23 @@
         <text class="rcLbl" x="200" y="304">false alarms →</text>
 
         <line class="rcGrid" x1="120" y1="280" x2="470" y2="70"/>
-        <text class="rcLbl" x="330" y="200" style="fill:#5E5470" transform="rotate(-31 330 200)">coin flip, AUC 0.5</text>
+        <text class="rcLbl" x="330" y="200" style="fill:#52707E" transform="rotate(-31 330 200)">coin flip, AUC 0.5</text>
 
-        <path d="M120,280 C170,150 300,95 470,70" fill="none" stroke="#5B21B6" stroke-width="3"/>
-        <text class="rcNote" x="250" y="120" style="fill:#5B21B6">Lumen model</text>
-        <text class="rcNote" x="250" y="138" style="fill:#5B21B6">AUC ~ 0.71</text>
+        <path d="M120,280 C170,150 300,95 470,70" fill="none" stroke="#1B5F8C" stroke-width="3"/>
+        <text class="rcNote" x="250" y="120" style="fill:#1B5F8C">Lumen model</text>
+        <text class="rcNote" x="250" y="138" style="fill:#1B5F8C">AUC ~ 0.71</text>
 
-        <rect x="540" y="80" width="300" height="180" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="540" y="80" width="300" height="180" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <text class="rcTtl" x="560" y="112">Read AUC like a percentage</text>
-        <text class="rcLbl" x="560" y="140" style="fill:#1E1633">0.5 = coin flip, no signal.</text>
-        <text class="rcLbl" x="560" y="162" style="fill:#1E1633">1.0 = perfect ranking.</text>
-        <text class="rcLbl" x="560" y="184" style="fill:#1E1633">0.71 = real but modest -</text>
-        <text class="rcLbl" x="560" y="204" style="fill:#1E1633">the model ranks a random</text>
-        <text class="rcLbl" x="560" y="224" style="fill:#1E1633">buyer above a random</text>
-        <text class="rcLbl" x="560" y="244" style="fill:#1E1633">non-buyer ~71% of the time.</text>
+        <text class="rcLbl" x="560" y="140" style="fill:#12222B">0.5 = coin flip, no signal.</text>
+        <text class="rcLbl" x="560" y="162" style="fill:#12222B">1.0 = perfect ranking.</text>
+        <text class="rcLbl" x="560" y="184" style="fill:#12222B">0.71 = real but modest -</text>
+        <text class="rcLbl" x="560" y="204" style="fill:#12222B">the model ranks a random</text>
+        <text class="rcLbl" x="560" y="224" style="fill:#12222B">buyer above a random</text>
+        <text class="rcLbl" x="560" y="244" style="fill:#12222B">non-buyer ~71% of the time.</text>
 
         <rect x="120" y="312" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="rcLbl" x="142" y="323" style="fill:#1E1633">AUC judges ranking across every threshold at once, so it survives the accuracy paradox - a coin flip scores 0.5 no matter how rare the event.</text>
+        <text class="rcLbl" x="142" y="323" style="fill:#12222B">AUC judges ranking across every threshold at once, so it survives the accuracy paradox - a coin flip scores 0.5 no matter how rare the event.</text>
       </svg>
       <figcaption>🔍 Click to zoom - ROC-AUC, from a coin flip to a modest 0.71</figcaption>
     </figure>
@@ -308,6 +308,6 @@
 </main>
 
 <script src="../assets/ml-live.js?v=3"></script>
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

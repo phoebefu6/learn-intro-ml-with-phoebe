@@ -1,22 +1,22 @@
 /* learn-intro-ml-with-phoebe - editorial bold design system
-   Primary: scikit-learn blue #7C3AED · Ink: #1E1633 · Accent: sklearn orange #F7931E */
+   Primary: scikit-learn blue #2C86BD · Ink: #12222B · Accent: sklearn orange #F7931E */
 
 :root {
-  --indigo: #7C3AED;
-  --indigo-deep: #5B21B6;
-  --indigo-mid: #A78BFA;
-  --indigo-soft: #DDD6FE;
-  --indigo-50: #F5F3FF;
-  --ink: #1E1633;
-  --muted: #5E5470;
-  --faint: #CBC2E0;
-  --hairline: #EBE6F7;
+  --indigo: #2C86BD;
+  --indigo-deep: #1B5F8C;
+  --indigo-mid: #4FB0DE;
+  --indigo-soft: #A5D8EF;
+  --indigo-50: #EAF6FC;
+  --ink: #12222B;
+  --muted: #52707E;
+  --faint: #B4D4E2;
+  --hairline: #DCEDF4;
   --amber: #F7931E;
   --amber-ink: #5A3606;
   --amber-50: #FFF4E6;
   --paper: #FFFFFF;
-  --code-bg: #16112A;
-  --code-ink: #E6E0F5;
+  --code-bg: #0C1A22;
+  --code-ink: #D6ECF5;
   --radius: 14px;
 }
 
@@ -178,7 +178,7 @@ details.card {
   overflow: hidden;
   background: #fff;
 }
-details.card[open] { border-color: var(--indigo-soft); box-shadow: 0 8px 28px rgba(124,58,237,.08); }
+details.card[open] { border-color: var(--indigo-soft); box-shadow: 0 8px 28px rgba(44,134,189,.08); }
 details.card summary {
   list-style: none;
   cursor: pointer;
@@ -370,7 +370,7 @@ figure.zoomable {
   transition: box-shadow .15s ease;
   background: #fff;
 }
-figure.zoomable:hover { box-shadow: 0 8px 28px rgba(124,58,237,.12); }
+figure.zoomable:hover { box-shadow: 0 8px 28px rgba(44,134,189,.12); }
 figure.zoomable svg, figure.zoomable img { width: 100%; height: auto; display: block; }
 figure.zoomable figcaption {
   margin-top: .6rem;
@@ -630,7 +630,7 @@ details.card::after {
   pointer-events: none;
   opacity: 0;
   transition: opacity .3s ease;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(124,58,237,.09), transparent 65%);
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(44,134,189,.09), transparent 65%);
 }
 details.card:hover::after { opacity: 1; }
 

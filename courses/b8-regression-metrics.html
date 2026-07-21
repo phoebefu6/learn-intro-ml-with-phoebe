@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 8 · Regression metrics and the model - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,12 +68,12 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A regression fit line through a scatter of points, with vertical residual segments drawn from each point to the line, and a note that RMSE is larger than MAE because squaring punishes the big misses.">
         <style>
-          .rmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .rmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .rmAx { stroke: #5E5470; stroke-width: 1.5; }
-          .rmFit { stroke: #5B21B6; stroke-width: 3; fill: none; }
+          .rmL { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .rmN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .rmAx { stroke: #52707E; stroke-width: 1.5; }
+          .rmFit { stroke: #1B5F8C; stroke-width: 3; fill: none; }
           .rmRes { stroke: #F7931E; stroke-width: 2; }
-          .rmDot { fill: #7C3AED; }
+          .rmDot { fill: #2C86BD; }
         </style>
         <text class="rmL" x="30" y="26">Residuals: the vertical gap from each point to the fit line</text>
         <line class="rmAx" x1="70" y1="60" x2="70" y2="270"/>
@@ -93,15 +93,15 @@
         <circle class="rmDot" cx="410" cy="200" r="5"/>
         <line class="rmRes" x1="470" y1="105" x2="470" y2="103"/>
         <circle class="rmDot" cx="470" cy="105" r="5"/>
-        <rect x="560" y="60" width="290" height="90" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <text class="rmN" x="576" y="86" style="fill:#1E1633; font-weight:700">One long orange miss (the big order)</text>
+        <rect x="560" y="60" width="290" height="90" rx="10" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <text class="rmN" x="576" y="86" style="fill:#12222B; font-weight:700">One long orange miss (the big order)</text>
         <text class="rmN" x="576" y="108">counts once in MAE, but squared in MSE -</text>
         <text class="rmN" x="576" y="126">so RMSE &gt; MAE whenever misses vary.</text>
-        <rect x="560" y="170" width="290" height="70" rx="10" fill="#5B21B6"/>
+        <rect x="560" y="170" width="290" height="70" rx="10" fill="#1B5F8C"/>
         <text class="rmN" x="576" y="198" style="fill:#FFFFFF; font-weight:700">RMSE &gt; MAE</text>
-        <text class="rmN" x="576" y="220" style="fill:#F5F3FF">squaring punishes the big misses harder</text>
+        <text class="rmN" x="576" y="220" style="fill:#EAF6FC">squaring punishes the big misses harder</text>
         <rect x="30" y="306" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="rmN" x="52" y="317" style="fill:#1E1633">The metric you pick decides whether one huge mispriced order matters a little (MAE) or a lot (RMSE).</text>
+        <text class="rmN" x="52" y="317" style="fill:#12222B">The metric you pick decides whether one huge mispriced order matters a little (MAE) or a lot (RMSE).</text>
       </svg>
       <figcaption>🔍 Click to zoom - residuals, and why RMSE outruns MAE</figcaption>
     </figure>
@@ -320,6 +320,6 @@ plt.show()</pre>
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

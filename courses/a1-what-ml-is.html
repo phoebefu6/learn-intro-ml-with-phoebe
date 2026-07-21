@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leader session 1 · What ML actually is - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,35 +68,35 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two lanes. Classic software: rules plus data go into a program that produces answers. Machine learning: data plus answers go into training that produces the rules as a model.">
         <style>
-          .wmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .wmL { font: 700 13px Inter, sans-serif; fill: #12222B; }
           .wmT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
-          .wmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .wmBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .wmA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#wmAh); }
+          .wmN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .wmBox { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .wmA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#wmAh); }
         </style>
         <defs>
-          <marker id="wmAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="wmAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
         <text class="wmL" x="30" y="26">Classic software - a person writes the rule</text>
-        <rect class="wmBox" x="30" y="42" width="150" height="42" rx="8"/><text class="wmN" x="48" y="68" style="fill:#1E1633">Rules (if/else)</text>
-        <rect class="wmBox" x="30" y="96" width="150" height="42" rx="8"/><text class="wmN" x="64" y="122" style="fill:#1E1633">Data</text>
+        <rect class="wmBox" x="30" y="42" width="150" height="42" rx="8"/><text class="wmN" x="48" y="68" style="fill:#12222B">Rules (if/else)</text>
+        <rect class="wmBox" x="30" y="96" width="150" height="42" rx="8"/><text class="wmN" x="64" y="122" style="fill:#12222B">Data</text>
         <line class="wmA" x1="180" y1="90" x2="250" y2="90"/>
-        <rect x="252" y="66" width="140" height="48" rx="10" fill="#7C3AED"/><text class="wmT" x="286" y="95">Program</text>
+        <rect x="252" y="66" width="140" height="48" rx="10" fill="#2C86BD"/><text class="wmT" x="286" y="95">Program</text>
         <line class="wmA" x1="392" y1="90" x2="462" y2="90"/>
-        <rect x="464" y="66" width="150" height="48" rx="10" fill="#5B21B6"/><text class="wmT" x="500" y="95">Answers</text>
+        <rect x="464" y="66" width="150" height="48" rx="10" fill="#1B5F8C"/><text class="wmT" x="500" y="95">Answers</text>
 
         <text class="wmL" x="30" y="198">Machine learning - the computer finds the rule</text>
-        <rect class="wmBox" x="30" y="214" width="150" height="42" rx="8"/><text class="wmN" x="64" y="240" style="fill:#1E1633">Data</text>
-        <rect class="wmBox" x="30" y="268" width="150" height="42" rx="8"/><text class="wmN" x="44" y="294" style="fill:#1E1633">Answers (labels)</text>
+        <rect class="wmBox" x="30" y="214" width="150" height="42" rx="8"/><text class="wmN" x="64" y="240" style="fill:#12222B">Data</text>
+        <rect class="wmBox" x="30" y="268" width="150" height="42" rx="8"/><text class="wmN" x="44" y="294" style="fill:#12222B">Answers (labels)</text>
         <line class="wmA" x1="180" y1="262" x2="250" y2="262"/>
         <rect x="252" y="238" width="140" height="48" rx="10" fill="#F7931E"/><text class="wmT" x="292" y="267">Training</text>
         <line class="wmA" x1="392" y1="262" x2="462" y2="262"/>
-        <rect x="464" y="238" width="150" height="48" rx="10" fill="#5B21B6"/><text class="wmT" x="486" y="267">Rules (a model)</text>
+        <rect x="464" y="238" width="150" height="48" rx="10" fill="#1B5F8C"/><text class="wmT" x="486" y="267">Rules (a model)</text>
         <text class="wmN" x="636" y="258" style="fill:#F7931E">← the model IS the</text>
         <text class="wmN" x="636" y="276" style="fill:#F7931E">learned rule, reusable</text>
 
         <rect x="30" y="322" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="wmN" x="52" y="333" style="fill:#1E1633">Same ingredients, swapped roles: classic software takes rules and produces answers; ML takes answers and produces the rules.</text>
+        <text class="wmN" x="52" y="333" style="fill:#12222B">Same ingredients, swapped roles: classic software takes rules and produces answers; ML takes answers and produces the rules.</text>
       </svg>
       <figcaption>🔍 Click to zoom - the one flip that defines machine learning</figcaption>
     </figure>
@@ -147,37 +147,37 @@
       <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three boxes: supervised learning (labelled examples predict a known target), unsupervised learning (no labels, find structure), and reinforcement learning (learn by trial and reward).">
         <style>
           .klTitle { font: 800 14px Inter, sans-serif; fill: #FFFFFF; }
-          .klBody { font: 600 11.5px Inter, sans-serif; fill: #1E1633; }
-          .klTag { font: 700 11px Inter, sans-serif; fill: #5B21B6; }
-          .klN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .klBody { font: 600 11.5px Inter, sans-serif; fill: #12222B; }
+          .klTag { font: 700 11px Inter, sans-serif; fill: #1B5F8C; }
+          .klN { font: 600 11px Inter, sans-serif; fill: #52707E; }
         </style>
-        <rect x="30" y="40" width="255" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <rect x="30" y="40" width="255" height="34" rx="12" fill="#5B21B6"/><text class="klTitle" x="48" y="63">Supervised</text>
+        <rect x="30" y="40" width="255" height="150" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <rect x="30" y="40" width="255" height="34" rx="12" fill="#1B5F8C"/><text class="klTitle" x="48" y="63">Supervised</text>
         <text class="klTag" x="48" y="96">learn from labelled examples</text>
         <text class="klBody" x="48" y="120">You have the answers for the past.</text>
         <text class="klBody" x="48" y="138">Predict a known target on new cases.</text>
-        <text class="klN" x="48" y="164" style="fill:#5B21B6">Lumen: will this visitor convert?</text>
-        <text class="klN" x="48" y="180" style="fill:#5B21B6">how big will the order be?</text>
+        <text class="klN" x="48" y="164" style="fill:#1B5F8C">Lumen: will this visitor convert?</text>
+        <text class="klN" x="48" y="180" style="fill:#1B5F8C">how big will the order be?</text>
 
-        <rect x="312" y="40" width="255" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
-        <rect x="312" y="40" width="255" height="34" rx="12" fill="#7C3AED"/><text class="klTitle" x="330" y="63">Unsupervised</text>
+        <rect x="312" y="40" width="255" height="150" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
+        <rect x="312" y="40" width="255" height="34" rx="12" fill="#2C86BD"/><text class="klTitle" x="330" y="63">Unsupervised</text>
         <text class="klTag" x="330" y="96">no answers - find structure</text>
         <text class="klBody" x="330" y="120">No labels. Group similar things,</text>
         <text class="klBody" x="330" y="138">or spot the odd one out.</text>
-        <text class="klN" x="330" y="164" style="fill:#5B21B6">Lumen: cluster customers into</text>
-        <text class="klN" x="330" y="180" style="fill:#5B21B6">segments no one defined yet.</text>
+        <text class="klN" x="330" y="164" style="fill:#1B5F8C">Lumen: cluster customers into</text>
+        <text class="klN" x="330" y="180" style="fill:#1B5F8C">segments no one defined yet.</text>
 
-        <rect x="594" y="40" width="256" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="594" y="40" width="256" height="150" rx="12" fill="#EAF6FC" stroke="#A5D8EF" stroke-width="1.5"/>
         <rect x="594" y="40" width="256" height="34" rx="12" fill="#F7931E"/><text class="klTitle" x="612" y="63">Reinforcement</text>
         <text class="klTag" x="612" y="96">learn by trial and reward</text>
         <text class="klBody" x="612" y="120">Act, get feedback, improve.</text>
         <text class="klBody" x="612" y="138">Powerful, data-hungry, advanced.</text>
-        <text class="klN" x="612" y="164" style="fill:#5B21B6">Robotics, game AI, some</text>
-        <text class="klN" x="612" y="180" style="fill:#5B21B6">pricing - rare in a first project.</text>
+        <text class="klN" x="612" y="164" style="fill:#1B5F8C">Robotics, game AI, some</text>
+        <text class="klN" x="612" y="180" style="fill:#1B5F8C">pricing - rare in a first project.</text>
 
         <rect x="30" y="252" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="klN" x="52" y="263" style="fill:#1E1633">This course lives almost entirely in the first box - supervised learning - because that is where 90% of business value and every first project sits.</text>
-        <text class="klN" x="52" y="281" style="fill:#1E1633">We give unsupervised a short taste at the very end; reinforcement learning we only name.</text>
+        <text class="klN" x="52" y="263" style="fill:#12222B">This course lives almost entirely in the first box - supervised learning - because that is where 90% of business value and every first project sits.</text>
+        <text class="klN" x="52" y="281" style="fill:#12222B">We give unsupervised a short taste at the very end; reinforcement learning we only name.</text>
       </svg>
       <figcaption>🔍 Click to zoom - three kinds of learning, and where this course lives</figcaption>
     </figure>
@@ -297,6 +297,6 @@
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

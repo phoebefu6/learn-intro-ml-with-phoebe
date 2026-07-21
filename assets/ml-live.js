@@ -33,14 +33,14 @@
   }
   function palette() {
     return {
-      blue:  cssVar("--indigo", "#7C3AED"),
-      deep:  cssVar("--indigo-deep", "#5B21B6"),
-      soft:  cssVar("--indigo-soft", "#DDD6FE"),
-      tint:  cssVar("--indigo-50", "#F5F3FF"),
+      blue:  cssVar("--indigo", "#2C86BD"),
+      deep:  cssVar("--indigo-deep", "#1B5F8C"),
+      soft:  cssVar("--indigo-soft", "#A5D8EF"),
+      tint:  cssVar("--indigo-50", "#EAF6FC"),
       orange:cssVar("--amber", "#F7931E"),
-      ink:   cssVar("--ink", "#1E1633"),
-      muted: cssVar("--muted", "#5E5470"),
-      hair:  cssVar("--hairline", "#EBE6F7")
+      ink:   cssVar("--ink", "#12222B"),
+      muted: cssVar("--muted", "#52707E"),
+      hair:  cssVar("--hairline", "#DCEDF4")
     };
   }
 
@@ -342,7 +342,7 @@
     var s = document.createElement("style");
     s.id = "mllive-css";
     s.textContent =
-      ".ml-live{border:1px solid var(--hairline);border-radius:16px;padding:1.4rem 1.5rem;margin:1.6rem 0;background:linear-gradient(180deg,var(--indigo-50),#fff);box-shadow:0 10px 30px rgba(124,58,237,.09)}" +
+      ".ml-live{border:1px solid var(--hairline);border-radius:16px;padding:1.4rem 1.5rem;margin:1.6rem 0;background:linear-gradient(180deg,var(--indigo-50),#fff);box-shadow:0 10px 30px rgba(44,134,189,.09)}" +
       ".mllive-head{display:flex;flex-direction:column;gap:.25rem;margin-bottom:.9rem}" +
       ".mllive-head strong{font-size:1.02rem;color:var(--ink)}" +
       ".mllive-sub{font-size:.86rem;color:var(--muted);line-height:1.5}" +

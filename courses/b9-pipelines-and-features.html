@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 9 · Feature prep and Pipelines - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -68,18 +68,18 @@
     <figure class="zoomable">
       <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A raw mixed-type table splits into two lanes inside a ColumnTransformer: a one-hot lane for categorical columns and a scale lane for numeric columns, which recombine and feed a model, with the whole thing boxed as one estimator.">
         <style>
-          .ppL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .ppN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .ppBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .ppA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#ppAh); }
+          .ppL { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .ppN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .ppBox { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .ppA { stroke: #B4D4E2; stroke-width: 2.5; fill: none; marker-end: url(#ppAh); }
         </style>
         <defs>
-          <marker id="ppAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="ppAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#B4D4E2" stroke-width="1.8"/></marker>
         </defs>
-        <rect x="24" y="60" width="230" height="210" rx="12" fill="none" stroke="#5B21B6" stroke-width="2" stroke-dasharray="6 4"/>
-        <text class="ppN" x="40" y="52" style="fill:#5B21B6; font-weight:700">ONE Pipeline estimator (fit on train only)</text>
+        <rect x="24" y="60" width="230" height="210" rx="12" fill="none" stroke="#1B5F8C" stroke-width="2" stroke-dasharray="6 4"/>
+        <text class="ppN" x="40" y="52" style="fill:#1B5F8C; font-weight:700">ONE Pipeline estimator (fit on train only)</text>
         <rect class="ppBox" x="40" y="80" width="150" height="120" rx="10"/>
-        <text class="ppN" x="56" y="104" style="fill:#1E1633; font-weight:700">Raw mixed table</text>
+        <text class="ppN" x="56" y="104" style="fill:#12222B; font-weight:700">Raw mixed table</text>
         <text class="ppN" x="56" y="126">prior_30d_spend  38.0</text>
         <text class="ppN" x="56" y="144">pages_viewed     5</text>
         <text class="ppN" x="56" y="162">channel      "email"</text>
@@ -88,21 +88,21 @@
         <text class="ppL" x="330" y="52">ColumnTransformer - two lanes</text>
         <line class="ppA" x1="192" y1="120" x2="330" y2="105"/>
         <line class="ppA" x1="192" y1="165" x2="330" y2="225"/>
-        <rect x="332" y="80" width="240" height="60" rx="10" fill="#7C3AED"/>
+        <rect x="332" y="80" width="240" height="60" rx="10" fill="#2C86BD"/>
         <text class="ppN" x="350" y="106" style="fill:#FFFFFF; font-weight:700">scale lane · StandardScaler</text>
-        <text class="ppN" x="350" y="126" style="fill:#F5F3FF">numeric cols -&gt; mean 0, SD 1</text>
+        <text class="ppN" x="350" y="126" style="fill:#EAF6FC">numeric cols -&gt; mean 0, SD 1</text>
         <rect x="332" y="200" width="240" height="60" rx="10" fill="#F7931E"/>
         <text class="ppN" x="350" y="226" style="fill:#FFFFFF; font-weight:700">one-hot lane · OneHotEncoder</text>
         <text class="ppN" x="350" y="246" style="fill:#5A3606">category cols -&gt; 0/1 columns</text>
 
         <line class="ppA" x1="572" y1="110" x2="648" y2="150"/>
         <line class="ppA" x1="572" y1="230" x2="648" y2="180"/>
-        <rect x="650" y="130" width="120" height="70" rx="10" fill="#5B21B6"/>
+        <rect x="650" y="130" width="120" height="70" rx="10" fill="#1B5F8C"/>
         <text class="ppN" x="668" y="160" style="fill:#FFFFFF; font-weight:700">Model</text>
-        <text class="ppN" x="668" y="182" style="fill:#F5F3FF">.fit / .predict</text>
+        <text class="ppN" x="668" y="182" style="fill:#EAF6FC">.fit / .predict</text>
         <line class="ppA" x1="770" y1="165" x2="846" y2="165"/>
         <rect x="30" y="300" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="ppN" x="52" y="311" style="fill:#1E1633">One estimator in, one estimator out - so train, test, and production all get the identical transforms.</text>
+        <text class="ppN" x="52" y="311" style="fill:#12222B">One estimator in, one estimator out - so train, test, and production all get the identical transforms.</text>
       </svg>
       <figcaption>🔍 Click to zoom - two prep lanes, boxed with the model as one estimator</figcaption>
     </figure>
@@ -306,6 +306,6 @@ print("without session_hour: ROC-AUC %.2f" % auc2.mean())   # ~ 0.71, unchanged<
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

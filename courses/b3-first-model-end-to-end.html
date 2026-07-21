@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 3 · Your first model, end to end - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -66,12 +66,12 @@
     <p class="lede">Despite the name, logistic regression is a classifier. It takes a linear combination of the features - a raw score - and squeezes it through the logistic (sigmoid) curve into a probability between 0 and 1. That probability is what <code>predict_proba</code> returns. <code>predict</code> then applies a threshold - 0.5 by default - to turn the probability into a yes/no. The threshold is a choice, not a law, and choosing it well is the b7 story.</p>
 
     <figure class="zoomable">
-      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The logistic sigmoid curve maps a raw linear score on the x-axis to a probability between 0 and 1 on the y-axis, with a horizontal threshold line at 0.5 splitting predictions into no and yes.">
+      <svg viewBox="0 0 880 332" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The logistic sigmoid curve maps a raw linear score on the x-axis to a probability between 0 and 1 on the y-axis, with a horizontal threshold line at 0.5 splitting predictions into no and yes.">
         <style>
-          .lgL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
-          .lgN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .lgCurve { fill: none; stroke: #5B21B6; stroke-width: 3.5; }
-          .lgAxis { stroke: #CBC2E0; stroke-width: 2; }
+          .lgL { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .lgN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .lgCurve { fill: none; stroke: #1B5F8C; stroke-width: 3.5; }
+          .lgAxis { stroke: #B4D4E2; stroke-width: 2; }
           .lgThresh { stroke: #F7931E; stroke-width: 2; stroke-dasharray: 6 5; }
         </style>
         <line class="lgAxis" x1="90" y1="250" x2="820" y2="250"/>
@@ -86,11 +86,12 @@
         <line class="lgThresh" x1="90" y1="147" x2="820" y2="147"/>
         <text class="lgN" x="700" y="140" style="fill:#F7931E; font-weight:700">threshold = 0.5</text>
 
-        <text class="lgN" x="150" y="230" style="fill:#5B21B6; font-weight:700">predict "no" (proba &lt; 0.5)</text>
-        <text class="lgN" x="560" y="80" style="fill:#5B21B6; font-weight:700">predict "yes" (proba &gt; 0.5)</text>
+        <text class="lgN" x="150" y="230" style="fill:#1B5F8C; font-weight:700">predict "no" (proba &lt; 0.5)</text>
+        <text class="lgN" x="560" y="80" style="fill:#1B5F8C; font-weight:700">predict "yes" (proba &gt; 0.5)</text>
 
         <rect x="90" y="298" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="lgN" x="112" y="309" style="fill:#1E1633">The model outputs a probability; the threshold turns it into a decision. Move the line and you trade catching more buyers against more false alarms.</text>
+        <text class="lgN" x="112" y="302" style="fill:#12222B">The model outputs a probability; the threshold turns it into a decision.</text>
+        <text class="lgN" x="112" y="318" style="fill:#12222B">Move the line and you trade catching more buyers against more false alarms.</text>
       </svg>
       <figcaption>🔍 Click to zoom - a score becomes a probability, a threshold becomes a decision</figcaption>
     </figure>
@@ -281,6 +282,6 @@ print("ROC-AUC: %.3f" % roc_auc_score(y_te, proba))   # ~ 0.71</pre>
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>

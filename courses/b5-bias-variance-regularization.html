@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Builder session 5 · Bias-variance and regularization - learn intro to machine learning with phoebe</title>
-<link rel="stylesheet" href="../assets/style.css?v=2">
+<link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body>
 
@@ -69,49 +69,49 @@
       <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Left: a seesaw balancing high bias (too simple) against high variance (too complex) with the sweet spot in the middle. Right inset: a penalty pulling large coefficients down toward zero.">
         <style>
           .bvTitle { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
-          .bvLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
-          .bvN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
-          .bvBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
-          .bvBar { fill: #7C3AED; }
-          .bvBarS { fill: #DDD6FE; }
+          .bvLab { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
+          .bvN { font: 600 11px Inter, sans-serif; fill: #52707E; }
+          .bvBox { fill: #EAF6FC; stroke: #A5D8EF; stroke-width: 1.5; }
+          .bvBar { fill: #2C86BD; }
+          .bvBarS { fill: #A5D8EF; }
         </style>
         <text class="bvLab" x="30" y="26">The seesaw: you trade bias for variance, aiming for the balanced middle</text>
 
         <!-- seesaw panel -->
         <rect class="bvBox" x="30" y="40" width="470" height="250" rx="12"/>
         <!-- fulcrum + plank -->
-        <polygon points="265,210 245,255 285,255" fill="#5E5470"/>
-        <line x1="80" y1="150" x2="450" y2="230" stroke="#CBC2E0" stroke-width="6" stroke-linecap="round"/>
+        <polygon points="265,210 245,255 285,255" fill="#52707E"/>
+        <line x1="80" y1="150" x2="450" y2="230" stroke="#B4D4E2" stroke-width="6" stroke-linecap="round"/>
         <!-- left weight: high bias -->
-        <rect x="70" y="118" width="120" height="40" rx="8" fill="#7C3AED"/>
+        <rect x="70" y="118" width="120" height="40" rx="8" fill="#2C86BD"/>
         <text class="bvTitle" x="86" y="143">High bias</text>
-        <text class="bvN" x="72" y="176" style="fill:#1E1633">too simple · underfit</text>
+        <text class="bvN" x="72" y="176" style="fill:#12222B">too simple · underfit</text>
         <text class="bvN" x="72" y="192">misses the real pattern</text>
         <!-- right weight: high variance -->
         <rect x="330" y="198" width="120" height="40" rx="8" fill="#F7931E"/>
         <text class="bvTitle" x="346" y="223">High variance</text>
-        <text class="bvN" x="330" y="258" style="fill:#1E1633">too complex · overfit</text>
+        <text class="bvN" x="330" y="258" style="fill:#12222B">too complex · overfit</text>
         <text class="bvN" x="330" y="274">memorises the noise</text>
         <!-- sweet spot marker -->
-        <circle cx="265" cy="190" r="7" fill="#5B21B6"/>
+        <circle cx="265" cy="190" r="7" fill="#1B5F8C"/>
         <text class="bvLab" x="196" y="112">sweet spot = the sum's minimum</text>
 
         <!-- penalty inset -->
         <rect class="bvBox" x="520" y="40" width="330" height="250" rx="12"/>
-        <rect x="520" y="40" width="330" height="30" rx="12" fill="#5B21B6"/>
+        <rect x="520" y="40" width="330" height="30" rx="12" fill="#1B5F8C"/>
         <text class="bvTitle" x="538" y="61">Penalty shrinks coefficients toward zero</text>
-        <text class="bvN" x="538" y="92" style="fill:#1E1633; font-weight:700">Without penalty</text>
+        <text class="bvN" x="538" y="92" style="fill:#12222B; font-weight:700">Without penalty</text>
         <rect class="bvBar" x="538" y="100" width="120" height="16" rx="3"/>
         <rect class="bvBar" x="538" y="122" width="180" height="16" rx="3"/>
         <rect class="bvBar" x="538" y="144" width="90" height="16" rx="3"/>
-        <text class="bvN" x="538" y="182" style="fill:#1E1633; font-weight:700">With penalty (higher alpha)</text>
+        <text class="bvN" x="538" y="182" style="fill:#12222B; font-weight:700">With penalty (higher alpha)</text>
         <rect class="bvBarS" x="538" y="190" width="62" height="16" rx="3"/>
         <rect class="bvBarS" x="538" y="212" width="96" height="16" rx="3"/>
         <rect class="bvBarS" x="538" y="234" width="4" height="16" rx="2"/>
         <text class="bvN" x="548" y="247" style="fill:#F7931E; font-weight:700">Lasso -&gt; 0</text>
 
         <rect x="30" y="312" width="14" height="14" rx="3" fill="#F7931E"/>
-        <text class="bvN" x="52" y="323" style="fill:#1E1633">The penalty is the dial: turn it up and coefficients shrink (Ridge) or vanish (Lasso), so the fit gets simpler and cannot chase noise.</text>
+        <text class="bvN" x="52" y="323" style="fill:#12222B">The penalty is the dial: turn it up and coefficients shrink (Ridge) or vanish (Lasso), so the fit gets simpler and cannot chase noise.</text>
       </svg>
       <figcaption>🔍 Click to zoom - the seesaw, and how a penalty pulls coefficients down</figcaption>
     </figure>
@@ -319,6 +319,6 @@ print("features used by Lasso :", int((lasso.coef_ != 0).sum()))   # fewer
 
 </main>
 
-<script src="../assets/app.js?v=2"></script>
+<script src="../assets/app.js?v=3"></script>
 </body>
 </html>
