@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 2 · The train/test split (and the leakage trap) - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 2 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 2 of 10</div>
+    <h1>The train/test split, <span class="accent">and the leakage trap that fakes a great score</span></h1>
+    <p class="sub">You cannot grade a model on the same data it studied - it would just recite the answers. So the first move in every ML project is to hide part of the data, train on the rest, and score once on what the model never saw. But there is a subtler trap: your preprocessing (scaling, encoding) must never peek at the test set either. This session builds the split on Lumen the right way, then stages the classic leakage disaster so you can see a test score inflate before your eyes - and never do it in production.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Foundations</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-2 · Why split</span>
+      <span class="a2" style="flex:3">2-14 · The sacred rule</span>
+      <span class="a3" style="flex:5">14-38 · Build it in Python</span>
+      <span class="a4" style="flex:1">38-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>A model graded on its own study notes always looks brilliant</h2>
+    </div>
+    <p class="lede">Machine learning only earns trust when it works on data it has never seen. That means two disciplines, learned together today. First, you split the data: train on one part, hold out the rest, and score exactly once on that held-out part. Second - the part beginners miss - every transformation you fit (a scaler, an encoder, an imputer) must also learn from the training rows only. A scaler that has seen the test set has leaked, and the score it produces is a comforting lie.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A correct <code>train_test_split</code> on Lumen - stratified so the rare 3.2% conversion rate survives in both halves - plus a scar you will never forget: you will fit a scaler the wrong way (on all the data, before the split) and watch the test error collapse from an honest <strong>0.90</strong> to a fantasy <strong>62.80</strong> in scikit-learn's own worked example. Leakage is the number-one beginner mistake; after today you will smell it coming.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE SACRED RULE ============ -->
+  <section class="section" id="rule">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the shape of the work</span>
+      <h2>Why split, and the sacred rule <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">The split is simple to state and easy to get subtly wrong. Train on the training rows. Fit the model - and every transformer - on the training rows only. Then score once on the test rows, which stay sealed until the very end. And because conversion is rare, we <em>stratify</em> the split so both halves keep the same 3.2% positive rate; otherwise a small test set can end up with almost no buyers to grade against.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One dataset is passed through train_test_split into a large training box, where the model and every transformer are fit, and a small sealed test box, which is scored exactly once at the end.">
+        <style>
+          .tsL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .tsT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .tsN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .tsBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .tsA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#tsAh); }
+        </style>
+        <defs>
+          <marker id="tsAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <rect class="tsBox" x="24" y="70" width="150" height="86" rx="10"/>
+        <text class="tsN" x="40" y="104" style="fill:#1E1633; font-weight:700">Full data</text>
+        <text class="tsN" x="40" y="124">40,000 sessions</text>
+        <text class="tsN" x="40" y="142">3.2% convert</text>
+
+        <line class="tsA" x1="174" y1="113" x2="238" y2="113"/>
+        <rect x="240" y="82" width="118" height="62" rx="10" fill="#5B21B6"/>
+        <text class="tsT" x="258" y="108">train_test</text>
+        <text class="tsT" x="258" y="128">_split</text>
+
+        <line class="tsA" x1="358" y1="100" x2="430" y2="70"/>
+        <line class="tsA" x1="358" y1="128" x2="430" y2="196"/>
+
+        <rect x="432" y="34" width="300" height="86" rx="10" fill="#7C3AED"/>
+        <text class="tsT" x="452" y="62">TRAIN · 75% (30,000)</text>
+        <text class="tsN" x="452" y="84" style="fill:#F5F3FF">fit the model AND every transformer here</text>
+        <text class="tsN" x="452" y="104" style="fill:#F5F3FF">still 3.2% convert (stratified)</text>
+
+        <rect class="tsBox" x="432" y="170" width="230" height="60" rx="10"/>
+        <text class="tsN" x="452" y="196" style="fill:#1E1633; font-weight:700">TEST · 25% (10,000) - sealed</text>
+        <text class="tsN" x="452" y="216">still 3.2% convert (stratified)</text>
+
+        <line class="tsA" x1="732" y1="77" x2="792" y2="77"/>
+        <text class="tsN" x="748" y="60" style="fill:#1E1633; font-weight:700">fit here</text>
+        <line class="tsA" x1="662" y1="200" x2="792" y2="200"/>
+        <text class="tsN" x="700" y="192" style="fill:#1E1633; font-weight:700">score once</text>
+
+        <rect x="24" y="264" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="tsN" x="46" y="275" style="fill:#1E1633">The test set is spent once, at the very end. Anything that touches it during training - even a scaler - leaks the answer and fakes your score.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - split once, fit on train only, score on test once</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>test_size and random_state<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><code>train_test_split</code> shuffles the rows and cuts them into two frames. Two arguments matter:</p>
+        <ul>
+          <li><code>test_size=0.25</code> - keep 25% of rows sealed for the final grade. 20-30% is the usual range; too small and the score is noisy, too large and you starve training.</li>
+          <li><code>random_state=42</code> - fixes the shuffle so your split (and your numbers) match mine and are reproducible run to run. Change it and the exact score wobbles, which is a preview of why we cross-validate in b6.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          The split is the one line that separates "my model works" from "my model memorised". Get it right and everything downstream - metrics in b7-b8, tuning in b6 - means something. Get it wrong and every later number is fiction.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>stratify for imbalanced targets<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Lumen converts only ~3.2% of the time. A plain random split can, by bad luck, put too few buyers in the test set - so your metrics are computed on a handful of positives and swing wildly. Passing <code>stratify=y</code> tells scikit-learn to preserve the class proportions in both halves:</p>
+        <div class="prompt-box good">
+          <span class="label">stratify.py</span>
+<pre>from sklearn.model_selection import train_test_split
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)</pre>
+        </div>
+        <p>Now both <code>y_tr</code> and <code>y_te</code> carry ~3.2% positives. For any imbalanced classification target, stratify by default - it costs nothing and steadies every metric that follows.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · the split and the leak</span>
+      <h2>Split Lumen right, then watch a leak fake the score <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We reload the dataset you built in b1, make a correct stratified split, then deliberately stage the leakage disaster: fit a scaler on all the data before splitting (wrong) versus on the training rows only (right). scikit-learn's own documentation puts hard numbers on it, and we will name exactly why the wrong way lies.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload the dataset and define X and y.</strong> Every builder session starts here. We predict <code>converted</code> from the feature columns.</p>
+        <div class="prompt-box good">
+          <span class="label">load.py</span>
+<pre>import numpy as np, pandas as pd
+
+df = pd.read_parquet("lumen_sessions.parquet")   # built once in b1
+
+feature_cols = ["prior_30d_spend", "new_vs_returning", "channel",
+                "product_category", "device", "pages_viewed", "session_hour"]
+X = df[feature_cols]
+y = df["converted"]
+print(X.shape, "| positive rate: %.2f%%" % (100 * y.mean()))   # (40000, 7) | ~3.2%</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Make the split - stratified.</strong> Hold out 25%, fix the seed, and confirm the rare class survives in both halves.</p>
+        <div class="prompt-box good">
+          <span class="label">split.py</span>
+<pre>from sklearn.model_selection import train_test_split
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)
+
+print("train:", X_tr.shape, "positive %.2f%%" % (100 * y_tr.mean()))
+print("test :", X_te.shape, "positive %.2f%%" % (100 * y_te.mean()))
+# train: (30000, 7) positive ~3.2%   test: (10000, 7) positive ~3.2%</pre>
+        </div>
+        <p>Both halves keep ~3.2% positives - that is stratify doing its job. Drop <code>stratify=y</code> and re-run: the test rate drifts, and with a rare class that drift is enough to bend your metrics.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>The leakage disaster.</strong> Fit a scaler the WRONG way (on all data, before splitting) versus the RIGHT way (on train, then transform test). This is scikit-learn's own worked example - the numbers are theirs.</p>
+        <div class="prompt-box good">
+          <span class="label">leakage.py</span>
+<pre>from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_squared_error
+
+# --- WRONG: scaler sees the test set before the split ---
+scaler = StandardScaler().fit(X_all)          # &lt;- peeks at everything
+X_all_scaled = scaler.transform(X_all)
+# ...split AFTER scaling -> test-set stats have leaked into training
+
+# --- RIGHT: fit the scaler on TRAIN only, then apply to TEST ---
+scaler = StandardScaler().fit(X_train)        # &lt;- learns from train alone
+X_train_s = scaler.transform(X_train)
+X_test_s  = scaler.transform(X_test)          # test transformed, never fitted
+
+model = Ridge().fit(X_train_s, y_train)
+print("correct test MSE   :", round(mean_squared_error(y_test, model.predict(X_test_s)), 2))
+# scikit-learn's documented figures for this example:
+#   correct (fit scaler on train)            -> test MSE  0.90
+#   wrong  (forgot to transform / leaked)    -> test MSE 62.80</pre>
+        </div>
+        <p>Why does the wrong way flatter the score? When the scaler is fit on all the data, the test rows help set the mean and standard deviation used to normalise training - so the model is quietly tuned to statistics of the very rows it will be graded on. The offline number looks great because the test set was never truly unseen. In scikit-learn's example the mirror-image mistake - a transform inconsistently applied - blows the honest MSE of <strong>0.90</strong> up to <strong>62.80</strong>. Either way, the lesson is one line: whatever you fit, fit on train only.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>The fix, previewed.</strong> The reason leakage keeps happening is that scaling and modelling are two separate steps a human has to wire up in the right order. A <code>Pipeline</code> binds them so <code>fit</code> can only ever see the training rows - leakage becomes structurally impossible. Full treatment in b9; here is the shape.</p>
+        <div class="prompt-box good">
+          <span class="label">pipeline_preview.py</span>
+<pre>from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+pipe = make_pipeline(StandardScaler(), LogisticRegression())
+pipe.fit(X_tr_numeric, y_tr)     # scaler fits on train inside the pipe
+pipe.score(X_te_numeric, y_te)   # test is only ever transformed, never fitted</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>A junior analyst normalised the full feature table, then split, then reported a beautiful offline accuracy to the growth team. The model shipped and immediately underperformed - because in production the scaler never gets to see the future rows it will score, so the advantage it had trained on evaporated. The offline win was borrowed from the test set. One reordered line - fit the scaler after the split, on train only - would have shown the true, more modest number up front.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 3</span>
+      <h2>This week <span class="tag exercise">◐ 35 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Watch the score wobble.</strong> Re-run the split with <code>random_state</code> set to 0, 1, 7, and 99. Fit a quick model each time and note how the test score moves. That wobble is exactly why a single split can be lucky - and why b6 introduces cross-validation.</li>
+      <li><strong>Prove stratify works.</strong> Split once with <code>stratify=y</code> and once without. Print <code>y_tr.mean()</code> and <code>y_te.mean()</code> for both. Confirm stratify keeps 3.2% in both halves while plain random drifts.</li>
+      <li><strong>Say it in one sentence.</strong> Write a single sentence explaining why you never call <code>.fit</code> on the test set - transformers included. If you can teach it, you own it.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What is the sacred rule of the train/test split?</p>
+      <button class="qopt" type="button">A · fit the model on train and the scaler on test, so each half is used once</button>
+      <button class="qopt" type="button">B · fit the model AND every transformer (scaler, encoder) on train only - the test set is never fitted, only scored</button>
+      <button class="qopt" type="button">C · fit everything on all the data, then split for the final report</button>
+      <p class="qwhy">Anything you fit - the model and every transformer - learns from the training rows only. The test set stays sealed and is transformed and scored once, never fitted. Fitting on test (or on all data) is leakage.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Why pass <code>stratify=y</code> when the target is imbalanced?</p>
+      <button class="qopt" type="button">A · it makes the model more accurate</button>
+      <button class="qopt" type="button">B · it shuffles the rows more thoroughly</button>
+      <button class="qopt" type="button">C · it keeps the rare-class rate (3.2%) balanced across both halves, so the test metrics are computed on enough positives</button>
+      <p class="qwhy">Stratify preserves the class proportions in both splits. With a 3.2% positive rate, a plain split can starve the test set of buyers and make every metric swing; stratify steadies it. It does not change the model itself.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What does data leakage do to your test score?</p>
+      <button class="qopt" type="button">A · inflates it - the score looks better than the model really is, because the test set secretly influenced training</button>
+      <button class="qopt" type="button">B · lowers it, because the test set is contaminated</button>
+      <button class="qopt" type="button">C · nothing measurable - leakage only affects training speed</button>
+      <p class="qwhy">Leakage makes the offline score optimistic: information from the test set (like a scaler's mean and SD fit on all the data) sneaks into training, so the model looks better offline than it will ever be in production. In scikit-learn's example the honest MSE 0.90 balloons to 62.80 when the transform is mishandled.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers the train/test split and the leakage pitfall on the Lumen dataset - the discipline every later metric depends on. The Pipeline that makes leakage impossible gets its full treatment in b9.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">train_test_split, test_size, random_state, stratify; the fit-on-train-only rule; the leakage demo</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn "Common Pitfalls - Inconsistent Preprocessing / Data Leakage" (MSE 0.90 vs 62.80)</span><span class="note">the leakage figures</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Pipelines that bind prep + model so leakage cannot happen</span><span class="note">Builder Session 9 - previewed here</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The split</b><span><code>train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)</code>. Train on train, score once on test.</span></div>
+      <div class="cheat-item"><b>The sacred rule</b><span>Fit the model AND every transformer on TRAIN only. The test set is transformed and scored, never fitted.</span></div>
+      <div class="cheat-item"><b>stratify</b><span>Keeps the rare 3.2% conversion rate in both halves. Default it for any imbalanced target.</span></div>
+      <div class="cheat-item"><b>Leakage</b><span>Fitting a scaler/encoder on all data before splitting = the test set influences training = an inflated, lying score. Honest MSE 0.90 becomes 62.80.</span></div>
+      <div class="cheat-item"><b>random_state</b><span>Fixes the shuffle for reproducibility. Change it and the exact score wobbles - the motive for cross-validation (b6).</span></div>
+      <div class="cheat-item"><b>The fix</b><span>A <code>Pipeline</code> binds prep + model so <code>fit</code> only sees train - leakage becomes structurally impossible. Full treatment in b9.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 2 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b3-first-model-end-to-end.html">Next: Your first model, end to end →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

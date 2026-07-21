@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 2 · How a model learns, and how it goes wrong - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 2 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 2 of 6</div>
+    <h1>How a model learns, <span class="accent">and how it goes wrong</span></h1>
+    <p class="sub">A model studies the past and then has to work on cases it has never seen. That is the whole game - and the whole risk. This session, still without a line of code, shows you what "training" actually does, why we hold back a test set to grade a model honestly, and the two ways every model fails: underfitting (too simple to catch the pattern) and overfitting (so complex it memorises noise). You will leave able to spot both from across a room, and to ask the one question that catches most bad models: "how was this tested?"</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Still foundational</span>
+      <span class="chip audience">Leaders · C-level / PM / marketing</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-22 · Learn &amp; grade</span>
+      <span class="a3" style="flex:4">22-40 · Over &amp; underfit</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>A model that aces the past can still fail the future</h2>
+    </div>
+    <p class="lede">Last session we said machine learning learns its rules from examples. Here is the catch nobody puts on the pitch slide: those examples are all from the past, and the model's actual job is on new cases it has never seen. A model that looks perfect on the data it studied can be useless the moment a fresh visitor arrives. The entire risk in machine learning - the thing your judgement has to protect - is whether the model <em>generalises</em> beyond what it memorised. Lumen Skincare's team learned this the hard way, and this session is how you avoid their mistake without touching the maths.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The train/test idea - why we always hold back a slice of data the model never sees, and grade it there - plus the instinct to spot overfitting and underfitting without a single formula. When someone shows you a model that is "98% accurate," you will know the first question to ask: accurate on what, data it studied or data it never saw?
+    </div>
+  </section>
+
+  <!-- ============ PART 1: LEARN & GRADE ============ -->
+  <section class="section" id="grade">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · learn honestly</span>
+      <h2>Learning from examples, and grading honestly <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">A model learns by studying a pile of past examples - Lumen's case, thousands of website visits, each labelled with whether the visitor bought. But if we then grade the model on those very same examples, we learn nothing: it has already seen the answers. So before training even starts, we split the pile in two. The model studies one part and is graded on the other - a part it never saw. That held-out slice is the only honest measure of how good the model really is.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A deck of example cards is split into a large training pile that flows into a model that learns, and a small held-out test pile that flows into an honest grade.">
+        <style>
+          .a2xL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .a2xT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a2xN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .a2xCard { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .a2xA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#a2Ah); }
+        </style>
+        <defs>
+          <marker id="a2Ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="a2xL" x="30" y="26">All the past examples (labelled visits)</text>
+        <rect class="a2xCard" x="30" y="40" width="120" height="30" rx="5"/>
+        <rect class="a2xCard" x="38" y="48" width="120" height="30" rx="5"/>
+        <rect class="a2xCard" x="46" y="56" width="120" height="30" rx="5"/><text class="a2xN" x="60" y="76" style="fill:#1E1633">visit + bought?</text>
+
+        <line class="a2xA" x1="176" y1="70" x2="236" y2="46"/>
+        <line class="a2xA" x1="176" y1="70" x2="236" y2="230"/>
+
+        <text class="a2xL" x="250" y="34" style="fill:#5B21B6">TRAIN pile (~80%)</text>
+        <rect class="a2xCard" x="250" y="44" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="70" style="fill:#1E1633">the big stack the</text><text class="a2xN" x="266" y="88" style="fill:#1E1633">model studies</text>
+        <line class="a2xA" x1="400" y1="74" x2="470" y2="74"/>
+        <rect x="472" y="50" width="150" height="48" rx="10" fill="#7C3AED"/><text class="a2xT" x="500" y="79">Model learns</text>
+
+        <text class="a2xL" x="250" y="216" style="fill:#F7931E">TEST pile (~20%, held out)</text>
+        <rect class="a2xCard" x="250" y="226" width="150" height="60" rx="8"/><text class="a2xN" x="266" y="252" style="fill:#1E1633">locked away - the</text><text class="a2xN" x="266" y="270" style="fill:#1E1633">model never sees it</text>
+        <line class="a2xA" x1="400" y1="256" x2="470" y2="256"/>
+        <rect x="472" y="232" width="150" height="48" rx="10" fill="#5B21B6"/><text class="a2xT" x="494" y="261">Honest grade</text>
+        <text class="a2xN" x="640" y="252" style="fill:#F7931E">← the only score</text>
+        <text class="a2xN" x="640" y="270" style="fill:#F7931E">you can trust</text>
+
+        <rect x="30" y="304" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="a2xN" x="52" y="315" style="fill:#1E1633">Split first, study second, grade on the part it never saw. Grading on the training data is like handing students the exam answers to memorise.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - train on one pile, grade on a pile the model never saw</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What training actually does<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Training is the once-off process of finding the pattern that fits the examples.</strong> The model tries a rule, checks how wrong it is on the training pile, nudges the rule to be a little less wrong, and repeats - thousands of times - until it fits those examples well. That is all "the model is learning" means: it is tuning itself to match the answers it can see.</p>
+        <ul>
+          <li><strong>Input</strong> - the training pile: past visits, each with its known outcome (bought, or did not).</li>
+          <li><strong>The dial-turning</strong> - the model adjusts its internal rule to reduce error on those examples.</li>
+          <li><strong>Output</strong> - a fixed model, the learned rule, ready to score new visitors.</li>
+        </ul>
+        <p>Notice the trap hiding here: the model is <em>rewarded for fitting the training pile</em>. Nothing in training forces it to work on anything else. That is exactly why we hold a test set back.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why hold out a test set<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The only honest measure of a model is its performance on data it has never seen - because that is the only situation the model will ever face in the real world. So before training, we lock away a slice of the examples (Lumen uses about 20%) and never let the model study it. After training, we grade the model on that locked slice. If it does well there, it has genuinely found a pattern. If it does well on the training pile but poorly on the held-out set, it just memorised.</p>
+        <div class="callout tip">
+          <strong>The one question that catches most bad models</strong>
+          When anyone shows you a model score, ask: "was this measured on data the model was trained on, or on held-out data it never saw?" A great-sounding number on training data means nothing. A modest number on held-out data is worth ten of it.
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Early on, Lumen's team graded their conversion model on the exact same visits it had trained on, saw 98%, and told the CMO it was ready. It went live and flopped - it had memorised the past visitors, not learned who buys. Once they re-graded on a held-out slice the real story appeared: a modest, honest signal (a ROC-AUC around 0.71), useful but nowhere near 98%. Same model, two scores - only the held-out one was true.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: OVER & UNDERFIT ============ -->
+  <section class="section" id="fail">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the two failures</span>
+      <h2>The two ways a model fails <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Once you grade on held-out data, every failure sorts into one of two piles. <strong>Underfitting:</strong> the model is too simple, so it misses the pattern and does badly on both the training set and the test set. <strong>Overfitting:</strong> the model is so complex it memorises the noise in the training set - it does brilliantly on training but badly on the test set. The <em>gap</em> between the two scores is the tell. Picture a seesaw: too simple on one end, too complex on the other, and the sweet spot balanced in the middle.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three mini panels of dots. Left: a straight line missing a curve, labelled underfit high bias. Middle: a smooth curve following the trend, labelled sweet spot. Right: a wiggly line through every dot, labelled overfit high variance.">
+        <style>
+          .a2yTitle { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
+          .a2yLab { font: 700 11.5px Inter, sans-serif; fill: #5B21B6; }
+          .a2yN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .a2yDot { fill: #7C3AED; }
+          .a2yFit { fill: none; stroke: #F7931E; stroke-width: 2.5; }
+        </style>
+        <!-- underfit -->
+        <rect x="30" y="40" width="255" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="30" y="40" width="255" height="30" rx="12" fill="#7C3AED"/><text class="a2yTitle" x="48" y="61">Underfit</text>
+        <circle class="a2yDot" cx="70" cy="180" r="4"/><circle class="a2yDot" cx="105" cy="150" r="4"/><circle class="a2yDot" cx="140" cy="160" r="4"/><circle class="a2yDot" cx="175" cy="115" r="4"/><circle class="a2yDot" cx="210" cy="130" r="4"/><circle class="a2yDot" cx="245" cy="95" r="4"/>
+        <line class="a2yFit" x1="62" y1="175" x2="252" y2="110"/>
+        <text class="a2yLab" x="48" y="200">high bias · too simple</text>
+
+        <!-- sweet spot -->
+        <rect x="312" y="40" width="255" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="312" y="40" width="255" height="30" rx="12" fill="#5B21B6"/><text class="a2yTitle" x="330" y="61">Just right</text>
+        <circle class="a2yDot" cx="352" cy="180" r="4"/><circle class="a2yDot" cx="387" cy="150" r="4"/><circle class="a2yDot" cx="422" cy="160" r="4"/><circle class="a2yDot" cx="457" cy="115" r="4"/><circle class="a2yDot" cx="492" cy="130" r="4"/><circle class="a2yDot" cx="527" cy="95" r="4"/>
+        <path class="a2yFit" d="M348,178 Q400,140 457,128 T534,100"/>
+        <text class="a2yLab" x="330" y="200">sweet spot · balanced</text>
+
+        <!-- overfit -->
+        <rect x="594" y="40" width="256" height="170" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="594" y="40" width="256" height="30" rx="12" fill="#F7931E"/><text class="a2yTitle" x="612" y="61">Overfit</text>
+        <circle class="a2yDot" cx="634" cy="180" r="4"/><circle class="a2yDot" cx="669" cy="150" r="4"/><circle class="a2yDot" cx="704" cy="160" r="4"/><circle class="a2yDot" cx="739" cy="115" r="4"/><circle class="a2yDot" cx="774" cy="130" r="4"/><circle class="a2yDot" cx="809" cy="95" r="4"/>
+        <path class="a2yFit" d="M634,180 L669,150 L704,160 L739,115 L774,130 L809,95"/>
+        <text class="a2yLab" x="612" y="200">high variance · memorised</text>
+
+        <rect x="30" y="262" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="a2yN" x="52" y="273" style="fill:#1E1633">Underfit misses the trend (bad on both sets); overfit chases every dot including the noise (great on train, bad on test). You want the balanced middle.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - too simple, just right, too complex</figcaption>
+    </figure>
+
+    <p class="lede">The clearest way to feel this is to watch it happen. Below is a live model fit on Lumen's data: slide the decision tree's depth and watch the training error fall while the test error makes a U - dropping to a sweet spot, then climbing back up as the model starts memorising.</p>
+
+    <div class="ml-live" data-tool="fit"></div>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Overfitting, defined properly<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Overfitting is not "high error" - it is a very specific signature: <strong>low training error and high test error</strong>. The model has fit the training pile so tightly that it has learned the noise, the random quirks of those particular examples, as if they were the pattern. On new data those quirks do not repeat, so it fails.</p>
+        <table class="clean">
+          <thead><tr><th>Tree depth</th><th>Train R²</th><th>Test R²</th><th>Diagnosis</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>0.31</td><td>0.22</td><td>Underfit - too simple</td></tr>
+            <tr><td>3</td><td>0.46</td><td>0.36</td><td>Sweet spot (peak)</td></tr>
+            <tr><td>5</td><td>0.51</td><td>0.29</td><td>Starting to overfit</td></tr>
+            <tr><td>8</td><td>0.62</td><td>0.15</td><td>Overfit</td></tr>
+            <tr><td>15</td><td>0.84</td><td>negative</td><td>Badly overfit</td></tr>
+          </tbody>
+        </table>
+        <p>Read the last row slowly. At depth 15 the model scores a superb <strong>0.84 on training</strong> and a <strong>negative test R²</strong> - meaning on new data it is literally worse than just guessing the average order value. It memorised the training rows perfectly and learned nothing useful. That is overfitting in one line, and no amount of training-set glory hides it once you look at the held-out score.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Bias-variance in one sentence<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>You will hear engineers say "bias-variance trade-off." Here is the whole thing in plain English: <strong>a simple model has high bias (it underfits), a complex model has high variance (it overfits), and you cannot drive both to zero - you trade one for the other.</strong> The goal is not zero of either; it is the depth where the two together are smallest - the bottom of that U in the test curve.</p>
+        <ul>
+          <li><strong>High bias</strong> - the model is too rigid to bend to the real pattern. More data will not save it; it needs to be less simple.</li>
+          <li><strong>High variance</strong> - the model bends to every wiggle, including noise. It needs to be less complex, or fed more data.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Your leader's takeaway</strong>
+          You do not tune this - your builders do (Session 4). What you own is the question: "did you pick the model's complexity by checking held-out performance, or did you just make it as complex as possible?" The seesaw is theirs to balance; the honest measurement is yours to demand.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 3</span>
+      <h2>This week <span class="tag exercise">◐ 25 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Ask the question.</strong> Find one model your org relies on and ask whoever owns it: "how was this tested - on data the model actually held out and never trained on?" Note the answer, and how confidently it comes.</li>
+      <li><strong>Tell an overfit story.</strong> Describe, in a few lines, a time something (a model, a strategy, a person) performed brilliantly on the practice cases and fell apart on real ones. That is overfitting; naming it in the wild makes it stick.</li>
+      <li><strong>Predict the failure.</strong> Pick a model you know of. Guess whether it is more likely too simple (underfit) or too complex (overfit), and why. You will not always be right - the point is to build the instinct.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What is the signature of an overfit model?</p>
+      <button class="qopt" type="button">A · high error on both the training set and the test set</button>
+      <button class="qopt" type="button">B · low error on the training set but high error on the test set - it memorised</button>
+      <button class="qopt" type="button">C · exactly equal error on training and test</button>
+      <p class="qwhy">Overfitting means the model fit the training pile so tightly it learned the noise: low training error, high test error. The gap between the two is the tell. High error on both is underfitting.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Why do we hold back a test set the model never sees?</p>
+      <button class="qopt" type="button">A · to give the model more examples to learn from</button>
+      <button class="qopt" type="button">B · to make training run faster</button>
+      <button class="qopt" type="button">C · to grade the model on unseen data - the only honest measure of how it will perform in the real world</button>
+      <p class="qwhy">The model's real job is on cases it never saw. Grading on the training data is like giving students the exam answers to memorise; only a held-out set tells you the truth.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · A model is too simple and does badly on both training and test data. In bias-variance terms, what is that?</p>
+      <button class="qopt" type="button">A · high bias - the model is underfitting</button>
+      <button class="qopt" type="button">B · high variance - the model is overfitting</button>
+      <button class="qopt" type="button">C · perfectly balanced - nothing to fix</button>
+      <p class="qwhy">A simple model that misses the pattern on both sets has high bias and is underfitting. High variance is the opposite failure - a complex model that overfits, doing well on training but poorly on test.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This session teaches the framing behind the "overfitting and generalisation" week of the major intro courses - the intuition a decision-maker needs. The hands-on Python (the decision-tree depth loop that produces the table above) lives in Builder Session 4; the sources below go deeper.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Training; the held-out test set; grading honestly on unseen data</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Underfitting vs overfitting; the train-test gap; bias-variance as a seesaw</span><span class="note">Part 2</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng / DeepLearning.AI ML Specialization - C1 W3 "the problem of overfitting"</span><span class="note">the spine; regularisation preview</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - bias and variance explained</span><span class="note">the clearest short visual</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The DecisionTree depth loop that fits the table + U-curve in Python</span><span class="note">Builder Session 4 - not covered here by design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The whole risk</b><span>A model learns from the past but works on new cases. Everything hinges on whether it generalises beyond what it memorised.</span></div>
+      <div class="cheat-item"><b>Split before you study</b><span>Hold back a test set (~20%) the model never sees. Train on the rest. Grade only on the held-out slice.</span></div>
+      <div class="cheat-item"><b>The one question</b><span>"Was this score on training data or on held-out data it never saw?" A great training score means nothing on its own.</span></div>
+      <div class="cheat-item"><b>Underfit vs overfit</b><span>Underfit = too simple, high error on BOTH sets. Overfit = memorises noise, low train error but high test error. The gap is the tell.</span></div>
+      <div class="cheat-item"><b>The negative-R² warning</b><span>A tree at depth 15 scores 0.84 on train but negative on test - worse than guessing the average. Complexity without honesty is a trap.</span></div>
+      <div class="cheat-item"><b>Bias-variance seesaw</b><span>Simple = high bias, complex = high variance. You trade one for the other; aim for the sum's minimum, the bottom of the U.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 2 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="a3-the-data-is-the-model.html">Next: The data is the model →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/ml-live.js?v=3"></script>
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

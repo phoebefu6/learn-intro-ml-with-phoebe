@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 6 · Cross-validation and tuning - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 6 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 6 of 10</div>
+    <h1>Cross-validation, <span class="accent">and how to tune without cheating</span></h1>
+    <p class="sub">Every score so far has come from one train/test split. But one split can be lucky - or unlucky - and if you keep peeking at the test set to pick a hyperparameter, you quietly cheat and ship an over-optimistic number. This session fixes both problems with cross-validation: rotate the validation role across k folds, average the scores, and read the spread. Then use it to tune <code>max_depth</code> with <code>GridSearchCV</code> - and only touch the held-out test set once, at the very end. Same Lumen regression from b4, same <code>fit</code>/<code>predict</code> API.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Getting real</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Recap</span>
+      <span class="a2" style="flex:4">3-20 · k-fold CV</span>
+      <span class="a3" style="flex:4">20-40 · Tune with GridSearchCV</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>One split can be lucky</h2>
+    </div>
+    <p class="lede">In b4 you picked the sweet-spot tree depth by watching a single test curve. That works, but it rests on one random split - shuffle the rows differently and the peak can wobble. Cross-validation gives you a steadier grade by averaging over several splits, and it is the tool that lets you tune hyperparameters honestly, because the test set stays sealed until the end. Think of it as taking the same exam five times with different question sets and reporting your average plus how much you varied.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A steadier estimate of how a model will generalise - a CV mean and its spread - plus the discipline that keeps you honest: you tune on cross-validation, never on the test set. You will run <code>cross_val_score</code>, read the fold-to-fold spread, and let <code>GridSearchCV</code> re-discover b4's sweet-spot depth for you.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: K-FOLD ============ -->
+  <section class="section" id="kfold">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the concept</span>
+      <h2>k-fold cross-validation <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Split the <strong>training</strong> data into k equal folds. Each fold takes a turn as the validation set while the other k-1 folds train the model; you do this k times, so every row is validated exactly once. Average the k scores for a steadier estimate, and look at the spread - a wide spread means the score depends heavily on which rows you happened to hold out. Crucially, all of this happens on the training data. You tune on these CV scores and never on the test set, which you spend exactly once, at the very end.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five rows representing 5-fold cross-validation. In each row a different fifth is highlighted as the validation fold while the other four fifths are training folds. A separate sealed test set sits apart.">
+        <style>
+          .cvLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+          .cvN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .cvT { font: 700 11px Inter, sans-serif; fill: #FFFFFF; }
+          .cvTr { fill: #DDD6FE; stroke: #FFFFFF; stroke-width: 2; }
+          .cvVa { fill: #5B21B6; stroke: #FFFFFF; stroke-width: 2; }
+          .cvTe { fill: #F5F3FF; stroke: #F7931E; stroke-width: 2; stroke-dasharray: 5 3; }
+        </style>
+        <text class="cvLab" x="30" y="24">5-fold CV on the training data - each fold serves as validation once</text>
+
+        <!-- 5 rows -->
+        <!-- row template: 5 cells of width 92 starting x=140 -->
+        <text class="cvN" x="30" y="59">Round 1</text>
+        <rect class="cvVa" x="140" y="44" width="92" height="24" rx="4"/><rect class="cvTr" x="234" y="44" width="92" height="24" rx="4"/><rect class="cvTr" x="328" y="44" width="92" height="24" rx="4"/><rect class="cvTr" x="422" y="44" width="92" height="24" rx="4"/><rect class="cvTr" x="516" y="44" width="92" height="24" rx="4"/>
+        <text class="cvN" x="30" y="91">Round 2</text>
+        <rect class="cvTr" x="140" y="76" width="92" height="24" rx="4"/><rect class="cvVa" x="234" y="76" width="92" height="24" rx="4"/><rect class="cvTr" x="328" y="76" width="92" height="24" rx="4"/><rect class="cvTr" x="422" y="76" width="92" height="24" rx="4"/><rect class="cvTr" x="516" y="76" width="92" height="24" rx="4"/>
+        <text class="cvN" x="30" y="123">Round 3</text>
+        <rect class="cvTr" x="140" y="108" width="92" height="24" rx="4"/><rect class="cvTr" x="234" y="108" width="92" height="24" rx="4"/><rect class="cvVa" x="328" y="108" width="92" height="24" rx="4"/><rect class="cvTr" x="422" y="108" width="92" height="24" rx="4"/><rect class="cvTr" x="516" y="108" width="92" height="24" rx="4"/>
+        <text class="cvN" x="30" y="155">Round 4</text>
+        <rect class="cvTr" x="140" y="140" width="92" height="24" rx="4"/><rect class="cvTr" x="234" y="140" width="92" height="24" rx="4"/><rect class="cvTr" x="328" y="140" width="92" height="24" rx="4"/><rect class="cvVa" x="422" y="140" width="92" height="24" rx="4"/><rect class="cvTr" x="516" y="140" width="92" height="24" rx="4"/>
+        <text class="cvN" x="30" y="187">Round 5</text>
+        <rect class="cvTr" x="140" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="234" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="328" y="172" width="92" height="24" rx="4"/><rect class="cvTr" x="422" y="172" width="92" height="24" rx="4"/><rect class="cvVa" x="516" y="172" width="92" height="24" rx="4"/>
+
+        <!-- legend -->
+        <rect class="cvVa" x="140" y="216" width="20" height="16" rx="3"/><text class="cvN" x="166" y="229" style="fill:#1E1633">validation fold</text>
+        <rect class="cvTr" x="290" y="216" width="20" height="16" rx="3"/><text class="cvN" x="316" y="229" style="fill:#1E1633">training folds</text>
+
+        <!-- sealed test set -->
+        <rect class="cvTe" x="656" y="44" width="194" height="152" rx="8"/>
+        <text class="cvLab" x="676" y="112" style="fill:#F7931E">TEST SET</text>
+        <text class="cvN" x="676" y="132" style="fill:#1E1633">sealed · opened</text>
+        <text class="cvN" x="676" y="148" style="fill:#1E1633">once, at the end</text>
+
+        <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="cvN" x="52" y="303" style="fill:#1E1633">Average the 5 validation scores for a steadier grade; the spread tells you how lucky a single split could have been. The test set never enters CV.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - each fold validates once; the test set stays sealed</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What CV estimates<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Cross-validation does not build a better model - read that twice. It gives you a <strong>less-lucky estimate of out-of-sample performance</strong>: how the model is likely to do on data it has not seen. The mean is your best guess; the spread across folds is a second piece of information you should always report.</p>
+        <ul>
+          <li><strong>The mean</strong> - your central estimate of generalisation.</li>
+          <li><strong>The spread (std)</strong> - how much the score swings depending on which rows you validate on. A wide spread is a warning that a single test split could easily mislead you.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          When you report "R² ~ 0.40" from one split, you are hiding the uncertainty. "R² ~ 0.40 +/- 0.06 across 5 folds" is honest - it says the true number is roughly in that band, and your stakeholders can trust it more, not less, because you showed the wobble.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why you never tune on the test set<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The test set has exactly one job: to give you an honest, one-time estimate of performance on truly unseen data. The moment you use it to <em>choose</em> something - a depth, an alpha, a feature set - it stops being unseen. You have leaked information from it into your model choices, and the score it reports is now optimistic.</p>
+        <p>That is why tuning lives entirely on cross-validation (or a separate validation split). CV is your sandbox for trying settings; the test set is the sealed envelope you open once, at the very end, to report the number you will actually stand behind. Spend it early and you have nothing honest left to report.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · CV then tune</span>
+      <h2>Cross-validate and tune in Python <span class="tag demo">18 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We stay on the b4 regression - predict <code>order_value</code> from <code>prior_30d_spend</code> with a decision tree - so the numbers line up. First a plain 5-fold CV, then <code>GridSearchCV</code> to pick <code>max_depth</code>, then one final look at the sealed test set.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and carve out a sealed test set.</strong> Everything else happens on the training portion.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.read_parquet("lumen_sessions.parquet")
+buyers = df[df.converted == 1].copy()
+
+X = buyers[["prior_30d_spend"]]
+y = buyers["order_value"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)     # test set: do not touch until the end</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Run 5-fold cross-validation.</strong> Score a depth-4 tree and read both the mean and the spread.</p>
+        <div class="prompt-box good">
+          <span class="label">cv.py</span>
+<pre>from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import cross_val_score
+
+tree = DecisionTreeRegressor(max_depth=4, random_state=0)
+scores = cross_val_score(tree, X_train, y_train, cv=5, scoring="r2")
+
+print("fold scores:", scores.round(2))          # e.g. ~0.33 .. ~0.50
+print("mean R2 = %.2f  +/- %.2f" % (scores.mean(), scores.std()))
+# -> mean ~ 0.40  +/- ~ 0.06</pre>
+        </div>
+        <p>The mean lands around <strong>R² ~ 0.40</strong> with a spread of about <strong>+/- 0.06</strong>, folds ranging roughly 0.33 to 0.50. That spread is the point: a single unlucky split could have handed you 0.33 and made a fine model look weak. The average is steadier, and the range is information you keep.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Tune max_depth with GridSearchCV.</strong> Let CV, not your eyeballs, pick the depth - and watch it re-find b4's sweet spot.</p>
+        <div class="prompt-box good">
+          <span class="label">grid.py</span>
+<pre>from sklearn.model_selection import GridSearchCV
+
+grid = GridSearchCV(
+    DecisionTreeRegressor(random_state=0),
+    param_grid={"max_depth": range(1, 13)},
+    cv=5, scoring="r2")
+grid.fit(X_train, y_train)                       # searches on TRAIN only, via CV
+
+print("best params:", grid.best_params_)         # -> max_depth around 3-4
+print("best CV R2 : %.2f" % grid.best_score_)    # -> ~ 0.40
+# matches b4's U-curve peak at depth 3 - CV found it without touching the test set</pre>
+        </div>
+        <p>GridSearchCV lands on <strong>max_depth around 3-4</strong> - exactly the sweet spot of b4's U-shaped curve. No peeking at the test set, no guessing: cross-validation picked the complexity for you.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Now, and only now, open the test set.</strong> Score the tuned model once and report that number.</p>
+        <div class="prompt-box good">
+          <span class="label">final.py</span>
+<pre>best = grid.best_estimator_
+print("final held-out test R2 = %.2f" % best.score(X_test, y_test))
+# report THIS number - it is the one you never tuned against</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>A team once tuned dozens of settings by watching the test score climb, then shipped the winning number to their VP. In production it fell flat - they had quietly overfit to the test set by choosing against it over and over. Cross-validation is the guardrail: tune on CV, keep the test set sealed, and the number you promise is the number you get.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 7</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Run cv=10.</strong> Repeat the depth-4 CV with <code>cv=10</code> and compare the mean and spread to <code>cv=5</code>. Does the mean move much? Does the spread tighten or widen, and why might more folds change it?</li>
+      <li><strong>Grid a second hyperparameter.</strong> Add <code>min_samples_leaf</code> to the <code>param_grid</code> alongside <code>max_depth</code> and let GridSearchCV search the combined space. What does it pick?</li>
+      <li><strong>Confirm the sweet spot.</strong> Check that the CV-chosen depth matches b4's U-curve peak (depth ~3). If it differs, explain what the difference tells you.</li>
+      <li><strong>Optional:</strong> print <code>grid.cv_results_["mean_test_score"]</code> and plot it against depth - you have just drawn b4's validation curve, this time built from cross-validation.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · What does cross-validation give you?</p>
+      <button class="qopt" type="button">A · a better-trained model than a single fit</button>
+      <button class="qopt" type="button">B · a guaranteed higher score</button>
+      <button class="qopt" type="button">C · a steadier estimate of out-of-sample performance, not a better model</button>
+      <p class="qwhy">CV estimates how the model will generalise by averaging over folds. It does not train a better model - it gives you a less-lucky estimate of the same model's performance.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · What must you never do?</p>
+      <button class="qopt" type="button">A · tune hyperparameters on the test set</button>
+      <button class="qopt" type="button">B · average scores across folds</button>
+      <button class="qopt" type="button">C · report the spread as well as the mean</button>
+      <p class="qwhy">The test set is spent once, at the very end. Tuning against it leaks information and produces an over-optimistic score. Tune on cross-validation or a validation split instead.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · In k-fold CV, how is each fold used?</p>
+      <button class="qopt" type="button">A · every fold is used only for training</button>
+      <button class="qopt" type="button">B · each fold serves once as validation while the rest train the model</button>
+      <button class="qopt" type="button">C · one fold trains and the other folds are all validation</button>
+      <p class="qwhy">Each of the k folds takes a turn as the validation set while the remaining k-1 folds train the model, so every row is validated exactly once across the k rounds.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers k-fold cross-validation and hyperparameter tuning on the Lumen dataset, building directly on b4's overfitting curve and b5's alpha dial. Classification metrics in depth come next in b7.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">k-fold CV; mean + spread; tuning on CV not test; GridSearchCV re-finding the sweet-spot depth</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn - cross-validation and GridSearchCV (model selection)</span><span class="note">the API spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - cross validation</span><span class="note">the intuition</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>k-fold CV</b><span>Split train into k folds; each fold validates once while the rest train. Average the k scores for a steadier grade.</span></div>
+      <div class="cheat-item"><b>What it estimates</b><span>Out-of-sample (generalisation) performance - not a better model. Report the mean and the spread.</span></div>
+      <div class="cheat-item"><b>cross_val_score</b><span><code>cross_val_score(model, X, y, cv=5, scoring="r2")</code>. Returns one score per fold; take <code>.mean()</code> and <code>.std()</code>.</span></div>
+      <div class="cheat-item"><b>GridSearchCV</b><span>Searches a <code>param_grid</code> using CV, refits the best on all training data. Read <code>best_params_</code> and <code>best_score_</code>.</span></div>
+      <div class="cheat-item"><b>The sacred rule</b><span>Tune on CV / validation, never on the test set. The test set is opened once, at the very end.</span></div>
+      <div class="cheat-item"><b>The Lumen result</b><span>5-fold on a depth-4 tree: R² ~ 0.40 +/- 0.06 (folds ~0.33-0.50). GridSearchCV picks depth ~3-4 - b4's sweet spot.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 6 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b7-classification-metrics.html">Next: Classification metrics in depth →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 4 · Reading a model's report card - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 4 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 4 of 6</div>
+    <h1>Reading a model's report card, <span class="accent">without being fooled by it</span></h1>
+    <p class="sub">A model hands you a number and waits for applause. The danger is that the loudest number - accuracy - is often the most misleading one. This session teaches a leader to read a model's report card the way an auditor reads accounts: knowing which figure to trust, which to distrust, and which question to ask next. You will learn why 96.8% accuracy can mean the model found zero buyers, what precision and recall really promise in plain words, why the decision threshold is a business choice and not a default, and how to judge a dollar-predicting model the way a CFO would. No code - just the judgement to never nod at a metric you cannot interrogate.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Building up</span>
+      <span class="chip audience">Leaders</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-24 · The accuracy paradox</span>
+      <span class="a3" style="flex:4">24-42 · Metrics that matter</span>
+      <span class="a4" style="flex:1">42-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The number that lies loudest</h2>
+    </div>
+    <p class="lede">When a model is finished, it does not hand you a verdict - it hands you a report card full of numbers, and it stays silent about which one matters. Left alone, most rooms grab the single figure they already understand: accuracy. That is exactly the trap. For Lumen Skincare, whose visitors convert only about 3.2% of the time, a model that predicts "no buyer" for every single person is 96.8% accurate and completely worthless - it finds nobody. This session is the antidote: a short, jargon-free toolkit for reading the report card so no metric can bluff its way past you.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The instinct to never accept "accuracy" at face value on a rare event, a plain-words grasp of precision, recall, F1 and ROC-AUC, the understanding that a classification threshold is a business decision you can dial, and the ability to judge a regression model in dollars the way your CFO would. You leave able to read any model's report card and ask the one question that exposes it.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE ACCURACY PARADOX ============ -->
+  <section class="section" id="paradox">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the trap</span>
+      <h2>The accuracy paradox, and the matrix that tells the truth <span class="tag concept">10 min live</span></h2>
+    </div>
+    <p class="lede">Accuracy is "what fraction did we get right?" It sounds unimpeachable, and on a balanced problem it is fine. On a rare event it collapses. Lumen converts about 3.2% of sessions, so a lazy model that always guesses "no" is right 96.8% of the time and catches zero buyers. The fix is to stop staring at one headline number and look at the confusion matrix - the four-cell table every other metric is built from.</p>
+
+    <p class="lede">Try it yourself. The tool below is Lumen's real conversion model. Drag the decision threshold and watch accuracy stay stubbornly high while the buyers it actually catches - the recall - swings wildly. That gap is the whole lesson.</p>
+
+    <div class="ml-live" data-tool="threshold"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 412" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A two-by-two confusion matrix. Rows are actual buyer and actual non-buyer; columns are predicted buyer and predicted non-buyer. The four cells are true positive, false positive, false negative and true negative. Precision reads down the predicted-buyer column; recall reads across the actual-buyer row.">
+        <style>
+          .cmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .cmT { font: 800 14px Inter, sans-serif; fill: #FFFFFF; }
+          .cmC { font: 600 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .cmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .cmH { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+        </style>
+        <text class="cmH" x="300" y="34">Predicted: buyer</text>
+        <text class="cmH" x="560" y="34">Predicted: no buyer</text>
+        <text class="cmH" x="40" y="130" transform="rotate(-90 40 130)">Actually bought</text>
+        <text class="cmH" x="40" y="300" transform="rotate(-90 40 300)">Did not buy</text>
+
+        <rect x="270" y="48" width="230" height="130" rx="10" fill="#5B21B6"/>
+        <text class="cmT" x="330" y="98">True positive</text>
+        <text class="cmC" x="300" y="124">buyer, correctly flagged</text>
+        <text class="cmC" x="330" y="146" style="fill:#DDD6FE">the wins</text>
+
+        <rect x="516" y="48" width="230" height="130" rx="10" fill="#F7931E"/>
+        <text class="cmT" x="560" y="98">False negative</text>
+        <text class="cmC" x="546" y="124">buyer we missed</text>
+        <text class="cmC" x="546" y="146" style="fill:#FFFFFF">a lost sale</text>
+
+        <rect x="270" y="192" width="230" height="130" rx="10" fill="#7C3AED"/>
+        <text class="cmT" x="316" y="242">False positive</text>
+        <text class="cmC" x="292" y="268">flagged, never bought</text>
+        <text class="cmC" x="316" y="290" style="fill:#DDD6FE">a wasted offer</text>
+
+        <rect x="516" y="192" width="230" height="130" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="cmL" x="560" y="242">True negative</text>
+        <text class="cmN" x="546" y="268" style="fill:#1E1633">correctly left alone</text>
+        <text class="cmN" x="546" y="290" style="fill:#1E1633">the easy 96.8%</text>
+
+        <text class="cmN" x="270" y="352" style="fill:#5B21B6">↓ precision reads down this column: of those we flagged, how many really bought</text>
+        <text class="cmN" x="270" y="372" style="fill:#F7931E">→ recall reads across the top row: of real buyers, how many we caught</text>
+
+        <rect x="30" y="392" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="cmN" x="52" y="403" style="fill:#1E1633">The matrix is the source of truth; every other score is just two of these cells in a ratio.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the confusion matrix, and where precision and recall come from</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Why 96.8% is a lie<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Accuracy answers "what share of all predictions were correct?" On Lumen's data that is dominated by the 96.8% of sessions that never convert. A model can win all of those by simply saying "no buyer" every time - and it will score 96.8% while finding exactly zero of the buyers you actually care about.</p>
+        <ul>
+          <li><strong>The base rate rules everything.</strong> When one outcome is 30x rarer than the other, guessing the common one is almost always "right" and always useless.</li>
+          <li><strong>The valuable answers are the rare ones.</strong> You are hunting the 3.2%, so a score that rewards ignoring them is measuring the wrong thing.</li>
+          <li><strong>Ask the follow-up.</strong> "96.8% accurate - how many of the real buyers did it actually find?" That one question deflates the paradox instantly.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's marketing team once celebrated a "97% accurate" conversion model in a leadership deck. It held up right until someone asked how many of the month's buyers it had actually flagged. The answer was none - the model had learned to say "no" to everyone, banked the easy 96.8%, and found not a single customer. The applause stopped.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The confusion matrix<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The confusion matrix is a simple 2x2 tally of what the model predicted against what actually happened. Four cells, and every classification metric you will ever meet is built from them:</p>
+        <ul>
+          <li><strong>True positive (TP)</strong> - a real buyer the model correctly flagged. The win.</li>
+          <li><strong>False positive (FP)</strong> - flagged as a buyer, never bought. A wasted offer or discount.</li>
+          <li><strong>False negative (FN)</strong> - a real buyer the model missed. A lost sale.</li>
+          <li><strong>True negative (TN)</strong> - correctly left alone. The easy majority on Lumen's data.</li>
+        </ul>
+        <p>When someone shows you a single number, ask for the matrix. It is the only view that cannot hide a failure, because it shows you the buyers you missed right next to the ones you caught.</p>
+        <div class="callout tip">
+          <strong>The leader's read</strong>
+          You never have to compute these. You only have to insist on seeing all four cells, because accuracy, precision and recall each quietly drop two of them. The matrix keeps everyone honest.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: METRICS THAT MATTER ============ -->
+  <section class="section" id="metrics">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the vocabulary</span>
+      <h2>The metrics that matter, in plain words <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">Once you have the matrix, four words carry almost all the meaning. Learn them as promises, not formulas. And learn the one that quietly runs the show: the threshold, the dial that decides how bold the model is about calling someone a buyer - a business choice, never a default of 0.5.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An ROC curve sketch. The diagonal line from bottom-left to top-right is a random coin-flip model with area 0.5. A curve bowed up toward the top-left corner is Lumen's model with an area under the curve of about 0.71, a real but modest signal.">
+        <style>
+          .rcAxis { stroke: #5E5470; stroke-width: 1.5; }
+          .rcGrid { stroke: #DDD6FE; stroke-width: 1; stroke-dasharray: 4 4; }
+          .rcLbl { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .rcTtl { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .rcNote { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+        </style>
+        <text class="rcTtl" x="60" y="34">How well does the model RANK buyers above non-buyers? (ROC-AUC)</text>
+        <line class="rcAxis" x1="120" y1="70" x2="120" y2="280"/>
+        <line class="rcAxis" x1="120" y1="280" x2="470" y2="280"/>
+        <text class="rcLbl" x="60" y="80" transform="rotate(-90 60 175)">buyers caught (recall) →</text>
+        <text class="rcLbl" x="200" y="304">false alarms →</text>
+
+        <line class="rcGrid" x1="120" y1="280" x2="470" y2="70"/>
+        <text class="rcLbl" x="330" y="200" style="fill:#5E5470" transform="rotate(-31 330 200)">coin flip, AUC 0.5</text>
+
+        <path d="M120,280 C170,150 300,95 470,70" fill="none" stroke="#5B21B6" stroke-width="3"/>
+        <text class="rcNote" x="250" y="120" style="fill:#5B21B6">Lumen model</text>
+        <text class="rcNote" x="250" y="138" style="fill:#5B21B6">AUC ~ 0.71</text>
+
+        <rect x="540" y="80" width="300" height="180" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="rcTtl" x="560" y="112">Read AUC like a percentage</text>
+        <text class="rcLbl" x="560" y="140" style="fill:#1E1633">0.5 = coin flip, no signal.</text>
+        <text class="rcLbl" x="560" y="162" style="fill:#1E1633">1.0 = perfect ranking.</text>
+        <text class="rcLbl" x="560" y="184" style="fill:#1E1633">0.71 = real but modest -</text>
+        <text class="rcLbl" x="560" y="204" style="fill:#1E1633">the model ranks a random</text>
+        <text class="rcLbl" x="560" y="224" style="fill:#1E1633">buyer above a random</text>
+        <text class="rcLbl" x="560" y="244" style="fill:#1E1633">non-buyer ~71% of the time.</text>
+
+        <rect x="120" y="312" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="rcLbl" x="142" y="323" style="fill:#1E1633">AUC judges ranking across every threshold at once, so it survives the accuracy paradox - a coin flip scores 0.5 no matter how rare the event.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - ROC-AUC, from a coin flip to a modest 0.71</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Precision vs recall (and the threshold dial)<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Two promises, one trade-off:</p>
+        <ul>
+          <li><strong>Precision</strong> - of those we flagged as buyers, how many really bought. High precision means few wasted offers.</li>
+          <li><strong>Recall</strong> - of the real buyers, how many we caught. High recall means few missed sales.</li>
+          <li><strong>F1</strong> - the balance of the two, a single number for when you care about both roughly equally.</li>
+          <li><strong>ROC-AUC (~0.71 for Lumen)</strong> - how well the model ranks buyers above non-buyers, from 0.5 (a coin flip) to 1.0 (perfect). A real but modest signal here.</li>
+        </ul>
+        <p>The dial that trades one for the other is the <strong>threshold</strong>. A model outputs a probability; the threshold is the cutoff above which you call it "buyer". Lower it and you catch more buyers (recall up) but flag more people who never buy (precision down). Raise it and the reverse. It defaults to 0.5, but 0.5 is arbitrary - the right cutoff depends on what a mistake costs you.</p>
+        <div class="callout tip">
+          <strong>Hold the pair in your head</strong>
+          Precision is "how clean are the alerts?"; recall is "how many did we miss?". You almost never get both at once - the threshold is where you choose which one to protect.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Judging a regression in dollars<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>When the model predicts a number instead of a category - like Lumen's order-value model - the report card changes. The two figures to know:</p>
+        <ul>
+          <li><strong>RMSE</strong> - the typical size of the model's miss, in the same unit as the target. For Lumen, dollars. The dumb baseline of "just predict the average order" has an RMSE of about $41; the full model brings that down to about $28. That drop is the model earning its keep.</li>
+          <li><strong>R2</strong> - the share of the variation the model explains, from 0 to 1. Useful to a data scientist, near-meaningless to a boardroom.</li>
+        </ul>
+        <p>Always compare against the baseline: a number alone ("RMSE $28") means nothing until you know that guessing the average was $41. And report the dollars, not R2, to a CFO - "our typical miss shrank from $41 to $28 an order" lands; "R2 of 0.52" does not.</p>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's threshold is set by arithmetic, not habit. A false positive - a discount sent to someone who was never going to buy - costs a few dollars of margin. A false negative - a real buyer who never got the offer - costs a whole sale. Because a missed buyer hurts far more than a wasted discount, Lumen deliberately lowers the threshold to lift recall, accepting more wasted offers to catch more buyers. The metric follows the money, not the default.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 5</span>
+      <h2>This week <span class="tag exercise">◐ 25 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Ask for the matrix.</strong> For one model in your org, ask the team for its confusion matrix, not just its accuracy. Look at the false negatives - the cases it missed - and decide if you can live with them.</li>
+      <li><strong>Pick your promise.</strong> For a real use case, decide whether precision or recall matters more, and why - what does a wasted alert cost versus a missed one? Write it in one sentence.</li>
+      <li><strong>Demand the baseline.</strong> Whenever someone quotes a metric, ask "what is the baseline?" A score only means something next to "predict the mean" or "always guess no".</li>
+      <li><strong>Optional:</strong> find a past deck where a headline accuracy number oversold a model. Bring the story to Session 5.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · A Lumen model is 96.8% accurate at predicting conversion. Why might that be worthless?</p>
+      <button class="qopt" type="button">A · because 96.8% is actually a low score for a model</button>
+      <button class="qopt" type="button">B · because only ~3.2% of sessions convert, so always predicting "no buyer" scores 96.8% and catches zero buyers</button>
+      <button class="qopt" type="button">C · because accuracy cannot be measured on real customer data</button>
+      <p class="qwhy">This is the accuracy paradox. With a 3.2% base rate, guessing the common outcome ("no buyer") is right 96.8% of the time while finding none of the buyers you care about. Accuracy is the wrong score on imbalanced data.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · What does "recall" tell you about a conversion model?</p>
+      <button class="qopt" type="button">A · of the people it flagged, how many really bought</button>
+      <button class="qopt" type="button">B · how accurate it is overall</button>
+      <button class="qopt" type="button">C · of the actual buyers, what share the model caught</button>
+      <p class="qwhy">Recall reads across the actual-buyer row: of all the real buyers, how many did the model catch? "Of those we flagged, how many bought" is precision, not recall.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · A regression model has an RMSE of $28, versus a "predict the average" baseline of $41. What does that tell you?</p>
+      <button class="qopt" type="button">A · the model's typical miss is smaller than just guessing the average, so it beats the baseline</button>
+      <button class="qopt" type="button">B · the model is wrong 28% of the time</button>
+      <button class="qopt" type="button">C · nothing useful without knowing its accuracy</button>
+      <p class="qwhy">RMSE is the typical miss in dollars. $28 versus a $41 baseline means the model shrank the average error below what guessing the mean would give - it is genuinely adding value. Accuracy is a classification metric and does not apply to a dollar prediction.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This leader session teaches the framing behind the "how do we know a model is any good?" week of the major intro courses - the confusion matrix, the classification metrics, and the dollar view of regression. The code that computes them (classification_report, roc_auc_score) lives in Builder Session 7; the sources below go deeper.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The accuracy paradox; the confusion matrix as the source of truth</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Precision, recall, F1, ROC-AUC; the threshold as a business choice; RMSE in dollars</span><span class="note">Part 2</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn user guide - "Metrics and scoring"</span><span class="note">the reference for every metric here</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - confusion matrix and ROC / AUC explainers</span><span class="note">clearest visual walk-through</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Computing these in Python (classification_report, roc_auc_score)</span><span class="note">Builder Session 7 - not covered here by design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The accuracy paradox</b><span>On a rare event (Lumen converts ~3.2%), "always predict no" is 96.8% accurate and catches zero buyers. Accuracy alone is a trap on imbalanced data.</span></div>
+      <div class="cheat-item"><b>The confusion matrix</b><span>Four cells - TP, FP, FN, TN. The source of truth; every other score is two of these in a ratio. Always ask to see it.</span></div>
+      <div class="cheat-item"><b>Precision vs recall</b><span>Precision = of those flagged, how many bought. Recall = of real buyers, how many caught. F1 balances them.</span></div>
+      <div class="cheat-item"><b>ROC-AUC</b><span>How well the model ranks buyers above non-buyers. 0.5 = coin flip, 1.0 = perfect. Lumen ~ 0.71: real but modest.</span></div>
+      <div class="cheat-item"><b>The threshold is a dial</b><span>0.5 is arbitrary. Lower it to catch more buyers (recall up, precision down). Set it by the cost of a wasted offer vs a missed sale.</span></div>
+      <div class="cheat-item"><b>Regression in dollars</b><span>RMSE = typical miss in $. Baseline "predict the mean" ~ $41; full model ~ $28. Report dollars to a CFO, not R2.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 4 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="a5-prediction-is-not-proof.html">Next: Prediction is not proof →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/ml-live.js?v=3"></script>
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

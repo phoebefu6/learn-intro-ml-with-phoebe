@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 9 · Feature prep and Pipelines - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 9 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 9 of 10</div>
+    <h1>Feature prep, and <span class="accent">the Pipeline that makes leakage impossible</span></h1>
+    <p class="sub">Real data is a mess of mixed types - numbers next to categories - and a model needs it all as clean numeric columns. The naive way is a pile of loose preprocessing steps, and it quietly leaks the test set into training. This session does it the right way: a ColumnTransformer that scales the numbers and one-hot encodes the categories, wrapped in a Pipeline so the exact same preparation is fit on train and applied everywhere else. One object, no skew, no leakage - and a clean look at what the model actually leaned on.</p>
+    <div class="chip-row">
+      <span class="chip level">🔴 Hardest</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Why prep</span>
+      <span class="a2" style="flex:3">3-16 · ColumnTransformer</span>
+      <span class="a3" style="flex:5">16-40 · Build it in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The prep is where models leak - so bind it to the model</h2>
+    </div>
+    <p class="lede">Every session so far quietly hand-picked numeric features or one-hot encoded on the whole frame. That is fine for a demo and dangerous in production: if you fit a scaler or an encoder on all the data before splitting, the test set has already influenced training, and your score lies. The fix is not more discipline - it is structure. A Pipeline binds the preparation to the model as one estimator, so the transforms are fit on train only and replayed identically on test and in production.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A single Pipeline object that scales numerics, one-hot encodes categoricals via a ColumnTransformer, and trains a model - all fit on train, all applied identically everywhere. You will read off what the model leaned on (prior spend, new-vs-returning, channel), watch the planted noise <code>session_hour</code> land near zero importance, and prove that dropping it changes nothing. More columns is not more signal.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: COLUMNTRANSFORMER + PIPELINE ============ -->
+  <section class="section" id="pipeline">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · one object, two lanes</span>
+      <h2>ColumnTransformer inside a Pipeline <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Mixed-type data needs two different treatments. Numbers want scaling so no single large-valued column dominates; categories want one-hot encoding so a model can use them as 0/1 flags. A ColumnTransformer runs both lanes in parallel on the right columns, and a Pipeline glues that prep to the model as one estimator.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A raw mixed-type table splits into two lanes inside a ColumnTransformer: a one-hot lane for categorical columns and a scale lane for numeric columns, which recombine and feed a model, with the whole thing boxed as one estimator.">
+        <style>
+          .ppL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .ppN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .ppBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .ppA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#ppAh); }
+        </style>
+        <defs>
+          <marker id="ppAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <rect x="24" y="60" width="230" height="210" rx="12" fill="none" stroke="#5B21B6" stroke-width="2" stroke-dasharray="6 4"/>
+        <text class="ppN" x="40" y="52" style="fill:#5B21B6; font-weight:700">ONE Pipeline estimator (fit on train only)</text>
+        <rect class="ppBox" x="40" y="80" width="150" height="120" rx="10"/>
+        <text class="ppN" x="56" y="104" style="fill:#1E1633; font-weight:700">Raw mixed table</text>
+        <text class="ppN" x="56" y="126">prior_30d_spend  38.0</text>
+        <text class="ppN" x="56" y="144">pages_viewed     5</text>
+        <text class="ppN" x="56" y="162">channel      "email"</text>
+        <text class="ppN" x="56" y="180">device      "mobile"</text>
+
+        <text class="ppL" x="330" y="52">ColumnTransformer - two lanes</text>
+        <line class="ppA" x1="192" y1="120" x2="330" y2="105"/>
+        <line class="ppA" x1="192" y1="165" x2="330" y2="225"/>
+        <rect x="332" y="80" width="240" height="60" rx="10" fill="#7C3AED"/>
+        <text class="ppN" x="350" y="106" style="fill:#FFFFFF; font-weight:700">scale lane · StandardScaler</text>
+        <text class="ppN" x="350" y="126" style="fill:#F5F3FF">numeric cols -&gt; mean 0, SD 1</text>
+        <rect x="332" y="200" width="240" height="60" rx="10" fill="#F7931E"/>
+        <text class="ppN" x="350" y="226" style="fill:#FFFFFF; font-weight:700">one-hot lane · OneHotEncoder</text>
+        <text class="ppN" x="350" y="246" style="fill:#5A3606">category cols -&gt; 0/1 columns</text>
+
+        <line class="ppA" x1="572" y1="110" x2="648" y2="150"/>
+        <line class="ppA" x1="572" y1="230" x2="648" y2="180"/>
+        <rect x="650" y="130" width="120" height="70" rx="10" fill="#5B21B6"/>
+        <text class="ppN" x="668" y="160" style="fill:#FFFFFF; font-weight:700">Model</text>
+        <text class="ppN" x="668" y="182" style="fill:#F5F3FF">.fit / .predict</text>
+        <line class="ppA" x1="770" y1="165" x2="846" y2="165"/>
+        <rect x="30" y="300" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="ppN" x="52" y="311" style="fill:#1E1633">One estimator in, one estimator out - so train, test, and production all get the identical transforms.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - two prep lanes, boxed with the model as one estimator</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Why one object, not a pile of steps<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>You could scale, encode, and fit as three separate lines - and thousands of leaked models prove why you should not. The danger is fitting any transformer on data the model will later be tested on:</p>
+        <ul>
+          <li><strong>Loose steps leak.</strong> Fit a scaler on all rows, then split, and the test rows have already shaped the mean and SD the model trained against. The score is optimistic and wrong.</li>
+          <li><strong>A Pipeline binds prep to model.</strong> <code>Pipeline([('pre', ct), ('model', ...)])</code> is one estimator: calling <code>fit</code> fits the ColumnTransformer on the training rows only, and <code>predict</code> replays those exact transforms.</li>
+          <li><strong>No train/serve skew.</strong> The same fitted object goes to production, so the transforms applied at prediction time are byte-for-byte the ones learned in training. No divergence.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          Leakage is the number-one beginner mistake, and it never shows up as an error - only as a score that looks great and collapses in production. A Pipeline makes the correct behaviour the structural default, so you cannot leak by accident.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Inspecting what the model leaned on<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A fitted Pipeline still lets you read the model inside it. For a linear model you read <code>coef_</code>; for a tree or forest you read <code>feature_importances_</code>. The trick is matching those numbers back to the expanded column names the ColumnTransformer produced.</p>
+        <ul>
+          <li>Reach the fitted steps with <code>pipe.named_steps['pre']</code> and <code>pipe.named_steps['model']</code>.</li>
+          <li>Recover the post-encoding column names with <code>pipe.named_steps['pre'].get_feature_names_out()</code>.</li>
+          <li>Pair names with weights or importances to rank the features honestly.</li>
+        </ul>
+        <p>This is how you confirm the model learned what the business expects - and how you catch it leaning on noise. On Lumen, the strong features are prior spend, new-vs-returning, and channel; the planted <code>session_hour</code> lands near zero.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · the leak-proof estimator</span>
+      <h2>Build the Pipeline, then expose the noise <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We go back to the classification task - predict <code>converted</code> - because it uses every column type Lumen has. We build one Pipeline, cross-validate it cleanly, read what it leaned on, and then prove the noise column carries nothing.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and name the column groups.</strong> Declare which columns are numeric and which are categorical - the ColumnTransformer routes each group to the right lane.</p>
+        <div class="prompt-box good">
+          <span class="label">columns.py</span>
+<pre>import numpy as np, pandas as pd
+
+df = pd.read_parquet("lumen_sessions.parquet")
+y = df["converted"]
+X = df.drop(columns=["converted", "order_value"])
+
+num = ["prior_30d_spend", "pages_viewed", "session_hour"]
+cat = ["channel", "device", "new_vs_returning", "product_category"]
+print("numeric:", num)
+print("categorical:", cat)</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Build the ColumnTransformer inside a Pipeline.</strong> Two lanes, one model, one estimator. Because it is a single object, cross-validation fits the prep fresh on each fold - no leakage.</p>
+        <div class="prompt-box good">
+          <span class="label">pipeline.py</span>
+<pre>from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat),
+])
+pipe = Pipeline([
+    ("pre", pre),
+    ("model", LogisticRegression(max_iter=1000, class_weight="balanced")),
+])
+
+auc = cross_val_score(pipe, X, y, cv=5, scoring="roc_auc")
+print("ROC-AUC %.2f +/- %.2f" % (auc.mean(), auc.std()))   # ~ 0.71</pre>
+        </div>
+        <p>The whole pipeline cross-validates cleanly at ROC-AUC ~0.71 - the same honest signal from b7, now produced with leak-proof prep.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Read what the model leaned on.</strong> Fit once, then pair the expanded feature names with the logistic coefficients to rank them by pull.</p>
+        <div class="prompt-box good">
+          <span class="label">importance.py</span>
+<pre>pipe.fit(X, y)
+names = pipe.named_steps["pre"].get_feature_names_out()
+coefs = pipe.named_steps["model"].coef_[0]
+
+rank = pd.Series(np.abs(coefs), index=names).sort_values(ascending=False)
+print(rank.head(6).round(3))
+# top: prior_30d_spend, new_vs_returning, channel_* ...
+# session_hour ~ 0.00  (the planted noise, exposed)</pre>
+        </div>
+        <p>Prior spend, new-vs-returning, and the best channels sit at the top - exactly the signal the canon planted. And <code>session_hour</code> sits near zero, because it was noise from day one.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Prove it: drop the noise.</strong> Remove <code>session_hour</code> and re-score. If it carried signal the number would drop; it does not budge.</p>
+        <div class="prompt-box good">
+          <span class="label">drop_noise.py</span>
+<pre>num2 = ["prior_30d_spend", "pages_viewed"]     # session_hour removed
+
+pre2 = ColumnTransformer([
+    ("num", StandardScaler(), num2),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat),
+])
+pipe2 = Pipeline([("pre", pre2),
+    ("model", LogisticRegression(max_iter=1000, class_weight="balanced"))])
+
+auc2 = cross_val_score(pipe2, X, y, cv=5, scoring="roc_auc")
+print("without session_hour: ROC-AUC %.2f" % auc2.mean())   # ~ 0.71, unchanged</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>When Lumen moved this model to production, the team shipped the Pipeline object itself, not a written-down list of prep steps. That mattered: the service applied the identical scaler means and encoder categories learned in training, so there was no train-serve skew and no leakage window. The engineer who inherited it did not need the notebook - the transforms travelled inside the model. Loose steps are how skew sneaks in between the data scientist's laptop and the live endpoint.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 10</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Engineer a feature.</strong> Add one you can compute at prediction time (for example spend-per-page, <code>prior_30d_spend / pages_viewed</code>), fold it into the numeric lane, and re-fit the pipeline. Did it help?</li>
+      <li><strong>Explain handle_unknown.</strong> Set <code>handle_unknown='ignore'</code> and write why it matters - what happens in production when a channel appears that was not in the training data?</li>
+      <li><strong>Rank and prune.</strong> Rank features by importance, remove the weakest one, and confirm the CV score does not fall. More columns is not more signal.</li>
+      <li><strong>Optional:</strong> swap LogisticRegression for a RandomForestClassifier in the same Pipeline - only the model step changes, and you read <code>feature_importances_</code> instead of <code>coef_</code>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Why wrap preparation and model in a single Pipeline?</p>
+      <button class="qopt" type="button">A · it runs faster than separate steps</button>
+      <button class="qopt" type="button">B · it is the only way scikit-learn lets you scale data</button>
+      <button class="qopt" type="button">C · it binds prep to the model so the same fit-on-train transforms apply everywhere - killing leakage and train-serve skew</button>
+      <p class="qwhy">A Pipeline is one estimator: fit fits the transformers on the training data only, and predict replays those exact transforms on test and in production. That structure is what prevents the test set from leaking into training and stops the live service from diverging.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · What does OneHotEncoder do?</p>
+      <button class="qopt" type="button">A · turns each category into 0/1 indicator columns a model can use</button>
+      <button class="qopt" type="button">B · scales numeric columns to mean 0 and SD 1</button>
+      <button class="qopt" type="button">C · drops rows with missing categories</button>
+      <p class="qwhy">One-hot encoding expands a categorical column like channel into a set of 0/1 columns, one per category, so a model that only understands numbers can use it. Scaling is what StandardScaler does, in the other lane of the ColumnTransformer.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · The model shows <code>session_hour</code> with importance near zero. What does that tell you?</p>
+      <button class="qopt" type="button">A · the encoding failed and must be redone</button>
+      <button class="qopt" type="button">B · it was planted as noise - extra columns are not extra signal</button>
+      <button class="qopt" type="button">C · session_hour is the most predictive feature</button>
+      <p class="qwhy">session_hour was deliberately built with no relationship to conversion, so a correct model gives it near-zero weight. Dropping it leaves the score unchanged, which is the whole lesson: adding columns adds noise, not information, unless the signal is real.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers correct feature preparation - the leak-proof way to feed mixed-type data to a model - on the Lumen classification task, and sets up the capstone in b10.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">ColumnTransformer + Pipeline; OneHotEncoder + StandardScaler; reading coef_ / feature_importances_</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn - Pipelines &amp; composite estimators, ColumnTransformer, preprocessing</span><span class="note">the prep spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Deeper feature engineering -&gt; learn-feature-engineering-with-phoebe</span><span class="note">the sibling course, named not taught</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 9 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>ColumnTransformer</b><span>routes columns to lanes: <code>[('num', StandardScaler(), num), ('cat', OneHotEncoder(...), cat)]</code>. Scales numbers, one-hots categories, in parallel.</span></div>
+      <div class="cheat-item"><b>Pipeline</b><span><code>Pipeline([('pre', ct), ('model', ...)])</code> is one estimator. fit fits prep on train only; predict replays it. Leakage becomes structurally impossible.</span></div>
+      <div class="cheat-item"><b>OneHotEncoder</b><span>category -&gt; 0/1 columns. Always <code>handle_unknown='ignore'</code> so an unseen category in production does not crash the service.</span></div>
+      <div class="cheat-item"><b>StandardScaler</b><span>numeric columns to mean 0, SD 1, fit on train. Keeps one large-valued column from dominating a linear model.</span></div>
+      <div class="cheat-item"><b>Read the model</b><span><code>get_feature_names_out()</code> for the expanded names, then <code>coef_</code> (linear) or <code>feature_importances_</code> (trees). Rank honestly.</span></div>
+      <div class="cheat-item"><b>Noise is not signal</b><span><code>session_hour</code> importance ~0; dropping it leaves ROC-AUC ~0.71 unchanged. More columns is not more information. Next: the capstone, then learn-experimentation-with-phoebe is the sequel.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 9 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b10-capstone-compare-models.html">Next: Capstone - compare models →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

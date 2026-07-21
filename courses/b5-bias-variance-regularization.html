@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 5 · Bias-variance and regularization - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 5 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 5 of 10</div>
+    <h1>Bias-variance, <span class="accent">and the dial that controls it</span></h1>
+    <p class="sub">In b4 you watched a decision tree overfit as it grew deeper - the U-shaped test curve, the gap between train and test. That was the tradeoff. This session hands you a dial to control it directly: regularization. Instead of forcing a model to be simple by hand, you add a penalty on complexity so the fit cannot chase noise. You will meet Ridge and Lasso, sweep the strength dial, and watch Lasso drive the planted <code>session_hour</code> noise feature to exactly zero - feature selection for free. Same Lumen data, same <code>fit</code>/<code>predict</code> API.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Building up</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Recap</span>
+      <span class="a2" style="flex:4">3-20 · The penalty idea</span>
+      <span class="a3" style="flex:4">20-40 · Sweep it in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The tradeoff from b4, now with a knob</h2>
+    </div>
+    <p class="lede">Last session you controlled overfitting by choosing tree depth - a blunt lever. Regularization is the smooth version: you keep the model expressive but add a penalty term that punishes large, wild coefficients. Turn the penalty up and the fit gets simpler and steadier; turn it down and it is free to chase every wiggle. It is the same bias-variance dial you already understand, now a continuous number you can tune, and it works on almost every model you will meet after this course.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A working mental model of regularization as a complexity penalty, plus fluent code for <code>Ridge</code> (L2, shrinks every coefficient) and <code>Lasso</code> (L1, can zero coefficients out entirely). You will sweep the <code>alpha</code> strength dial, plot coefficient paths, and see Lasso automatically discard the useless <code>session_hour</code> feature - the same planted noise from b1.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE PENALTY IDEA ============ -->
+  <section class="section" id="penalty">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the concept</span>
+      <h2>Bias-variance, and the penalty idea <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">A model that is too simple has <strong>high bias</strong> - it underfits, missing the real pattern. A model that is too complex has <strong>high variance</strong> - it overfits, memorising noise. Regularization adds a penalty on complexity to the thing the model minimises, so a coefficient only survives if it earns its keep against that penalty. The fit can no longer chase noise for free. Two flavours: <strong>Ridge (L2)</strong> shrinks all coefficients smoothly toward zero; <strong>Lasso (L1)</strong> can push some coefficients to <em>exactly</em> zero, which drops those features entirely.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Left: a seesaw balancing high bias (too simple) against high variance (too complex) with the sweet spot in the middle. Right inset: a penalty pulling large coefficients down toward zero.">
+        <style>
+          .bvTitle { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
+          .bvLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+          .bvN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .bvBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .bvBar { fill: #7C3AED; }
+          .bvBarS { fill: #DDD6FE; }
+        </style>
+        <text class="bvLab" x="30" y="26">The seesaw: you trade bias for variance, aiming for the balanced middle</text>
+
+        <!-- seesaw panel -->
+        <rect class="bvBox" x="30" y="40" width="470" height="250" rx="12"/>
+        <!-- fulcrum + plank -->
+        <polygon points="265,210 245,255 285,255" fill="#5E5470"/>
+        <line x1="80" y1="150" x2="450" y2="230" stroke="#CBC2E0" stroke-width="6" stroke-linecap="round"/>
+        <!-- left weight: high bias -->
+        <rect x="70" y="118" width="120" height="40" rx="8" fill="#7C3AED"/>
+        <text class="bvTitle" x="86" y="143">High bias</text>
+        <text class="bvN" x="72" y="176" style="fill:#1E1633">too simple · underfit</text>
+        <text class="bvN" x="72" y="192">misses the real pattern</text>
+        <!-- right weight: high variance -->
+        <rect x="330" y="198" width="120" height="40" rx="8" fill="#F7931E"/>
+        <text class="bvTitle" x="346" y="223">High variance</text>
+        <text class="bvN" x="330" y="258" style="fill:#1E1633">too complex · overfit</text>
+        <text class="bvN" x="330" y="274">memorises the noise</text>
+        <!-- sweet spot marker -->
+        <circle cx="265" cy="190" r="7" fill="#5B21B6"/>
+        <text class="bvLab" x="196" y="112">sweet spot = the sum's minimum</text>
+
+        <!-- penalty inset -->
+        <rect class="bvBox" x="520" y="40" width="330" height="250" rx="12"/>
+        <rect x="520" y="40" width="330" height="30" rx="12" fill="#5B21B6"/>
+        <text class="bvTitle" x="538" y="61">Penalty shrinks coefficients toward zero</text>
+        <text class="bvN" x="538" y="92" style="fill:#1E1633; font-weight:700">Without penalty</text>
+        <rect class="bvBar" x="538" y="100" width="120" height="16" rx="3"/>
+        <rect class="bvBar" x="538" y="122" width="180" height="16" rx="3"/>
+        <rect class="bvBar" x="538" y="144" width="90" height="16" rx="3"/>
+        <text class="bvN" x="538" y="182" style="fill:#1E1633; font-weight:700">With penalty (higher alpha)</text>
+        <rect class="bvBarS" x="538" y="190" width="62" height="16" rx="3"/>
+        <rect class="bvBarS" x="538" y="212" width="96" height="16" rx="3"/>
+        <rect class="bvBarS" x="538" y="234" width="4" height="16" rx="2"/>
+        <text class="bvN" x="548" y="247" style="fill:#F7931E; font-weight:700">Lasso -&gt; 0</text>
+
+        <rect x="30" y="312" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="bvN" x="52" y="323" style="fill:#1E1633">The penalty is the dial: turn it up and coefficients shrink (Ridge) or vanish (Lasso), so the fit gets simpler and cannot chase noise.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the seesaw, and how a penalty pulls coefficients down</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Ridge (L2) vs Lasso (L1)<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Both add a penalty to the least-squares loss, but they measure "coefficient size" differently, and that one difference changes everything:</p>
+        <ul>
+          <li><strong>Ridge (L2)</strong> penalises the sum of <em>squared</em> coefficients. It shrinks every coefficient smoothly toward zero but never quite to zero - all features stay in the model, just quieter. Great when many features each carry a little signal.</li>
+          <li><strong>Lasso (L1)</strong> penalises the sum of <em>absolute</em> coefficients. Its geometry lets it push weak coefficients to <em>exactly</em> zero, so it performs feature selection - it decides which columns to keep. Great when you suspect some features are useless (like <code>session_hour</code>).</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          Ridge answers "how much should I trust each feature?"; Lasso also answers "which features should I even keep?". On clean, correlated data they often score alike - the win is robustness and a simpler, more honest model, not a magically higher R².
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>alpha is the strength dial<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Both models take one key hyperparameter, <code>alpha</code> - the weight on the penalty:</p>
+        <ul>
+          <li><code>alpha = 0</code> - no penalty; you are back to plain <code>LinearRegression</code>, free to overfit.</li>
+          <li><strong>small alpha</strong> - a light touch; coefficients barely shrink.</li>
+          <li><strong>large alpha</strong> - a heavy hand; coefficients shrink hard (Ridge) or get zeroed (Lasso), pushing toward a simpler, higher-bias model.</li>
+        </ul>
+        <p>So <code>alpha</code> is literally the bias-variance dial in numeric form. You pick it the same honest way you picked tree depth in b4 - by held-out performance, which b6 formalises with cross-validation. Never eyeball it on the test set.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · regularize order_value</span>
+      <h2>Sweep the dial in Python <span class="tag demo">18 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We predict <code>order_value</code> among the buyers with numeric plus one-hot features, then compare plain linear, Ridge, and Lasso. On clean data expect all three to land near the full-model R² of ~0.52 from the canon - regularization here mainly stabilises the fit, it does not dramatically improve it. The payoff is watching Lasso zero out the planted noise.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and set up the regression.</strong> One-hot the categoricals with <code>pd.get_dummies</code> for now (proper leak-free pipelines come in b9), then split.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.read_parquet("lumen_sessions.parquet")
+buyers = df[df.converted == 1].copy()             # regression lives on the ~1,300 buyers
+
+num = ["prior_30d_spend", "pages_viewed", "session_hour"]   # session_hour = planted noise
+cat = ["channel", "device", "new_vs_returning", "product_category"]
+X = pd.get_dummies(buyers[num + cat], columns=cat, drop_first=True)
+y = buyers["order_value"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)
+print(X_train.shape)                              # rows x features</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Fit three models and compare test R².</strong> Same <code>fit</code>/<code>predict</code> API; only the penalty differs.</p>
+        <div class="prompt-box good">
+          <span class="label">compare.py</span>
+<pre>from sklearn.linear_model import LinearRegression, Ridge, Lasso
+
+for name, model in [
+    ("Linear (alpha=0)", LinearRegression()),
+    ("Ridge (alpha=10)", Ridge(alpha=10.0)),
+    ("Lasso (alpha=1)",  Lasso(alpha=1.0, max_iter=10000)),
+]:
+    model.fit(X_train, y_train)
+    print("%-18s test R2 = %.2f" % (name, model.score(X_test, y_test)))
+# all three land near ~0.52 - regularization stabilises here, it does not transform</pre>
+        </div>
+        <p>All three sit near the canonical full-model <strong>R² ~ 0.52</strong>. That is the honest result: on clean, well-behaved data the penalty buys robustness, not a headline jump. The difference shows up in the coefficients, not the score.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Sweep alpha and plot coefficient paths.</strong> Watch how each coefficient shrinks as the penalty grows - and watch Lasso drive <code>session_hour</code> to exactly zero.</p>
+        <div class="prompt-box good">
+          <span class="label">paths.py</span>
+<pre>import matplotlib.pyplot as plt
+
+alphas = np.logspace(-2, 2, 30)                   # 0.01 -> 100
+paths = []
+for a in alphas:
+    m = Lasso(alpha=a, max_iter=10000).fit(X_train, y_train)
+    paths.append(m.coef_)
+paths = np.array(paths)
+
+hour_idx = list(X.columns).index("session_hour")
+plt.plot(alphas, paths[:, hour_idx], label="session_hour (noise)")
+plt.xscale("log"); plt.axhline(0, color="grey", lw=0.8)
+plt.xlabel("alpha"); plt.ylabel("Lasso coefficient"); plt.legend()
+plt.show()
+
+# confirm it hits exactly zero
+z = Lasso(alpha=1.0, max_iter=10000).fit(X_train, y_train)
+print("session_hour coef:", round(z.coef_[hour_idx], 4))   # -> 0.0</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lasso automatically dropped <code>session_hour</code> to zero - the useless noise feature we planted in b1 - so the Lumen team did not have to argue about it in a review. The model made the call: this column carries no signal, keep it out. That is feature selection happening as a side effect of the penalty, and it is why analysts reach for Lasso when a dataset has dozens of maybe-useful columns.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Take the win.</strong> Regularization buys robustness and simpler, more defensible models - not magic accuracy.</p>
+        <div class="prompt-box good">
+          <span class="label">takeaway.py</span>
+<pre>lin = LinearRegression().fit(X_train, y_train)
+lasso = Lasso(alpha=1.0, max_iter=10000).fit(X_train, y_train)
+
+print("features used by Linear:", int((lin.coef_ != 0).sum()))
+print("features used by Lasso :", int((lasso.coef_ != 0).sum()))   # fewer
+# same ~0.52 R2, but Lasso got there with fewer moving parts -> easier to trust + explain</pre>
+        </div>
+        <div class="callout tip">
+          <strong>Notice what you traded</strong>
+          A touch of training fit for a lot of robustness and simplicity. The regularized model has smaller, steadier coefficients that will hold up better on next month's sessions - exactly the generalisation you have been chasing since b4.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 6</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Sweep Ridge alpha.</strong> Fit <code>Ridge</code> across <code>np.logspace(-2, 3, 40)</code> and plot test R² vs alpha. Where does the score peak, and where does too much penalty start to underfit?</li>
+      <li><strong>Find Lasso's zero point.</strong> Increase Lasso's alpha until it zeros the <em>most</em> features. Which columns survive longest? (Hint: <code>prior_30d_spend</code> and <code>product_category</code> should be the last standing.)</li>
+      <li><strong>Explain L1 vs L2 in one sentence</strong> - in your own words, why can Lasso zero a coefficient out while Ridge only shrinks it?</li>
+      <li><strong>Optional:</strong> standardise the features first (Ridge and Lasso are scale-sensitive) and confirm the coefficient paths change. This previews the pipeline discipline of b9.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · A model with high variance is best described as -</p>
+      <button class="qopt" type="button">A · too simple, missing the pattern (underfit)</button>
+      <button class="qopt" type="button">B · too complex, memorising noise (overfit)</button>
+      <button class="qopt" type="button">C · exactly balanced at the sweet spot</button>
+      <p class="qwhy">High variance = too complex = overfitting: the model bends to the noise in the training data and fails on new data. High bias is the too-simple, underfitting case.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · What does regularization actually do?</p>
+      <button class="qopt" type="button">A · it adds more features so the model sees more signal</button>
+      <button class="qopt" type="button">B · it guarantees a higher test R²</button>
+      <button class="qopt" type="button">C · it adds a penalty on complexity to reduce overfitting</button>
+      <p class="qwhy">Regularization penalises large/complex coefficients so the fit cannot chase noise. On clean data it mainly buys robustness and simplicity, not a guaranteed score jump.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · How do Lasso and Ridge differ?</p>
+      <button class="qopt" type="button">A · Lasso (L1) can zero coefficients out entirely; Ridge (L2) only shrinks them</button>
+      <button class="qopt" type="button">B · Ridge can zero features out; Lasso cannot</button>
+      <button class="qopt" type="button">C · they are identical, just different names</button>
+      <p class="qwhy">Lasso's L1 penalty can push weak coefficients to exactly zero (feature selection); Ridge's L2 penalty shrinks every coefficient toward zero but keeps them all in the model.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers the bias-variance and regularization content of the sources below - on the Lumen dataset - and connects straight to b4's overfitting curve. Cross-validation, the honest way to pick <code>alpha</code>, is b6.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Bias-variance as a penalty; Ridge (L2) vs Lasso (L1); the alpha strength dial; coefficient paths</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng / DeepLearning.AI ML Specialization - regularization (C1 W3)</span><span class="note">concept spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - Ridge and Lasso regression</span><span class="note">the intuition</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>High bias vs high variance</b><span>High bias = too simple (underfit, bad on both sets). High variance = too complex (overfit, great on train, bad on test).</span></div>
+      <div class="cheat-item"><b>Regularization</b><span>Adds a penalty on coefficient size to the loss, so the fit cannot chase noise. The continuous version of the b4 depth dial.</span></div>
+      <div class="cheat-item"><b>Ridge (L2)</b><span><code>Ridge(alpha=...)</code>. Penalises squared coefficients; shrinks all toward zero, keeps every feature. Good for many small signals.</span></div>
+      <div class="cheat-item"><b>Lasso (L1)</b><span><code>Lasso(alpha=...)</code>. Penalises absolute coefficients; can zero features out entirely - feature selection for free.</span></div>
+      <div class="cheat-item"><b>alpha</b><span>The strength dial. 0 = plain linear (can overfit); large = strong penalty (pushes toward high bias). Pick it by held-out performance, never on test.</span></div>
+      <div class="cheat-item"><b>The Lumen result</b><span>Linear, Ridge, Lasso all ~R² 0.52 on clean data. Lasso zeroed <code>session_hour</code> (the planted noise) - robustness and simplicity, not magic accuracy.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 5 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b6-cross-validation-and-tuning.html">Next: Cross-validation and tuning →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

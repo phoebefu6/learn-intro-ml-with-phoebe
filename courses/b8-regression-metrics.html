@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 8 · Regression metrics and the model - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 8 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 8 of 10</div>
+    <h1>Regression metrics, and <span class="accent">judging a number-predictor in dollars</span></h1>
+    <p class="sub">A classifier gives you a yes or no; a regressor gives you a number - and you have to say how wrong that number is. This session builds the four metrics every regression uses (MAE, MSE, RMSE, R-squared), grounds each one in the Lumen order-value target, and does the thing that actually lands in a business review: it reports the error in dollars, not in an abstract score. You will beat a predict-the-mean baseline step by step, and learn why RMSE and MAE tell you different things about the same model.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Core</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Why dollars</span>
+      <span class="a2" style="flex:3">3-16 · The four metrics</span>
+      <span class="a3" style="flex:5">16-40 · Build it in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>A prediction is only useful if you can say how wrong it is</h2>
+    </div>
+    <p class="lede">In b7 you judged a classifier - a yes/no machine - with precision, recall, and ROC-AUC. Regression is different: the model predicts <code>order_value</code>, a dollar amount, and "right or wrong" is no longer a clean split. Instead you measure the size of the miss. This session turns that miss into four numbers, then translates the best one back into the language a CFO actually cares about: dollars off, on average.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The four regression metrics and when each earns its keep - MAE (average dollar miss), MSE, RMSE (same units as the target, punishes big misses harder), and R-squared (share of variance explained). You will build up from a predict-the-mean baseline (RMSE ~$41, R-squared 0) to a full model (RMSE ~$28, MAE ~$20, R-squared ~0.52), and learn to report "$28 vs a $41 baseline" instead of an abstract score.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE METRICS ============ -->
+  <section class="section" id="metrics">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the four numbers</span>
+      <h2>MAE, MSE, RMSE, and R-squared <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Every regression score starts from one quantity: the residual, the gap between what the model predicted and what actually happened. Each metric summarises those residuals a different way, and the differences are the whole point - they are not interchangeable.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A regression fit line through a scatter of points, with vertical residual segments drawn from each point to the line, and a note that RMSE is larger than MAE because squaring punishes the big misses.">
+        <style>
+          .rmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .rmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .rmAx { stroke: #5E5470; stroke-width: 1.5; }
+          .rmFit { stroke: #5B21B6; stroke-width: 3; fill: none; }
+          .rmRes { stroke: #F7931E; stroke-width: 2; }
+          .rmDot { fill: #7C3AED; }
+        </style>
+        <text class="rmL" x="30" y="26">Residuals: the vertical gap from each point to the fit line</text>
+        <line class="rmAx" x1="70" y1="60" x2="70" y2="270"/>
+        <line class="rmAx" x1="70" y1="270" x2="520" y2="270"/>
+        <text class="rmN" x="20" y="70">order_value ($)</text>
+        <text class="rmN" x="440" y="292">prior_30d_spend</text>
+        <line class="rmFit" x1="80" y1="240" x2="510" y2="90"/>
+        <line class="rmRes" x1="130" y1="220" x2="130" y2="228"/>
+        <circle class="rmDot" cx="130" cy="220" r="5"/>
+        <line class="rmRes" x1="200" y1="150" x2="200" y2="203"/>
+        <circle class="rmDot" cx="200" cy="150" r="5"/>
+        <line class="rmRes" x1="270" y1="185" x2="270" y2="178"/>
+        <circle class="rmDot" cx="270" cy="185" r="5"/>
+        <line class="rmRes" x1="340" y1="120" x2="340" y2="153"/>
+        <circle class="rmDot" cx="340" cy="120" r="5"/>
+        <line class="rmRes" x1="410" y1="200" x2="410" y2="128"/>
+        <circle class="rmDot" cx="410" cy="200" r="5"/>
+        <line class="rmRes" x1="470" y1="105" x2="470" y2="103"/>
+        <circle class="rmDot" cx="470" cy="105" r="5"/>
+        <rect x="560" y="60" width="290" height="90" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="rmN" x="576" y="86" style="fill:#1E1633; font-weight:700">One long orange miss (the big order)</text>
+        <text class="rmN" x="576" y="108">counts once in MAE, but squared in MSE -</text>
+        <text class="rmN" x="576" y="126">so RMSE &gt; MAE whenever misses vary.</text>
+        <rect x="560" y="170" width="290" height="70" rx="10" fill="#5B21B6"/>
+        <text class="rmN" x="576" y="198" style="fill:#FFFFFF; font-weight:700">RMSE &gt; MAE</text>
+        <text class="rmN" x="576" y="220" style="fill:#F5F3FF">squaring punishes the big misses harder</text>
+        <rect x="30" y="306" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="rmN" x="52" y="317" style="fill:#1E1633">The metric you pick decides whether one huge mispriced order matters a little (MAE) or a lot (RMSE).</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - residuals, and why RMSE outruns MAE</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>RMSE vs MAE - two honest answers to "how far off?"<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Both measure the typical miss in dollars, but they weight the misses differently:</p>
+        <ul>
+          <li><strong>MAE</strong> (mean absolute error) - the average size of the miss, in dollars, treating a $10 miss and a $100 miss proportionally. It is the number a stakeholder reads as "we are off by about this much".</li>
+          <li><strong>MSE</strong> (mean squared error) - the average of the squared misses. Squaring blows up big errors, so MSE reacts strongly to a few large misses. Its units are dollars-squared, which nobody can picture.</li>
+          <li><strong>RMSE</strong> (root mean squared error) - the square root of MSE, which pulls the units back to dollars. Because the squaring happened first, RMSE still punishes big misses harder than MAE does.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          Order value is right-skewed - a handful of big orders sit far above the rest. On that shape RMSE will always be larger than MAE, and the gap between them tells you how much a few large misses are dominating your error. Report both: MAE for the everyday miss, RMSE for the risk from the tail.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>R-squared and the predict-the-mean baseline<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>R-squared answers a different question: not "how many dollars off" but "how much better than doing nothing?" The do-nothing model is <strong>predicting the mean order value for every row</strong> - it ignores all features. R-squared is the share of the variance in order value that your model explains on top of that baseline.</p>
+        <ul>
+          <li>R-squared = 0 means you are no better than predicting the mean.</li>
+          <li>R-squared = 1 would mean perfect prediction (never happens on real, noisy money).</li>
+          <li>The predict-the-mean baseline has RMSE equal to the standard deviation of the target - on Lumen converters, about $41.</li>
+        </ul>
+        <p>So R-squared and RMSE are two views of the same fit: R-squared is unit-free and comparable across problems, RMSE is in dollars and lands in a room. You will report both, but lead with dollars.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · beat the baseline</span>
+      <h2>From predict-the-mean to a real model <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We predict <code>order_value</code> for the sessions that converted, and we build the score up in stages so every number has a reference point. Your figures will land near the course canon (a real sklearn fit on seed 42); teach the relationships, not a false fourth decimal.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and set up the regression.</strong> Order value only makes sense for buyers, so we model the converter subset. Same train/test discipline as every session.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.read_parquet("lumen_sessions.parquet")
+buyers = df[df.converted == 1].copy()          # regression is on converters only
+
+y = buyers["order_value"]
+X = buyers[["prior_30d_spend", "product_category",
+            "channel", "new_vs_returning"]]
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42)
+print(X_tr.shape, X_te.shape, "target SD $%.0f" % y.std())   # SD ~ $41</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Set the baseline: predict the mean.</strong> Before any model earns praise, know what doing nothing scores. The mean is the honest floor.</p>
+        <div class="prompt-box good">
+          <span class="label">baseline.py</span>
+<pre>from sklearn.dummy import DummyRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+dummy = DummyRegressor(strategy="mean")
+dummy.fit(X_tr[["prior_30d_spend"]], y_tr)
+pred0 = dummy.predict(X_te[["prior_30d_spend"]])
+
+rmse0 = mean_squared_error(y_te, pred0) ** 0.5
+print("baseline RMSE $%.0f" % rmse0)           # ~ $41 (= the SD)
+print("baseline R2  %.2f" % r2_score(y_te, pred0))   # 0.00</pre>
+        </div>
+        <p>RMSE ~$41 and R-squared 0. That $41 is the standard deviation of order value - the baseline error is literally how much order value bounces around on its own. Every model from here has to beat it.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>One feature: prior spend.</strong> The statistics course found prior spend correlates with order value at r ~ 0.6. A single-feature linear model should turn that into real explained variance.</p>
+        <div class="prompt-box good">
+          <span class="label">single_feature.py</span>
+<pre>from sklearn.linear_model import LinearRegression
+
+reg1 = LinearRegression()
+reg1.fit(X_tr[["prior_30d_spend"]], y_tr)
+p1 = reg1.predict(X_te[["prior_30d_spend"]])
+
+print("R2   %.2f" % r2_score(y_te, p1))            # ~ 0.40
+print("RMSE $%.0f" % (mean_squared_error(y_te, p1) ** 0.5))   # ~ $32</pre>
+        </div>
+        <p>R-squared ~0.40, RMSE ~$32 - already well below the $41 baseline. Note r ~ 0.6 means r-squared ~0.36 on the full data, and a touch higher on the fitted converter subset. One feature, one clear win.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>The full model.</strong> Add product category, channel, and new-vs-returning via one-hot encoding. More honest signal should push the error down further.</p>
+        <div class="prompt-box good">
+          <span class="label">full_model.py</span>
+<pre>from sklearn.metrics import mean_absolute_error
+
+Xtr = pd.get_dummies(X_tr, drop_first=True)
+Xte = pd.get_dummies(X_te, drop_first=True).reindex(
+    columns=Xtr.columns, fill_value=0)          # align test columns to train
+
+reg = LinearRegression().fit(Xtr, y_tr)
+p = reg.predict(Xte)
+
+print("R2   %.2f" % r2_score(y_te, p))              # ~ 0.52
+print("RMSE $%.0f" % (mean_squared_error(y_te, p) ** 0.5))   # ~ $28
+print("MAE  $%.0f" % mean_absolute_error(y_te, p))  # ~ $20</pre>
+        </div>
+        <p>R-squared ~0.52, RMSE ~$28, MAE ~$20. Notice MAE &lt; RMSE - always true, and the gap is wide here because the right-skewed big orders inflate RMSE. The everyday miss is about $20; the big-order risk is what pushes RMSE to $28.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Look at the residuals.</strong> A single number hides where the model struggles. Plot residuals against the prediction to see the skew with your own eyes.</p>
+        <div class="prompt-box good">
+          <span class="label">residuals.py</span>
+<pre>import matplotlib.pyplot as plt
+
+resid = y_te - p
+plt.scatter(p, resid, s=6, alpha=0.3)
+plt.axhline(0, color="black")
+plt.xlabel("predicted order_value ($)")
+plt.ylabel("residual  (actual - predicted)")
+plt.title("Residuals fan out on the big orders")
+plt.show()</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>When the Lumen analyst took this to the CFO, she did not say "R-squared 0.52". She said "our order-value model is off by about $28 on average, versus $41 if we just guessed the average order" - and the room understood it instantly. Dollars land; R-squared does not. Keep R-squared for the model card and lead every conversation with the RMSE-versus-baseline dollar figure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 9</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Compute the metrics by hand.</strong> Take the first 20 test predictions, form the residuals, and calculate MAE, RMSE, and R-squared yourself with numpy - then confirm they match scikit-learn. Owning the formula beats trusting the import.</li>
+      <li><strong>Drop the biggest orders.</strong> Refit and re-score with the top 1% of order values removed. Watch RMSE fall more than MAE does, and explain why in one sentence.</li>
+      <li><strong>Explain the gap.</strong> Write why MAE &lt; RMSE for this target, referring to the right skew and the squaring step. Two sentences, plain English.</li>
+      <li><strong>Optional:</strong> report your final model as one sentence a CFO would accept - dollars first, baseline named, no jargon.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · How does RMSE differ from MAE?</p>
+      <button class="qopt" type="button">A · RMSE is always smaller because it takes a square root</button>
+      <button class="qopt" type="button">B · RMSE punishes large errors more (it squares first) but stays in the same units as the target</button>
+      <button class="qopt" type="button">C · RMSE is unit-free while MAE is in dollars</button>
+      <p class="qwhy">RMSE squares the residuals before averaging, so big misses count disproportionately, then the square root returns it to dollars. MAE weights every miss proportionally. On a right-skewed target RMSE is larger than MAE, never smaller.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · What does the predict-the-mean baseline score on Lumen converters?</p>
+      <button class="qopt" type="button">A · R-squared ~0.40, RMSE ~$32</button>
+      <button class="qopt" type="button">B · R-squared ~1, RMSE $0</button>
+      <button class="qopt" type="button">C · R-squared = 0, RMSE = the SD of order value ~$41</button>
+      <p class="qwhy">Predicting the mean explains none of the variance, so R-squared is 0 by definition, and its RMSE equals the standard deviation of the target - about $41 here. That is the floor every real model has to beat.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Your full model reaches R-squared ~0.52. What does that mean?</p>
+      <button class="qopt" type="button">A · about half the variance in order value is explained, clearly beating the mean baseline</button>
+      <button class="qopt" type="button">B · the model is right 52% of the time</button>
+      <button class="qopt" type="button">C · 52% of orders were predicted exactly</button>
+      <p class="qwhy">R-squared is the share of variance explained, not an accuracy or an exact-hit rate. ~0.52 means roughly half the variation in order value is captured - a solid, honest lift over the predict-the-mean baseline, matched by the RMSE dropping from $41 to $28.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers regression evaluation - the metrics you use to judge any number-predictor - on the Lumen order-value target, and pairs with the classification metrics of b7.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">MAE, MSE, RMSE, R-squared; the predict-the-mean baseline; reporting error in dollars</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn - regression metrics (mean_absolute_error, mean_squared_error, r2_score)</span><span class="note">the metric API</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">365 Data Science - linear regression and its evaluation</span><span class="note">concept spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - R-squared, clearly explained</span><span class="note">intuition</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 8 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Residual</b><span>actual minus predicted. Every regression metric is just a way of summarising the residuals.</span></div>
+      <div class="cheat-item"><b>MAE</b><span>average absolute miss, in dollars. The everyday "we are off by about this much" number. ~$20 for the full Lumen model.</span></div>
+      <div class="cheat-item"><b>RMSE</b><span>square-root of the mean squared error - same units as the target, punishes big misses harder. Always &gt; MAE on skewed money. ~$28 full model.</span></div>
+      <div class="cheat-item"><b>R-squared</b><span>share of variance explained. 0 = no better than the mean, 1 = perfect. ~0.52 for the full model; unit-free, so lead with dollars in a room.</span></div>
+      <div class="cheat-item"><b>The baseline</b><span>predict the mean for every row: R-squared 0, RMSE = the SD (~$41). Beat this or you have nothing.</span></div>
+      <div class="cheat-item"><b>Report it right</b><span>"$28 off vs a $41 baseline" beats "R-squared 0.52" in every business review. Dollars land, scores do not.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 8 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b9-pipelines-and-features.html">Next: Feature prep and Pipelines →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 1 · Setup and your first dataset - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 1 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 1 of 10</div>
+    <h1>Setup, and <span class="accent">the dataset you will model all course long</span></h1>
+    <p class="sub">Before you can train a model you need a project, a toolkit, and data. This session installs scikit-learn, builds the Lumen Skincare dataset once with a fixed seed (so every later session reconciles to the same numbers), and introduces the one API that every scikit-learn model shares - <code>fit</code> then <code>predict</code>. By the end you will have run your very first estimator, on the two questions this whole course answers: who converts, and how big the order will be. Everyone starts here; b2 through b10 reload the exact dataset you build today. This is your ▶ start button for the builder track.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Start here</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn / pandas / numpy</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:3">3-16 · The data &amp; the API</span>
+      <span class="a3" style="flex:5">16-40 · Build it in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>A model is only as good as the data you feed it</h2>
+    </div>
+    <p class="lede">Every machine-learning project starts the same way: turn the messy real world into a rectangle of numbers - rows are examples, columns are features, and one column is the answer you want to predict. This session builds that rectangle for Lumen Skincare, and the reason we simulate it (with a fixed seed) rather than download it is honesty: you will know exactly what signal is in the data, so when a model finds it - or fails to - you understand why. That is a far better way to learn than a black-box CSV.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A reproducible Lumen dataset (seed 42) with two prediction targets - <code>converted</code> and <code>order_value</code> - that you reuse all course long, plus fluency in the scikit-learn estimator API: <code>model.fit(X, y)</code> to learn, <code>model.predict(X)</code> to apply. You will run a first classifier and a first regressor today - not to judge them yet (that starts in b2), but to feel how little code it takes.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE DATA & THE API ============ -->
+  <section class="section" id="setup">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the shape of the work</span>
+      <h2>Features, targets, and the fit/predict API <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Two ideas carry the whole course. First: data is a matrix <code>X</code> of features plus a vector <code>y</code> of answers. Second: every scikit-learn model, however different inside, is used the same way - <code>fit</code> to learn from training data, <code>predict</code> to apply to new data. Learn this once and every model in b2-b10 is familiar.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One Lumen sessions table feeds two supervised tasks: a classifier predicting the converted column and a regressor predicting the order_value column, both from the same feature columns.">
+        <style>
+          .stL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .stT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .stN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .stBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .stA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#stAh); }
+        </style>
+        <defs>
+          <marker id="stAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="stL" x="30" y="26">One table: rows = sessions, columns = features + two targets</text>
+        <rect class="stBox" x="30" y="40" width="300" height="150" rx="10"/>
+        <text class="stN" x="46" y="64" style="fill:#1E1633; font-weight:700">FEATURES (X)</text>
+        <text class="stN" x="46" y="86">prior_30d_spend · channel · device</text>
+        <text class="stN" x="46" y="104">new_vs_returning · product_category</text>
+        <text class="stN" x="46" y="122">pages_viewed · session_hour (noise)</text>
+        <line x1="46" y1="136" x2="314" y2="136" stroke="#DDD6FE" stroke-width="1"/>
+        <text class="stN" x="46" y="158" style="fill:#5B21B6; font-weight:700">TARGETS (y)</text>
+        <text class="stN" x="46" y="178">converted (0/1) · order_value ($)</text>
+
+        <line class="stA" x1="330" y1="90" x2="410" y2="70"/>
+        <line class="stA" x1="330" y1="140" x2="410" y2="210"/>
+
+        <rect x="412" y="44" width="200" height="58" rx="10" fill="#5B21B6"/>
+        <text class="stT" x="430" y="70">Classifier</text>
+        <text class="stN" x="430" y="90" style="fill:#F5F3FF">predict converted (yes/no)</text>
+        <rect x="412" y="184" width="200" height="58" rx="10" fill="#F7931E"/>
+        <text class="stT" x="430" y="210">Regressor</text>
+        <text class="stN" x="430" y="230" style="fill:#5A3606">predict order_value ($)</text>
+
+        <line class="stA" x1="612" y1="73" x2="682" y2="73"/>
+        <line class="stA" x1="612" y1="213" x2="682" y2="213"/>
+        <rect class="stBox" x="684" y="49" width="166" height="48" rx="10"/>
+        <text class="stN" x="700" y="70" style="fill:#1E1633">"will buy" score</text>
+        <text class="stN" x="700" y="88">for each new visitor</text>
+        <rect class="stBox" x="684" y="189" width="166" height="48" rx="10"/>
+        <text class="stN" x="700" y="210" style="fill:#1E1633">"$ this order" for</text>
+        <text class="stN" x="700" y="228">each likely buyer</text>
+
+        <rect x="30" y="286" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="stN" x="52" y="297" style="fill:#1E1633">Same feature columns, two different answer columns - so one dataset teaches both supervised shapes: classification and regression.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one Lumen table, two prediction tasks</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The estimator API - the four calls you will use all course<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every scikit-learn model is an "estimator" and shares the same handful of methods. Learn them once:</p>
+        <ul>
+          <li><code>model.fit(X, y)</code> - learn from labelled training data. This is the training step.</li>
+          <li><code>model.predict(X)</code> - apply the learned model to new rows, returning a prediction each.</li>
+          <li><code>model.predict_proba(X)</code> - for classifiers, the probability of each class (b3 uses this).</li>
+          <li><code>model.score(X, y)</code> - a quick default metric (accuracy for classifiers, R² for regressors). We replace this with honest metrics in b7-b8.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          Because the API is identical, swapping a LogisticRegression for a DecisionTree or a RandomForest is a one-line change. You will spend your energy on the <em>data</em> and the <em>evaluation</em>, not on relearning each model - which is exactly where the real work is.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Install the toolkit<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Everything in this course runs on three libraries. In a fresh environment:</p>
+        <div class="prompt-box good">
+          <span class="label">setup (terminal)</span>
+<pre>python -m venv .venv &amp;&amp; source .venv/bin/activate   # or conda
+pip install scikit-learn pandas numpy matplotlib pyarrow</pre>
+        </div>
+        <p><code>scikit-learn</code> is the models, <code>pandas</code>/<code>numpy</code> the data, <code>matplotlib</code> the plots, and <code>pyarrow</code> lets us save the dataset to parquet so later sessions reload it instantly. If you took the statistics course, this is the same stack plus scikit-learn.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · the running dataset</span>
+      <h2>Build Lumen once, then run your first model <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We simulate 40,000 Lumen checkout sessions with a fixed seed so your numbers match mine - and match every later builder session. The signal is deliberately realistic: prior spend and returning-customer status drive conversion, prior spend and product category drive order value, and <code>session_hour</code> is pure noise we planted to prove later that more columns is not more signal.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Build the dataset (seed 42).</strong> Run this once; it saves <code>lumen_sessions.parquet</code>, which b2 through b10 reload.</p>
+        <div class="prompt-box good">
+          <span class="label">build_lumen.py</span>
+<pre>import numpy as np, pandas as pd
+
+rng = np.random.default_rng(42)
+N = 40_000                                   # checkout sessions (~10 days at ~4,000/day)
+
+returning = rng.random(N) &lt; 0.35
+channel = rng.choice(
+    ["email", "paid_search", "social", "organic", "referral",
+     "display", "affiliate", "direct", "sms"], N,
+    p=[.16, .18, .15, .14, .07, .09, .05, .11, .05])
+device = rng.choice(["mobile", "desktop", "tablet"], N, p=[.58, .34, .08])
+product_category = rng.choice(
+    ["cleanser", "serum", "moisturizer", "set"], N, p=[.34, .28, .26, .12])
+pages_viewed = rng.poisson(4, N) + 1
+session_hour = rng.integers(0, 24, N)               # deliberately near-useless (noise)
+prior_30d_spend = np.clip(rng.gamma(2.2, 34.0, N), 0, 400).round(2)   # right-skewed, mean ~$75
+
+# conversion: a ~3.2% event driven by returning + prior spend + engagement + channel quality
+chan_lift = {"email": .8, "direct": .5, "organic": .3, "referral": .2, "sms": .1,
+             "paid_search": -.1, "social": -.2, "affiliate": -.3, "display": -.5}
+cl = np.array([chan_lift[c] for c in channel])
+z = -5.13 + 0.95 * returning + 0.006 * prior_30d_spend + 0.11 * pages_viewed + cl
+converted = (rng.random(N) &lt; 1 / (1 + np.exp(-z))).astype(int)
+
+# order value: right-skewed money, correlated r ~ 0.6 with prior spend, driven by category
+cat_base = {"cleanser": 28, "serum": 42, "moisturizer": 36, "set": 76}
+cb = np.array([cat_base[c] for c in product_category])
+order_value = np.round(
+    0.45 * prior_30d_spend + cb + (rng.gamma(1.5, 22, N) - 1.5 * 22), 2).clip(5, 600)
+
+df = pd.DataFrame({
+    "channel": channel, "device": device,
+    "new_vs_returning": np.where(returning, "returning", "new"),
+    "product_category": product_category, "pages_viewed": pages_viewed,
+    "session_hour": session_hour, "prior_30d_spend": prior_30d_spend,
+    "converted": converted, "order_value": order_value,
+})
+df.to_parquet("lumen_sessions.parquet")
+print(df.shape)
+print(df.head())</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Sanity-check the signal.</strong> Confirm your numbers match the course canon before modelling anything.</p>
+        <div class="prompt-box good">
+          <span class="label">explore.py</span>
+<pre>print("conversion rate : %.2f%%" % (100 * df.converted.mean()))     # ~ 3.2%
+print("AOV mean / median: $%.0f / $%.0f" % (
+    df.order_value.mean(), df.order_value.median()))               # ~ $73 / $67 (right-skewed)
+print("corr(prior_spend, order_value): %.2f" % (
+    df[["prior_30d_spend", "order_value"]].corr().iloc[0, 1]))      # ~ 0.60
+
+# who converts more - the signal we expect a model to find
+print(df.groupby("new_vs_returning").converted.mean().round(3))     # returning ~ 2x new</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>That ~3.2% conversion rate is the same control rate the Lumen A/B tests use in the experimentation course, and the ~0.60 correlation is the exact number the statistics course fit in its regression session. Three courses, one brand, numbers that line up - so a learner can carry intuition straight across. When you see 3.2% again in an A/B test, you will already know the shape of the data underneath it.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Run your first classifier.</strong> Predict <code>converted</code> from two numeric features - just to feel the API. We are not judging it yet (that is b2-b3), only learning <code>fit</code> then <code>predict</code>.</p>
+        <div class="prompt-box good">
+          <span class="label">first_model.py</span>
+<pre>from sklearn.linear_model import LogisticRegression
+
+X = df[["prior_30d_spend", "pages_viewed"]]   # two features, to start
+y = df["converted"]
+
+clf = LogisticRegression()
+clf.fit(X, y)                                 # &lt;- learn
+print(clf.predict(X[:5]))                     # &lt;- apply: 0/1 for the first 5 rows
+print(clf.predict_proba(X[:5]).round(3))      # probability of each class</pre>
+        </div>
+        <p>Two lines to train a model. Notice most predictions are <code>0</code> - with a 3.2% base rate, "probably will not convert" is usually right. That is the seed of the <em>accuracy paradox</em> we confront in b3.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>And your first regressor.</strong> Same API, different model, different target - predict <code>order_value</code> for the sessions that converted.</p>
+        <div class="prompt-box good">
+          <span class="label">first_regressor.py</span>
+<pre>from sklearn.linear_model import LinearRegression
+
+buyers = df[df.converted == 1]
+Xr = buyers[["prior_30d_spend"]]
+yr = buyers["order_value"]
+
+reg = LinearRegression()
+reg.fit(Xr, yr)                               # same fit/predict, different model
+print("predicted $ for a $200 prior-spend buyer:",
+      reg.predict([[200]]).round(2))
+print("learned slope:", reg.coef_.round(3), "intercept:", round(reg.intercept_, 1))</pre>
+        </div>
+        <div class="callout tip">
+          <strong>Notice what did NOT change</strong>
+          A classifier and a regressor - completely different maths - used with the identical <code>fit</code>/<code>predict</code> pattern. That consistency is scikit-learn's superpower and why the rest of the course can focus on judgement, not syntax.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 2</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Reload, don't rebuild.</strong> Confirm <code>pd.read_parquet("lumen_sessions.parquet")</code> gives you back the identical frame. Every later session starts this way.</li>
+      <li><strong>Explore the features.</strong> Use <code>df.groupby("channel").converted.mean()</code> and <code>df.groupby("product_category").order_value.mean()</code>. Which channel converts best? Which category has the biggest orders? (You are hand-finding the signal a model will learn.)</li>
+      <li><strong>Add a third feature</strong> to the first classifier (e.g. a one-hot of <code>new_vs_returning</code> via <code>pd.get_dummies</code>). Does the code still run with the same <code>fit</code>/<code>predict</code>? (We do this properly with pipelines in b9.)</li>
+      <li><strong>Optional:</strong> plot <code>order_value</code> as a histogram and confirm the right skew (mean &gt; median) - the same shape the statistics course taught.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · In scikit-learn, what do <code>X</code> and <code>y</code> hold?</p>
+      <button class="qopt" type="button">A · X is the training rows, y is the test rows</button>
+      <button class="qopt" type="button">B · X is the feature matrix (the inputs), y is the target vector (the answer to predict)</button>
+      <button class="qopt" type="button">C · X is the model, y is its accuracy</button>
+      <p class="qwhy">By convention X is the features (one row per example, one column per feature) and y is the target you want to predict. Train/test is a separate split we make in b2.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Why do we build the Lumen dataset with a fixed seed (<code>default_rng(42)</code>)?</p>
+      <button class="qopt" type="button">A · fixed seeds make models more accurate</button>
+      <button class="qopt" type="button">B · it is required by scikit-learn</button>
+      <button class="qopt" type="button">C · so the data is reproducible - your numbers match the course and every later session</button>
+      <p class="qwhy">A fixed seed makes the random generation reproducible. It does not change accuracy or get required by sklearn - it just means everyone (and every later session) works on the identical dataset.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Your first classifier predicts <code>0</code> (no conversion) for almost every row. Why is that not surprising - or yet a problem?</p>
+      <button class="qopt" type="button">A · only ~3.2% of sessions convert, so "no" is usually correct - judging it needs more than accuracy, which is the b3 lesson</button>
+      <button class="qopt" type="button">B · the model is broken and must be refit</button>
+      <button class="qopt" type="button">C · logistic regression cannot predict rare events</button>
+      <p class="qwhy">With a 3.2% base rate, predicting "no" is right ~97% of the time - so raw accuracy looks great while the model catches no buyers. That is the accuracy paradox, and it is exactly why b3 and b7 bring better metrics.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers the setup and estimator-basics content of the sources below - the ~80% you need before modelling - on the Lumen dataset. The train/test split and honest evaluation start in b2.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Features/targets (X, y); the fit / predict / predict_proba / score API</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Building &amp; exploring a reproducible dataset; a first classifier and regressor</span><span class="note">demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn "Getting Started" - fitting and predicting: estimator basics</span><span class="note">the API spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng / DeepLearning.AI ML Specialization - C1 W1 (supervised setup)</span><span class="note">concept spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The train/test split, leakage, and how to judge these models</span><span class="note">Builder Sessions 2-8 - not covered here by design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>X and y</b><span><code>X</code> = feature matrix (rows = examples, cols = features), <code>y</code> = target vector. Classification target is a category; regression target is a number.</span></div>
+      <div class="cheat-item"><b>The API</b><span><code>model.fit(X, y)</code> learns, <code>model.predict(X)</code> applies, <code>predict_proba</code> gives class probabilities, <code>score</code> is a quick default metric.</span></div>
+      <div class="cheat-item"><b>Same API, any model</b><span>LogisticRegression, DecisionTree, RandomForest - all fit/predict. Swapping models is a one-line change.</span></div>
+      <div class="cheat-item"><b>Reproducibility</b><span><code>np.random.default_rng(42)</code>. Fixed seed = your numbers match the course all the way to b10.</span></div>
+      <div class="cheat-item"><b>The Lumen numbers</b><span>~3.2% convert, AOV ~$73 (right-skewed, mean &gt; median), corr(prior_spend, order_value) ~0.60. They match the statistics and experimentation courses.</span></div>
+      <div class="cheat-item"><b>The planted noise</b><span><code>session_hour</code> carries no signal on purpose - we use it in b9 to prove more columns is not more information.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 1 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b2-train-test-split.html">Next: The train/test split →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

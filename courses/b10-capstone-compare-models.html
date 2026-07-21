@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 10 · Capstone: compare models - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 10 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 10 of 10</div>
+    <h1>Capstone: <span class="accent">compare fairly, pick with CV, score once, write it up</span></h1>
+    <p class="sub">This is where the whole builder track comes together. You have a leak-proof Pipeline, honest metrics, and cross-validation - now you run the protocol a real team runs: compare several candidate models on the same cross-validation splits, pick the winner by that estimate, then score the winner exactly once on the held-out test set, and write a model card so someone else can trust and maintain it. Then a taste of what comes next - clustering customers with no labels at all, the doorway to unsupervised learning and the experimentation course.</p>
+    <div class="chip-row">
+      <span class="chip level">🔴 Capstone</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · The protocol</span>
+      <span class="a2" style="flex:3">3-16 · Compare &amp; pick</span>
+      <span class="a3" style="flex:5">16-40 · Build it in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Picking a model is a protocol, not a vibe</h2>
+    </div>
+    <p class="lede">Beginners pick the model that scored best on the test set - which quietly turns the test set into a tuning set and inflates every number they report. Professionals separate the two jobs: use cross-validation to choose, and reserve the held-out test set for one final, honest estimate of the winner. This capstone walks that protocol end to end on Lumen, then writes the model card that makes the result shippable.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The full comparison protocol: cross-validate three candidate models on the same splits and the same metric, pick the winner, score it once on held-out test, and write a model card (task, data, metric, limits, monitoring). Plus a first taste of unsupervised learning - KMeans customer segments that need no labels at all - and a clear map of the two courses that come next.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE PROTOCOL ============ -->
+  <section class="section" id="protocol">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the comparison protocol</span>
+      <h2>Compare, pick, then score once <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">The order of operations is the whole discipline. You compare candidates on cross-validation, because a single split can be lucky; you pick the winner from those CV estimates; and only then do you open the test set - once - to report how the chosen model will generalise. Touch the test set earlier and it stops being an honest estimate.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A leaderboard of cross-validation scores shown as bars for three models, feeding a pick-the-winner step, which passes through a single final held-out test gate before shipping.">
+        <style>
+          .cpL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .cpN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .cpBar { fill: #7C3AED; }
+          .cpWin { fill: #5B21B6; }
+          .cpA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#cpAh); }
+        </style>
+        <defs>
+          <marker id="cpAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="cpL" x="30" y="26">Leaderboard: cross-validated ROC-AUC (same splits, same metric)</text>
+        <line stroke="#5E5470" stroke-width="1.5" x1="150" y1="60" x2="150" y2="200"/>
+        <text class="cpN" x="30" y="90">Logistic</text>
+        <rect class="cpWin" x="150" y="72" width="210" height="26" rx="4"/>
+        <text class="cpN" x="30" y="140">Dec. tree (d3)</text>
+        <rect class="cpBar" x="150" y="122" width="180" height="26" rx="4"/>
+        <text class="cpN" x="30" y="190">Random forest</text>
+        <rect class="cpWin" x="150" y="172" width="214" height="26" rx="4"/>
+        <text class="cpN" x="150" y="220">all near the canon ROC-AUC ~0.71</text>
+
+        <line class="cpA" x1="400" y1="130" x2="470" y2="130"/>
+        <rect x="472" y="104" width="130" height="52" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="cpN" x="488" y="128" style="fill:#1E1633; font-weight:700">Pick winner</text>
+        <text class="cpN" x="488" y="146">by CV mean +/- std</text>
+
+        <line class="cpA" x1="602" y1="130" x2="672" y2="130"/>
+        <rect x="674" y="98" width="150" height="64" rx="10" fill="#F7931E"/>
+        <text class="cpN" x="690" y="124" style="fill:#FFFFFF; font-weight:700">Held-out test</text>
+        <text class="cpN" x="690" y="144" style="fill:#5A3606">scored EXACTLY once</text>
+        <line class="cpA" x1="749" y1="162" x2="749" y2="220"/>
+        <rect x="686" y="222" width="126" height="40" rx="10" fill="#5B21B6"/>
+        <text class="cpN" x="702" y="247" style="fill:#FFFFFF; font-weight:700">Ship + monitor</text>
+        <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="cpN" x="52" y="303" style="fill:#1E1633">The test gate opens once. Score a model there, then tweak and re-score, and the estimate is no longer honest.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - CV leaderboard, one test gate, then ship</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Compare fairly - same CV, same metric<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A fair comparison changes only the model. Everything else is held constant:</p>
+        <ul>
+          <li><strong>Same splits.</strong> Every candidate is cross-validated on the identical folds, so a lucky split cannot flatter one model over another.</li>
+          <li><strong>Same metric.</strong> Pick the metric that matches the business question first (ROC-AUC for imbalanced conversion), then judge every model by it - not accuracy for one and F1 for the next.</li>
+          <li><strong>Same prep.</strong> Each candidate sits inside the same b9 Pipeline, so no model gets an unfair prep advantage or a leakage shortcut.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          A model comparison is only as trustworthy as its fairness. Change the splits, the metric, or the prep between candidates and you are comparing conditions, not models - and you will pick a winner for the wrong reason.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Score the test set exactly once<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The held-out test set is a one-time resource. Its whole value is that the chosen model has never touched it, so the score is an unbiased estimate of real-world performance. The moment you score, look, adjust, and score again, you have used the test set to tune - and the estimate inflates.</p>
+        <ul>
+          <li>Do all choosing on cross-validation or a separate validation split.</li>
+          <li>Refit the single winner on all the training data.</li>
+          <li>Score on the test set once, report that number, and stop.</li>
+        </ul>
+        <p>If the test result disappoints, the honest move is to gather more data or rethink features - not to keep poking the same test set until it smiles back.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · the full protocol</span>
+      <h2>Run it end to end, then peek at unsupervised <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We classify <code>converted</code> using the b9 Pipeline, compare three models on cross-validation, score the winner once, write the model card, and finish with a taste of clustering. Your exact numbers will be near the canon ROC-AUC ~0.71 - teach the relationships, not a false fourth decimal.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and rebuild the prep.</strong> Same ColumnTransformer as b9 - the model is the only thing we will swap.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
+df = pd.read_parquet("lumen_sessions.parquet")
+y = df["converted"]
+X = df.drop(columns=["converted", "order_value"])
+
+num = ["prior_30d_spend", "pages_viewed", "session_hour"]
+cat = ["channel", "device", "new_vs_returning", "product_category"]
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat),
+])
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Cross-validate three candidates.</strong> Same splits, same metric (ROC-AUC), each inside the same Pipeline. Print mean and spread per model.</p>
+        <div class="prompt-box good">
+          <span class="label">compare.py</span>
+<pre>from sklearn.pipeline import Pipeline
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+models = {
+    "logistic": LogisticRegression(max_iter=1000, class_weight="balanced"),
+    "tree_d3":  DecisionTreeClassifier(max_depth=3, class_weight="balanced"),
+    "forest":   RandomForestClassifier(n_estimators=200, class_weight="balanced"),
+}
+for name, m in models.items():
+    pipe = Pipeline([("pre", pre), ("model", m)])
+    s = cross_val_score(pipe, X_tr, y_tr, cv=5, scoring="roc_auc")
+    print("%-9s ROC-AUC %.2f +/- %.2f" % (name, s.mean(), s.std()))
+# logistic and forest around ROC-AUC ~0.71; the shallow tree a touch lower</pre>
+        </div>
+        <p>Logistic and random forest land around the ~0.71 AUC region; the shallow tree sits a touch lower. Keep the language qualitative - your numbers will be near the canon, and the ranking is the point, not the fourth decimal.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Pick the winner, refit, score once.</strong> Choose by the CV estimate, refit on all training data, then open the held-out test set a single time.</p>
+        <div class="prompt-box good">
+          <span class="label">final_score.py</span>
+<pre>from sklearn.metrics import roc_auc_score
+
+best = Pipeline([("pre", pre),
+    ("model", LogisticRegression(max_iter=1000, class_weight="balanced"))])
+best.fit(X_tr, y_tr)                              # refit on ALL train
+
+proba = best.predict_proba(X_te)[:, 1]
+print("held-out test ROC-AUC %.2f" % roc_auc_score(y_te, proba))   # ~ 0.71, scored ONCE</pre>
+        </div>
+        <p>One number, reported once. It sits near the CV estimate, which is exactly what a clean protocol should produce - no nasty surprise, because we never tuned on the test set.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Write the model card.</strong> A model nobody can maintain is not shipped. Capture task, data, metric, limits, and monitoring in one small table.</p>
+        <div class="prompt-box good">
+          <span class="label">model_card.py</span>
+<pre>card = pd.DataFrame([
+    ("Task",       "Predict session conversion (binary)"),
+    ("Data",       "40k Lumen checkout sessions, ~3.2% convert"),
+    ("Model",      "LogisticRegression in a leak-proof Pipeline"),
+    ("Metric",     "ROC-AUC ~0.71 (held-out test, scored once)"),
+    ("Limits",     "Modest signal; threshold is a business choice"),
+    ("Monitoring", "Watch AUC + base rate drift monthly"),
+], columns=["field", "value"])
+print(card.to_string(index=False))</pre>
+        </div>
+        <table class="clean">
+          <thead><tr><th>Field</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Task</td><td>Predict session conversion (binary)</td></tr>
+            <tr><td>Data</td><td>40k Lumen checkout sessions, ~3.2% convert</td></tr>
+            <tr><td>Model</td><td>LogisticRegression in a leak-proof Pipeline</td></tr>
+            <tr><td>Metric</td><td>ROC-AUC ~0.71 (held-out test, scored once)</td></tr>
+            <tr><td>Limits</td><td>Modest signal; classification threshold is a business choice</td></tr>
+            <tr><td>Monitoring</td><td>Watch AUC and the base rate for drift, monthly</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step">
+        <p><strong>A taste of unsupervised.</strong> Everything so far had a label. KMeans has none - it groups similar customers on its own, from spend and order value alone.</p>
+        <div class="prompt-box good">
+          <span class="label">kmeans.py</span>
+<pre>from sklearn.cluster import KMeans
+
+buyers = df[df.converted == 1][["prior_30d_spend", "order_value"]]
+Xs = StandardScaler().fit_transform(buyers)       # scale before distance-based clustering
+
+km = KMeans(n_clusters=3, n_init=10, random_state=42).fit(Xs)
+buyers = buyers.assign(segment=km.labels_)
+print(buyers.groupby("segment").mean().round(0))
+# three natural segments emerge, e.g. budget / core / high-value</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>On the final comparison, random forest edged logistic regression on AUC by a hair - and Lumen shipped logistic regression anyway. The reason was interpretability: the marketing team needed to explain to finance why a session scored the way it did, and coefficients they could read beat a small AUC gain they could not. They added monthly monitoring on AUC and the base rate, and moved on. A slightly better score is not always the better business decision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Your capstone</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Write a model card</strong> for one of your own use cases - task, data, metric, limits, monitoring. If you cannot fill in "limits" and "monitoring", the model is not ready to ship.</li>
+      <li><strong>Add a fourth candidate</strong> to the comparison (for example a gradient-boosting or K-nearest-neighbours classifier), on the same CV splits and metric. Does the ranking change?</li>
+      <li><strong>Re-run KMeans with a different k</strong> (try 2 and 4) and eyeball the segments. Which k tells the clearest customer story? There is no label to grade you - that is the unsupervised world.</li>
+      <li><strong>Optional:</strong> write the one sentence you would say to a stakeholder to justify shipping your chosen model - the way Lumen justified logistic over the forest.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What is the right order for choosing and reporting a model?</p>
+      <button class="qopt" type="button">A · score every model on the test set, then pick the highest</button>
+      <button class="qopt" type="button">B · compare candidates by cross-validation, pick the winner, THEN score it once on the held-out test</button>
+      <button class="qopt" type="button">C · pick the model with the best training accuracy</button>
+      <p class="qwhy">Choosing on the test set turns it into a tuning set and inflates the reported number. The honest protocol chooses on cross-validation, refits the single winner, and opens the held-out test set exactly once for the final estimate.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · What does KMeans do?</p>
+      <button class="qopt" type="button">A · groups similar rows into clusters with no labels - it is unsupervised</button>
+      <button class="qopt" type="button">B · predicts a labelled target like conversion</button>
+      <button class="qopt" type="button">C · measures how well a classifier separates the classes</button>
+      <p class="qwhy">KMeans is unsupervised: it finds groups of similar rows from the features alone, with no target column to learn from. That is a different job from the supervised classification and regression the rest of this course covered.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · Why score the held-out test set only once?</p>
+      <button class="qopt" type="button">A · scoring is slow, so once saves time</button>
+      <button class="qopt" type="button">B · scikit-learn forbids scoring twice</button>
+      <button class="qopt" type="button">C · repeated peeking turns it into a tuning set and inflates the estimate</button>
+      <p class="qwhy">The test set is an honest estimate only while the model has never seen it. Score, adjust, and re-score, and you are tuning on the test set - the number climbs but no longer reflects real-world performance. Choose on CV, spend the test set once.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This capstone puts the whole workflow together - compare, pick, score once, document - and opens the door to unsupervised learning and the courses that come next.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The comparison protocol; scoring the test set once; the model card; a first KMeans clustering</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn - model selection (cross_val_score) and KMeans clustering</span><span class="note">the model-choice spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Deeper unsupervised learning -&gt; learn-unsupervised-with-phoebe</span><span class="note">the sibling course, named not taught</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">From prediction to cause -&gt; learn-experimentation-with-phoebe</span><span class="note">the causal follow-up, the sequel</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 10 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Compare fairly</b><span>same CV splits, same metric, same prep for every candidate. Change only the model, or you are comparing conditions, not models.</span></div>
+      <div class="cheat-item"><b>Pick by CV</b><span>choose the winner on the cross-validation mean and spread - a single split can be lucky. The spread across folds is itself information.</span></div>
+      <div class="cheat-item"><b>Score once</b><span>refit the winner on all train, then open the held-out test set exactly once. Peek repeatedly and it becomes a tuning set that lies.</span></div>
+      <div class="cheat-item"><b>Model card</b><span>task, data, metric, limits, monitoring. If you cannot write limits and monitoring, the model is not ready to ship.</span></div>
+      <div class="cheat-item"><b>KMeans</b><span>unsupervised - groups similar rows with no labels. Scale first (it is distance-based). A taste of learn-unsupervised-with-phoebe.</span></div>
+      <div class="cheat-item"><b>Best score != best decision</b><span>Lumen shipped logistic over a slightly better forest for interpretability. Next: prediction to cause in learn-experimentation-with-phoebe, the sequel.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 10 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="../index.html">Next: back to all sessions →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

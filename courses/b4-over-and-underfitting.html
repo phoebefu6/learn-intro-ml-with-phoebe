@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 4 · Over- and under-fitting - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 4 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 4 of 10</div>
+    <h1>Over- and under-fitting, <span class="accent">the single most important picture in ML</span></h1>
+    <p class="sub">If you learn one shape this whole course, make it this one: as a model gets more complex, its training error keeps falling forever - but its test error falls, bottoms out, then rises again. That U is the difference between a model that generalises and one that has merely memorised. Today you draw it by hand: fit decision trees of rising depth on Lumen order value and watch the gap between train and test open up. There is a live tool below so you can turn the depth dial yourself.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Building</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-2 · The U</span>
+      <span class="a2" style="flex:3">2-16 · The curve by hand</span>
+      <span class="a3" style="flex:5">16-38 · Build it in Python</span>
+      <span class="a4" style="flex:1">38-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Low training error is not the goal - low test error is</h2>
+    </div>
+    <p class="lede">A beginner's instinct is to push training error as low as possible. But a model that fits the training data perfectly has usually just memorised its noise, and it falls apart on new data. The honest question is never "how well does it fit what it has seen?" - it is "how well does it do on what it has not?" The gap between those two answers is overfitting, and today you will watch it grow, live, one tree-depth at a time.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The U-shaped test-error curve, drawn from your own Lumen run: a decision tree at depth 1 <em>underfits</em> (train R² 0.31, test 0.22), depth 3 hits the <strong>sweet spot</strong> (train 0.46, test 0.36 - the peak), and by depth 15 the tree <em>badly overfits</em> - train R² soars to 0.84 while test R² goes <strong>negative</strong>, worse than just predicting the mean. The gap between the two lines is the whole diagnosis.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE U-CURVE ============ -->
+  <section class="section" id="ucurve">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the shape of the work</span>
+      <h2>The U-curve, by hand <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">We fit a <code>DecisionTreeRegressor</code> on Lumen <code>order_value</code> at rising <code>max_depth</code> and record two scores each time: train R² and test R². Train error keeps falling as depth rises - a deeper tree can always carve the training data finer. Test error is the honest one: it falls while the model is learning real signal, then rises once the model starts memorising noise. Where test error bottoms out is the sweet spot. This is the exact experiment in the live tool below - turn the dial and watch it happen.</p>
+
+    <div class="ml-live" data-tool="fit"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A schematic complexity-versus-error chart: the training-error line falls continuously as complexity rises, while the test-error line forms a U - high at low complexity (underfit), lowest in the middle (sweet spot), and rising again at high complexity (overfit).">
+        <style>
+          .ucL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .ucN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .ucAxis { stroke: #CBC2E0; stroke-width: 2; }
+          .ucTrain { fill: none; stroke: #DDD6FE; stroke-width: 3.5; }
+          .ucTest { fill: none; stroke: #5B21B6; stroke-width: 3.5; }
+        </style>
+        <line class="ucAxis" x1="80" y1="290" x2="830" y2="290"/>
+        <line class="ucAxis" x1="80" y1="30" x2="80" y2="290"/>
+        <text class="ucN" x="20" y="40">error</text>
+        <text class="ucL" x="470" y="326">model complexity (tree depth) →</text>
+
+        <!-- regions -->
+        <line x1="300" y1="30" x2="300" y2="290" stroke="#F5F3FF" stroke-width="2"/>
+        <line x1="520" y1="30" x2="520" y2="290" stroke="#F5F3FF" stroke-width="2"/>
+        <text class="ucN" x="130" y="52" style="fill:#5E5470; font-weight:700">underfit</text>
+        <text class="ucN" x="360" y="52" style="fill:#5B21B6; font-weight:700">sweet spot</text>
+        <text class="ucN" x="640" y="52" style="fill:#F7931E; font-weight:700">overfit</text>
+
+        <!-- test error: U shape -->
+        <path class="ucTest" d="M110,90 C200,160 270,238 400,242 C520,246 640,175 820,70"/>
+        <!-- train error: monotone down -->
+        <path class="ucTrain" d="M110,120 C260,190 420,238 600,262 C700,272 780,278 820,282"/>
+
+        <circle cx="400" cy="242" r="6" fill="#5B21B6"/>
+        <text class="ucN" x="360" y="270" style="fill:#5B21B6; font-weight:700">min test error = pick this depth</text>
+
+        <text class="ucN" x="700" y="90" style="fill:#5B21B6; font-weight:700">test error (held-out)</text>
+        <text class="ucN" x="640" y="270" style="fill:#5E5470; font-weight:700">train error (always falls)</text>
+
+        <text class="ucN" x="130" y="150" style="fill:#5E5470">high bias</text>
+        <text class="ucN" x="640" y="150" style="fill:#5E5470">high variance</text>
+
+        <rect x="80" y="336" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="ucN" x="102" y="347" style="fill:#1E1633">The gap between the two lines is overfitting. Train error alone can't warn you - only the held-out test line bends back up.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - train error always falls; test error is a U</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Reading the gap<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Diagnose a model from just two numbers - train score and test score:</p>
+        <ul>
+          <li><strong>Both low</strong> (train 0.31, test 0.22 at depth 1) - <em>underfitting</em>. The model is too simple to capture the signal; add complexity.</li>
+          <li><strong>Both decent and close</strong> (train 0.46, test 0.36 at depth 3) - the <em>sweet spot</em>. This generalises.</li>
+          <li><strong>Train high, test low or negative</strong> (train 0.84, test negative at depth 15) - <em>overfitting</em>. The model memorised the training rows; the gap is the tell.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          You cannot see overfitting by looking at training error - it just keeps dropping and looks like progress. Only the held-out test score bends back up to warn you. That is why b2's split was sacred: without it, this entire diagnosis is invisible.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Bias vs variance<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The U-curve has a name for each side. A too-simple model has high <em>bias</em>: it makes systematic errors because it cannot represent the real pattern (the underfit, left side). A too-complex model has high <em>variance</em>: it swings wildly to fit whatever noise happens to be in the training sample (the overfit, right side).</p>
+        <p>You cannot drive both to zero - lowering one tends to raise the other. The goal is not perfection on either side but the minimum of their sum, which is exactly where the test-error U bottoms out. The formal treatment and how <em>regularization</em> lets you tune this trade-off deliberately is the b5 story; today you just need to feel the shape.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · draw the U</span>
+      <h2>Fit rising depths and print the U-curve <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We reload Lumen, take the converters for an <code>order_value</code> regression, split, then loop tree depth and record train and test R². Your table must match the course canon - it was fit with a real <code>DecisionTreeRegressor</code>, seed 42.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload and set up the regression.</strong> Order value only exists for buyers, so we regress on the converter subset - one feature, so the depth effect is clean and visible.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.read_parquet("lumen_sessions.parquet")
+
+buyers = df[df.converted == 1]          # order_value is meaningful for buyers
+X = buyers[["prior_30d_spend"]]
+y = buyers["order_value"]
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42)</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Loop the depth, record both scores.</strong> Fit a fresh tree at each depth and keep the train and test R².</p>
+        <div class="prompt-box good">
+          <span class="label">ucurve.py</span>
+<pre>from sklearn.tree import DecisionTreeRegressor
+
+rows = []
+for depth in [1, 2, 3, 5, 8, 15]:
+    tree = DecisionTreeRegressor(max_depth=depth, random_state=0).fit(X_tr, y_tr)
+    rows.append((depth,
+                 round(tree.score(X_tr, y_tr), 2),    # train R^2
+                 round(tree.score(X_te, y_te), 2)))   # test R^2
+for d, tr, te in rows:
+    print("depth %2d | train R2 %5.2f | test R2 %5.2f" % (d, tr, te))</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Read the table - it must match canon.</strong> This is the U in numbers.</p>
+        <table class="clean">
+          <thead>
+            <tr><th>max_depth</th><th>Train R²</th><th>Test R²</th><th>Diagnosis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0.31</td><td>0.22</td><td>underfit - too simple, both low</td></tr>
+            <tr><td>2</td><td>0.40</td><td>0.31</td><td>improving</td></tr>
+            <tr><td><strong>3</strong></td><td><strong>0.46</strong></td><td><strong>0.36</strong></td><td><strong>sweet spot - test R² peaks</strong></td></tr>
+            <tr><td>5</td><td>0.51</td><td>0.29</td><td>starting to overfit</td></tr>
+            <tr><td>8</td><td>0.62</td><td>0.15</td><td>overfit - gap widening</td></tr>
+            <tr><td>15</td><td>0.84</td><td>negative</td><td>badly overfit - worse than the mean</td></tr>
+          </tbody>
+        </table>
+        <p>Train R² climbs the whole way to 0.84. Test R² peaks at depth 3, then falls, and by depth 15 it is <em>negative</em> - the deep tree has memorised the training rows so thoroughly that on new data it does worse than just predicting the average order value.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Plot both curves and pick depth 3.</strong> Seeing the U beats reading it. This draws the exact picture from Part 1 on your own numbers.</p>
+        <div class="prompt-box good">
+          <span class="label">plot.py</span>
+<pre>import matplotlib.pyplot as plt
+
+depths = [r[0] for r in rows]
+plt.plot(depths, [r[1] for r in rows], marker="o", label="train R2")
+plt.plot(depths, [r[2] for r in rows], marker="o", label="test R2")
+plt.axvline(3, linestyle="--")     # the sweet spot
+plt.xlabel("max_depth"); plt.ylabel("R2"); plt.legend(); plt.show()</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>A pricing team crowned a deep gradient-boosted model because it "won" on last month's data - it explained almost every historical order. The next month it lost badly to a far simpler model. It had not learned how customers behave; it had memorised last month's specific rows, right down to the noise. The depth-15 negative test R² above is that story in miniature - and the reason you always pick complexity by the held-out score, never the training one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 5</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Rerun on classification.</strong> Swap in a <code>DecisionTreeClassifier</code> on <code>converted</code> and record ROC-AUC (b3's honest metric) per depth instead of R². Does the same U appear?</li>
+      <li><strong>Find the turn.</strong> Identify the depth where your test score first starts falling - that is your model's edge of overfitting. Note it; it is the depth you would ship.</li>
+      <li><strong>Explain the negative.</strong> Write one sentence explaining how a test R² can be negative at depth 15 - what does R² &lt; 0 mean about the model versus simply predicting the mean?</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What is the signature of overfitting?</p>
+      <button class="qopt" type="button">A · both train and test R² are low</button>
+      <button class="qopt" type="button">B · train R² is high while test R² is low or even negative - a large gap between them</button>
+      <button class="qopt" type="button">C · train and test R² are both high and equal</button>
+      <p class="qwhy">Overfitting means the model has learned the training rows (including noise) but fails to generalise: train R² keeps rising while test R² falls. The gap between the two is the tell - at depth 15, train 0.84 versus a negative test R².</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · At depth 1 the tree scores train R² 0.31 and test R² 0.22 - both low. What is that?</p>
+      <button class="qopt" type="button">A · underfitting - the model is too simple to capture the signal, so it does poorly on both train and test</button>
+      <button class="qopt" type="button">B · overfitting - the model memorised the data</button>
+      <button class="qopt" type="button">C · the sweet spot - low error everywhere</button>
+      <p class="qwhy">When both scores are low, the model is too simple to represent the real pattern - high bias, underfitting. The fix is more complexity (more depth), which moves you toward the sweet spot at depth 3.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · How do you honestly pick the tree depth?</p>
+      <button class="qopt" type="button">A · pick the depth with the highest training R²</button>
+      <button class="qopt" type="button">B · always pick the deepest tree - more complexity is better</button>
+      <button class="qopt" type="button">C · pick the depth that maximises the held-out test (or cross-validated) score - depth 3 here</button>
+      <p class="qwhy">Training R² always favours the deepest tree, so it is useless for choosing. You pick by performance on data the model did not train on - the test set, or better still cross-validation (b6). Here the test R² peaks at depth 3.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session draws the U-shaped test-error curve on Lumen order value and teaches the train/test gap as the overfitting diagnosis. The formal bias-variance decomposition and regularization as the tuning lever come in b5.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Over/underfitting, the train/test gap, the U-shaped test curve, picking depth by test score; the live fit tool</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn "Underfitting vs. Overfitting" / model generalization</span><span class="note">concept spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Bias-variance formalized + regularization as the deliberate tuning lever</span><span class="note">Builder Session 5</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The U-curve</b><span>As complexity rises, train error always falls but test error falls then rises. The bottom of the U is the sweet spot.</span></div>
+      <div class="cheat-item"><b>The gap = overfitting</b><span>Train high, test low/negative. Only the held-out score bends back up to warn you - training error never will.</span></div>
+      <div class="cheat-item"><b>Underfitting</b><span>Both scores low (depth 1: train 0.31, test 0.22). Too simple - add complexity.</span></div>
+      <div class="cheat-item"><b>Sweet spot</b><span>Depth 3: train 0.46, test 0.36 (peak). Test R² collapses to negative by depth 15 - worse than the mean.</span></div>
+      <div class="cheat-item"><b>Bias vs variance</b><span>Simple = high bias (underfit); complex = high variance (overfit). Minimise the sum, not either alone.</span></div>
+      <div class="cheat-item"><b>Pick honestly</b><span>Choose depth by the test / cross-validated score, never the training score - training always favours the deepest tree.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 4 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b5-bias-variance-regularization.html">Next: Bias, variance, and regularization →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/ml-live.js?v=3"></script>
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

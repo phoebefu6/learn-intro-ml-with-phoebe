@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 5 · Prediction is not proof - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 5 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 5 of 6</div>
+    <h1>Prediction is not proof, <span class="accent">and simple usually wins</span></h1>
+    <p class="sub">Two things every leader must hold at once. The first is a rough map of the model zoo - enough to know when a plain logistic regression is the right call and when a problem genuinely needs the heavy machinery. The second is the hardest line in all of machine learning: a model predicts, but it never proves what causes an outcome. Confuse the two and you will spend real budget chasing a correlation that moves nothing. This session gives you the map and draws the line - no code, just the judgement that keeps a good prediction from becoming a bad decision.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Getting real</span>
+      <span class="chip audience">Leaders</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-24 · The model zoo</span>
+      <span class="a3" style="flex:4">24-42 · Predict vs cause</span>
+      <span class="a4" style="flex:1">42-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The most expensive mistake in the room</h2>
+    </div>
+    <p class="lede">A model tells Lumen Skincare that visitors who arrive from email convert far more often than average. The obvious move is to pour budget into email. It is also, often, the wrong move - because the model has spotted a pattern, not a lever. Email may simply be where Lumen's already-loyal customers happen to show up; shift the budget and you may get nothing. This session arms you against exactly that error, and gives you the map to pick the simplest model that could possibly work before anyone reaches for a neural network.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A one-glance map of the model families and when each earns its complexity, the instinct to start simple and interpretable every time, and - most valuable of all - the discipline to separate "the model predicts X" from "X causes the outcome". You will know, in the meeting, when the honest next step is not a bigger model but an experiment.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE MODEL ZOO ============ -->
+  <section class="section" id="zoo">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the map</span>
+      <h2>The model zoo at a glance <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">You do not need to know how each model works. You need to place them on two axes: how complex they are to run and trust, and how easily a human can read why they decided what they did. That map tells you which family to reach for - and which ones are a whole course of their own.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A map with two axes. The horizontal axis runs from simple on the left to complex on the right. The vertical axis runs from interpretable at the top to black-box at the bottom. Linear and logistic regression sit top-left, simple and interpretable. Decision trees sit near the top-middle. Ensembles like random forests and gradient boosting sit lower-right, complex and less interpretable. Neural networks and deep learning sit far bottom-right, most complex and black-box. Clustering sits mid-left as an unsupervised family.">
+        <style>
+          .mzAxis { stroke: #5E5470; stroke-width: 1.5; marker-end: url(#mzAh); }
+          .mzLbl { font: 700 11px Inter, sans-serif; fill: #5E5470; }
+          .mzT { font: 800 12.5px Inter, sans-serif; fill: #FFFFFF; }
+          .mzN { font: 600 10.5px Inter, sans-serif; fill: #1E1633; }
+          .mzNote { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+        </style>
+        <defs>
+          <marker id="mzAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#5E5470" stroke-width="1.8"/></marker>
+        </defs>
+        <line class="mzAxis" x1="90" y1="360" x2="840" y2="360"/>
+        <line class="mzAxis" x1="90" y1="360" x2="90" y2="40"/>
+        <text class="mzLbl" x="700" y="384">simple → complex</text>
+        <text class="mzLbl" x="30" y="70" transform="rotate(-90 30 200)">black-box → interpretable</text>
+
+        <rect x="110" y="70" width="200" height="60" rx="10" fill="#5B21B6"/>
+        <text class="mzT" x="128" y="96">Linear / logistic</text>
+        <text class="mzN" x="128" y="118" style="fill:#DDD6FE">simple, interpretable, the baseline</text>
+
+        <rect x="300" y="150" width="180" height="60" rx="10" fill="#7C3AED"/>
+        <text class="mzT" x="318" y="176">Decision trees</text>
+        <text class="mzN" x="318" y="198" style="fill:#DDD6FE">readable rules, overfit easily</text>
+
+        <rect x="520" y="240" width="200" height="66" rx="10" fill="#A78BFA"/>
+        <text class="mzT" x="538" y="266">Ensembles</text>
+        <text class="mzN" x="538" y="286" style="fill:#1E1633">random forests, boosting</text>
+        <text class="mzN" x="538" y="300" style="fill:#1E1633">(XGBoost) - strong, opaque</text>
+
+        <rect x="600" y="316" width="230" height="60" rx="10" fill="#1E1633"/>
+        <text class="mzT" x="618" y="342">Neural nets / deep learning</text>
+        <text class="mzN" x="618" y="364" style="fill:#DDD6FE">huge data, images/text, black-box</text>
+
+        <rect x="110" y="230" width="200" height="60" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="mzN" x="128" y="256" style="fill:#5B21B6"><tspan style="font-weight:800">Clustering / k-means</tspan></text>
+        <text class="mzN" x="128" y="278" style="fill:#5E5470">unsupervised - find segments</text>
+
+        <rect x="110" y="392" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="mzNote" x="132" y="403" style="fill:#1E1633">Move down-right only when a simpler model has been tried and genuinely falls short. Complexity costs interpretability, and you pay it in trust.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the model families, mapped by complexity and interpretability</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Start simple<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The right first model is almost always the simplest one that could work - <strong>logistic regression for a yes/no, linear regression for a number.</strong> Not because it is the most powerful, but because it is honest about what it knows and cheap to reason about.</p>
+        <ul>
+          <li><strong>Linear / logistic regression</strong> - simple, fast, and interpretable. You can read the weights and see which features push the prediction. Always your baseline.</li>
+          <li><strong>Decision trees</strong> - a flowchart of if/then rules a human can follow. Readable, but they overfit easily, memorising the training data unless kept shallow.</li>
+        </ul>
+        <p>A simple model that everyone understands and that beats the baseline is worth more than a complex one no one can explain. Start here, prove there is signal, then earn the right to add complexity.</p>
+        <div class="callout tip">
+          <strong>The leader's default</strong>
+          When a team opens with "we'll use deep learning", ask "what did the logistic regression score?" If they skipped it, they skipped their own baseline - and they cannot tell you whether the fancy model is actually adding anything.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>When you actually need the heavy models<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The complex families exist for a reason - just not usually a first project's reason. Reach down-right on the map when a simple model has genuinely fallen short and the problem justifies the cost:</p>
+        <ul>
+          <li><strong>Ensembles</strong> (random forests, gradient boosting like XGBoost) - many trees combined. Often the strongest on tabular business data, at the cost of interpretability. Their own course: <em>ensemble-methods</em>.</li>
+          <li><strong>Neural networks / deep learning</strong> - for huge datasets and unstructured inputs like images, audio and text. Powerful, data-hungry, and a black box. Their own course: <em>deep-learning</em>.</li>
+          <li><strong>Clustering / k-means</strong> - unsupervised: no labels, it finds segments no one defined. A different job entirely, covered in <em>unsupervised</em>.</li>
+        </ul>
+        <p>Naming these is enough for now. An intro course teaches the workflow and judgement; the heavy machinery is a deliberate next step, not a prerequisite.</p>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's conversion problem is tabular checkout data with a modest signal. A logistic regression captures nearly all of it (ROC-AUC ~ 0.71); a deep neural network would add enormous complexity, demand far more data, and likely land in the same place - while nobody could explain a single decision to the marketing team. Simple wins, and it wins the trust too.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: PREDICTION IS NOT CAUSATION ============ -->
+  <section class="section" id="cause">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the hard line</span>
+      <h2>Prediction is not causation <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">Here is the line that separates a data-literate leader from a fooled one. A model exploits correlations to predict an outcome. It cannot tell you what would happen if you changed something. Predicting who will buy is not the same as knowing what would make them buy - and only one of those questions a model can answer.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels. On the left, what a model does: features correlate with an outcome, so the model predicts it, but this cannot tell you the cause. On the right, what an experiment does: you deliberately intervene, split into groups, and measure the causal lift.">
+        <style>
+          .pcT { font: 800 13px Inter, sans-serif; fill: #FFFFFF; }
+          .pcH { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .pcN { font: 600 11px Inter, sans-serif; fill: #1E1633; }
+          .pcA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#pcAh); }
+          .pcNote { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+        </style>
+        <defs>
+          <marker id="pcAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <rect x="30" y="40" width="390" height="270" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="pcH" x="52" y="70">What a model does: predict</text>
+        <rect x="52" y="90" width="160" height="46" rx="8" fill="#7C3AED"/><text class="pcT" x="72" y="118">Features</text>
+        <line class="pcA" x1="212" y1="113" x2="272" y2="113"/>
+        <rect x="274" y="90" width="120" height="46" rx="8" fill="#A78BFA"/><text class="pcN" x="288" y="118" style="fill:#1E1633">correlate</text>
+        <line class="pcA" x1="230" y1="150" x2="230" y2="196"/>
+        <rect x="130" y="200" width="180" height="46" rx="8" fill="#5B21B6"/><text class="pcT" x="150" y="228">Prediction</text>
+        <text class="pcNote" x="52" y="282" style="fill:#1E1633">Answers "who is likely to buy?"</text>
+        <text class="pcNote" x="52" y="300" style="fill:#F7931E">Cannot tell you why, or what to change.</text>
+
+        <rect x="460" y="40" width="390" height="270" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="pcH" x="482" y="70">What an experiment does: prove</text>
+        <rect x="482" y="90" width="160" height="46" rx="8" fill="#F7931E"/><text class="pcT" x="502" y="118">Intervene</text>
+        <line class="pcA" x1="642" y1="113" x2="702" y2="113"/>
+        <rect x="704" y="90" width="120" height="46" rx="8" fill="#7C3AED"/><text class="pcN" x="716" y="118" style="fill:#1E1633">two groups</text>
+        <line class="pcA" x1="660" y1="150" x2="660" y2="196"/>
+        <rect x="560" y="200" width="200" height="46" rx="8" fill="#5B21B6"/><text class="pcT" x="580" y="228">Causal lift</text>
+        <text class="pcNote" x="482" y="282" style="fill:#1E1633">Answers "what would change buying?"</text>
+        <text class="pcNote" x="482" y="300" style="fill:#5B21B6">The only way to measure a true cause.</text>
+
+        <rect x="30" y="330" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="pcNote" x="52" y="341" style="fill:#1E1633">A model reads the world as it is; an experiment changes the world and watches. To pull a lever, you need the right-hand panel.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - a model predicts the world; an experiment changes it</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Importance is not a lever<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Models hand you a "feature importance" list - which inputs mattered most to the prediction. It is genuinely useful, and it is genuinely dangerous, because it is not a list of causes.</p>
+        <ul>
+          <li><strong>Importance means "predictive", not "causal".</strong> "Returning customer" is Lumen's second-strongest feature. But labelling someone returning causes nothing - it is a marker of a customer who was already loyal, not a lever you can pull.</li>
+          <li><strong>Correlation gets its predictive power for free.</strong> A feature can ride along with the outcome without moving it. The model does not know or care about the difference; it only wants to predict.</li>
+          <li><strong>The trap:</strong> reading a high-importance feature as an instruction ("make more customers 'returning'") and spending budget on it.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The one-line check</strong>
+          For any important feature, ask: "If I could change this for a customer tomorrow, would the outcome actually move - or is it just a sign of who they already are?" If it is a sign, it is not a lever.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>When you need an experiment, not a model<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The moment a question contains the word "cause" - or its disguises, "would", "if we", "does X drive Y" - you have left prediction and entered causation. No model can answer it. You need to intervene and measure.</p>
+        <ul>
+          <li><strong>"Which visitors will buy?"</strong> - a prediction. A model is exactly right.</li>
+          <li><strong>"Would a discount cause more of them to buy?"</strong> - a causal question. Only an experiment - randomise who gets the discount, compare the groups - can answer it.</li>
+        </ul>
+        <p>This is the explicit bridge to the next course. <em>learn-experimentation-with-phoebe</em> is entirely about answering the causal questions that machine learning cannot. Knowing which of the two you are holding is the leader's job.</p>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's model showed that email visitors convert more, so leadership shifted a chunk of budget toward email. Conversion did not move. The reason: email was not causing purchases - it was simply where Lumen's already-loyal buyers arrived. The model had read a correlation perfectly and told them nothing about cause. Only an A/B test - randomly withholding email from some loyal customers - would have revealed that the lever was a mirage.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 6</span>
+      <h2>This week <span class="tag exercise">◐ 25 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Split predict from cause.</strong> For one model in your org, write two sentences: "It predicts X" and "It does not prove X causes anything." Notice how often people quietly slide from the first to the second.</li>
+      <li><strong>Find an experiment hiding as a model.</strong> Spot one decision your team wants to make ("should we do more of Y?") that actually needs a controlled test, not a prediction.</li>
+      <li><strong>Pick the simplest tool.</strong> For a real use case, name the simplest model that could plausibly work - and justify anything more complex before you allow it.</li>
+      <li><strong>Optional:</strong> find a past decision where a correlation was mistaken for a lever, and money moved with no result. Bring the story to Session 6.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · For a first conversion model on Lumen's tabular checkout data, which should you reach for first?</p>
+      <button class="qopt" type="button">A · a deep neural network, because it is the most powerful</button>
+      <button class="qopt" type="button">B · a simple, interpretable model like logistic regression, as the baseline</button>
+      <button class="qopt" type="button">C · whichever model the newest paper recommends</button>
+      <p class="qwhy">Start simple. Logistic regression is fast, interpretable, and sets the baseline that tells you whether any fancier model is actually adding value. On modest tabular signal, it often captures nearly everything.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · "Returning customer" is a top feature in Lumen's model. What does that prove?</p>
+      <button class="qopt" type="button">A · that making customers "returning" will cause more conversions</button>
+      <button class="qopt" type="button">B · that being a returning customer is the cause of buying</button>
+      <button class="qopt" type="button">C · that the feature predicts conversion well - not that it causes it</button>
+      <p class="qwhy">Feature importance is about prediction, not causation. "Returning" is a marker of an already-loyal customer, not a lever you can pull. Reading importance as a cause is the expensive mistake.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · "Would a discount CAUSE more visitors to buy?" Why can't a model answer this?</p>
+      <button class="qopt" type="button">A · because it is a causal question - a model predicts patterns, so you need an experiment to measure a true cause</button>
+      <button class="qopt" type="button">B · because discounts are too hard to predict</button>
+      <button class="qopt" type="button">C · because there is not enough data on discounts</button>
+      <p class="qwhy">Anything asking what a change would cause needs an intervention - randomise who gets the discount and compare groups. A model reads the world as it is; only an experiment changes it and measures the lift. That is the next course.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This leader session teaches the framing behind the "which model, and what a model can't do" week of the major intro courses - the model families and the prediction-versus-causation line. The heavy families and the causal tests are whole sibling courses; the sources below map where to go next.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The model zoo mapped by complexity and interpretability; start simple</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Prediction is not causation; importance is not a lever; when you need an experiment</span><span class="note">Part 2</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The heavy families map to sibling courses: ensemble-methods, deep-learning, unsupervised</span><span class="note">named here, taught there</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The causal question leads to learn-experimentation-with-phoebe</span><span class="note">the next course in the ds ladder</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The model zoo</b><span>Linear/logistic (simple, interpretable), trees (readable, overfit), ensembles like XGBoost (strong, opaque), neural nets (huge data, black-box), clustering (unsupervised segments).</span></div>
+      <div class="cheat-item"><b>Start simple</b><span>Logistic/linear regression first, always. It is the baseline that tells you whether anything fancier is actually earning its complexity.</span></div>
+      <div class="cheat-item"><b>Heavy models are next courses</b><span>Ensembles, deep learning and unsupervised each have their own course. An intro teaches the workflow, not the zoo.</span></div>
+      <div class="cheat-item"><b>Predict ≠ prove</b><span>A model exploits correlation to predict. It never establishes what causes an outcome. Hold the two apart.</span></div>
+      <div class="cheat-item"><b>Importance is not a lever</b><span>A high-importance feature ("returning") can be a marker of who someone is, not something you can change to move the result.</span></div>
+      <div class="cheat-item"><b>When you need an experiment</b><span>Any "would / cause / does X drive Y" question needs a controlled test, not a model. That is learn-experimentation-with-phoebe.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 5 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="a6-ml-responsibly.html">Next: Putting ML to work responsibly →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 3 · Your first model, end to end - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 3 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 3 of 10</div>
+    <h1>Your first real model, <span class="accent">and the 96.8% that means nothing</span></h1>
+    <p class="sub">Today you train an actual classifier - logistic regression - to predict who converts on Lumen, end to end: fit, predict, and read the score. Then you meet the trap that has fooled more analysts than any other: the accuracy paradox. Your model will hit ~96.8% accuracy and feel like a triumph, until you notice a model that always says "no" scores exactly the same and catches zero buyers. ROC-AUC will tell you the honest story. Precision and recall arrive in b7.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Building</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-2 · Frame</span>
+      <span class="a2" style="flex:3">2-14 · Logistic regression</span>
+      <span class="a3" style="flex:5">14-38 · Build it in Python</span>
+      <span class="a4" style="flex:1">38-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The most dangerous number in ML is a high accuracy</h2>
+    </div>
+    <p class="lede">You now have a clean, stratified split from b2. Time to train a real model on it and score it honestly. We will build a logistic regression classifier for <code>converted</code>, and in the same breath confront why its headline accuracy is a mirage. When only 3.2% of sessions convert, guessing "no" every single time is right 96.8% of the time - so any metric that rewards that behaviour is measuring the wrong thing. The whole point of today is to feel that gap on live numbers.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A trained logistic-regression classifier for Lumen conversion, scored end to end - plus the single most important reflex in applied ML: never trust accuracy on imbalanced data. You will see your model hit <strong>~96.8%</strong> accuracy, watch a brain-dead "always predict no" baseline tie it at <strong>~96.8%</strong>, and then read the honest signal off <strong>ROC-AUC ~0.71</strong>. Same model, two stories - and you will know which one to believe.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: LOGISTIC REGRESSION ============ -->
+  <section class="section" id="logit">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the shape of the work</span>
+      <h2>Logistic regression, start to finish <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Despite the name, logistic regression is a classifier. It takes a linear combination of the features - a raw score - and squeezes it through the logistic (sigmoid) curve into a probability between 0 and 1. That probability is what <code>predict_proba</code> returns. <code>predict</code> then applies a threshold - 0.5 by default - to turn the probability into a yes/no. The threshold is a choice, not a law, and choosing it well is the b7 story.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The logistic sigmoid curve maps a raw linear score on the x-axis to a probability between 0 and 1 on the y-axis, with a horizontal threshold line at 0.5 splitting predictions into no and yes.">
+        <style>
+          .lgL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .lgN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .lgCurve { fill: none; stroke: #5B21B6; stroke-width: 3.5; }
+          .lgAxis { stroke: #CBC2E0; stroke-width: 2; }
+          .lgThresh { stroke: #F7931E; stroke-width: 2; stroke-dasharray: 6 5; }
+        </style>
+        <line class="lgAxis" x1="90" y1="250" x2="820" y2="250"/>
+        <line class="lgAxis" x1="90" y1="40" x2="90" y2="250"/>
+        <text class="lgN" x="60" y="55">1.0</text>
+        <text class="lgN" x="60" y="150">0.5</text>
+        <text class="lgN" x="66" y="250">0</text>
+        <text class="lgL" x="360" y="286">raw linear score (features · weights)</text>
+        <text class="lgL" x="20" y="150" transform="rotate(-90 20 150)">probability</text>
+
+        <path class="lgCurve" d="M90,244 C260,242 330,238 400,200 C455,168 460,132 500,95 C540,58 620,50 820,47"/>
+        <line class="lgThresh" x1="90" y1="147" x2="820" y2="147"/>
+        <text class="lgN" x="700" y="140" style="fill:#F7931E; font-weight:700">threshold = 0.5</text>
+
+        <text class="lgN" x="150" y="230" style="fill:#5B21B6; font-weight:700">predict "no" (proba &lt; 0.5)</text>
+        <text class="lgN" x="560" y="80" style="fill:#5B21B6; font-weight:700">predict "yes" (proba &gt; 0.5)</text>
+
+        <rect x="90" y="298" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="lgN" x="112" y="309" style="fill:#1E1633">The model outputs a probability; the threshold turns it into a decision. Move the line and you trade catching more buyers against more false alarms.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - a score becomes a probability, a threshold becomes a decision</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>predict vs predict_proba<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Two methods, two different answers - know when to reach for each:</p>
+        <ul>
+          <li><code>model.predict(X)</code> - returns the hard class, 0 or 1, after applying the 0.5 threshold. Good for a final decision.</li>
+          <li><code>model.predict_proba(X)</code> - returns the probability of each class. Column 1 is P(converts). This is the richer output: it lets you rank visitors by likelihood and choose your own threshold later.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Why this matters</strong>
+          On imbalanced data, the probabilities carry the signal that the hard 0/1 predictions throw away. A model can rank buyers well (high AUC) yet still predict "no" for everyone at the default threshold. If you only ever call <code>predict</code>, you never see that - which is how the accuracy paradox catches people.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>the default 0.5 threshold is arbitrary<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The 0.5 cutoff is a convenient default, not a business decision. When conversion is rare and a buyer is worth far more than the cost of a wasted email, you often want to catch more buyers - so you lower the threshold, accepting more false positives to raise recall:</p>
+        <div class="prompt-box good">
+          <span class="label">threshold.py</span>
+<pre>proba = clf.predict_proba(X_te)[:, 1]     # P(convert) for each row
+preds_default = (proba &gt;= 0.5).astype(int)   # default - catches almost no one
+preds_aggressive = (proba &gt;= 0.10).astype(int) # lower bar - catches more buyers</pre>
+        </div>
+        <p>Which cutoff is right depends on the cost of a false positive versus a false negative - a business call, formalised with precision and recall in b7. For now, just know 0.5 is a starting point, not the answer.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · train and confront</span>
+      <h2>Train the classifier, then break the accuracy illusion <span class="tag demo">22 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We reload Lumen, reuse the stratified split from b2, scale the numeric features on train only, fit logistic regression, and read three numbers in order: accuracy (looks great), the dumb-baseline accuracy (identical - the paradox), and ROC-AUC (the honest signal). Precision and recall come in b7.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload, split, and scale numeric features.</strong> Start from the parquet, take three numeric features to keep it clean, and scale on train only - the b2 discipline.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_parquet("lumen_sessions.parquet")
+
+num_cols = ["prior_30d_spend", "pages_viewed", "session_hour"]
+X = df[num_cols]
+y = df["converted"]
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)
+
+scaler = StandardScaler().fit(X_tr)        # fit on TRAIN only
+X_tr_s = scaler.transform(X_tr)
+X_te_s = scaler.transform(X_te)</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Fit, predict, and score accuracy.</strong> Same fit/predict API as b1, now with a proper split and a real metric.</p>
+        <div class="prompt-box good">
+          <span class="label">train.py</span>
+<pre>from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+clf = LogisticRegression(max_iter=1000).fit(X_tr_s, y_tr)
+preds = clf.predict(X_te_s)
+
+print("accuracy: %.3f" % accuracy_score(y_te, preds))   # ~ 0.968</pre>
+        </div>
+        <p>~96.8% accuracy. On any other day that is a victory. Hold that feeling - the next step takes it apart.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Compare to the dumb baseline - the accuracy paradox.</strong> A model that always predicts 0 (no conversion) scores the same, because 96.8% of sessions really are "no".</p>
+        <div class="prompt-box good">
+          <span class="label">paradox.py</span>
+<pre>from sklearn.dummy import DummyClassifier
+
+dumb = DummyClassifier(strategy="most_frequent").fit(X_tr_s, y_tr)
+print("always-no accuracy: %.3f" % dumb.score(X_te_s, y_te))   # ~ 0.968
+
+print("buyers our model flagged:", int(preds.sum()))   # very few - near zero
+print("buyers in the test set  :", int(y_te.sum()))    # ~320</pre>
+        </div>
+        <p>Equal accuracy, but the "always no" model catches zero buyers - and our logistic model, at the 0.5 threshold, catches almost none either. That is the <strong>accuracy paradox</strong>: on imbalanced data, accuracy rewards predicting the majority class and stays silent about the rare class you actually care about. Accuracy is the wrong score here.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>ROC-AUC - the honest signal.</strong> Score the probabilities, not the hard 0/1. AUC asks: does the model rank a random buyer above a random non-buyer?</p>
+        <div class="prompt-box good">
+          <span class="label">honest.py</span>
+<pre>from sklearn.metrics import roc_auc_score
+
+proba = clf.predict_proba(X_te_s)[:, 1]        # P(convert)
+print("ROC-AUC: %.3f" % roc_auc_score(y_te, proba))   # ~ 0.71</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>A growth team once shipped a churn model with "97% accuracy!" on the slide. It flagged not a single at-risk customer - because 97% of customers were not churning, and the model had simply learned to say "fine" every time. The metric was true and completely useless. ROC-AUC of 0.71 is a humbler, honest headline: the model ranks buyers above non-buyers meaningfully better than a coin flip, which is a real if modest signal you can build on - not a fantasy you will have to walk back.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 4</span>
+      <h2>This week <span class="tag exercise">◐ 35 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Look at the probabilities.</strong> Print a histogram of <code>clf.predict_proba(X_te)[:, 1]</code>. Notice how most mass sits well below 0.5 - that is why the 0.5 threshold catches so few buyers.</li>
+      <li><strong>Count the catches.</strong> How many actual buyers does the 0.5 threshold flag as "yes"? Compare to the ~320 buyers in the test set. Then lower the threshold to 0.10 and count again.</li>
+      <li><strong>Build the baseline yourself.</strong> Without <code>DummyClassifier</code>, compute the always-0 accuracy by hand: <code>1 - y_te.mean()</code>. Confirm it lands at ~96.8% and matches the model. Write one sentence on why that equality is the whole lesson.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Your classifier hits ~96.8% accuracy. Why is that misleading?</p>
+      <button class="qopt" type="button">A · 96.8% is actually a low score for classification</button>
+      <button class="qopt" type="button">B · accuracy is only valid for regression, not classification</button>
+      <button class="qopt" type="button">C · it exactly equals the "always predict no" baseline - 96.8% of sessions do not convert - so the model catches almost no buyers despite the high number</button>
+      <p class="qwhy">With a 3.2% positive rate, guessing "no" every time is right 96.8% of the time. The model ties that baseline and catches near-zero buyers, so accuracy rewards the majority class and hides the failure on the rare class. That is the accuracy paradox.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">2 · What does <code>predict_proba</code> return that <code>predict</code> does not?</p>
+      <button class="qopt" type="button">A · the model's accuracy on the test set</button>
+      <button class="qopt" type="button">B · the probability of the positive class, before any threshold is applied - so you can rank rows and choose your own cutoff</button>
+      <button class="qopt" type="button">C · a guaranteed correct label for each row</button>
+      <p class="qwhy"><code>predict_proba</code> gives the probability of each class; column 1 is P(convert). <code>predict</code> collapses that to 0/1 at the 0.5 threshold. The probabilities carry the ranking signal that hard labels discard - crucial on imbalanced data.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What does ROC-AUC ~0.71 actually tell you?</p>
+      <button class="qopt" type="button">A · the model ranks buyers above non-buyers better than a 0.5 coin flip - a real but modest signal, unlike the misleading accuracy</button>
+      <button class="qopt" type="button">B · the model is 71% accurate</button>
+      <button class="qopt" type="button">C · 71% of buyers were correctly flagged at the 0.5 threshold</button>
+      <p class="qwhy">ROC-AUC is the probability the model scores a random buyer higher than a random non-buyer. 0.5 is a coin flip, 1.0 is perfect ranking; 0.71 is a genuine, if modest, signal - and unlike accuracy it is not fooled by the class imbalance. It is not an accuracy or a recall.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session trains logistic regression end to end on Lumen and confronts the accuracy paradox with ROC-AUC. The full confusion matrix, precision, recall, F1, and threshold tuning get their own session in b7.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Logistic regression fit/predict/predict_proba; the 0.5 threshold; accuracy paradox; ROC-AUC as the honest score</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng / DeepLearning.AI ML Specialization - C1 W3 (logistic regression, sigmoid, decision boundary)</span><span class="note">concept spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The full metric suite: confusion matrix, precision, recall, F1, threshold tuning</span><span class="note">Builder Session 7</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Logistic regression</b><span>A classifier: linear score -> sigmoid -> probability in [0,1]. <code>LogisticRegression(max_iter=1000).fit(X, y)</code>.</span></div>
+      <div class="cheat-item"><b>predict vs predict_proba</b><span><code>predict</code> gives hard 0/1 at the 0.5 threshold; <code>predict_proba(X)[:, 1]</code> gives P(convert) - the ranking signal.</span></div>
+      <div class="cheat-item"><b>The accuracy paradox</b><span>~96.8% accuracy = the "always no" baseline. On imbalanced data accuracy rewards the majority class and hides the rare one.</span></div>
+      <div class="cheat-item"><b>ROC-AUC ~0.71</b><span>P(model ranks a random buyer above a random non-buyer). 0.5 = coin flip, 1.0 = perfect. The honest headline here.</span></div>
+      <div class="cheat-item"><b>The threshold is a choice</b><span>0.5 is arbitrary. Lower it to catch more buyers (higher recall, more false alarms). A business call - formalised in b7.</span></div>
+      <div class="cheat-item"><b>Score the probabilities</b><span>Feed <code>roc_auc_score</code> the probabilities, not the 0/1 predictions - it grades ranking, not the arbitrary cutoff.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 3 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b4-over-and-underfitting.html">Next: Over- and under-fitting →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

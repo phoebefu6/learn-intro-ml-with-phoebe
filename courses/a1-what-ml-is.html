@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 1 · What ML actually is - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 1 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 1 of 6</div>
+    <h1>What machine learning actually is, <span class="accent">and what it is not</span></h1>
+    <p class="sub">Machine learning is having a moment, and with it a fog of hype. This session cuts through it for the people who fund, approve, and depend on ML - without a line of code. You will learn the one thing that separates ML from ordinary software (it learns the rules from examples instead of being handed them), the three kinds of learning, the hard line between predicting something and proving what causes it, and - most usefully - when the honest answer is "this does not need machine learning at all." This is your ▶ start button for the leader track.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Start here</span>
+      <span class="chip audience">Leaders · C-level / PM / marketing</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-22 · What ML is</span>
+      <span class="a3" style="flex:4">22-40 · Kinds &amp; limits</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>"Can't we just use AI for this?"</h2>
+    </div>
+    <p class="lede">It is the question every leader hears now, usually in a meeting, usually with a budget attached. Sometimes the answer is a resounding yes - machine learning is genuinely the right tool. Just as often the honest answer is "a simple rule would work better, faster, and cheaper," and knowing which is which is worth more than any model. Lumen Skincare, the direct-to-consumer brand we follow all course long, wants to predict which website visitors will buy. That is a real ML problem. But half the things pitched as "AI" around it are not. This session gives you the judgement to tell them apart.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A clear, jargon-free definition of machine learning - a system that learns its rules from examples rather than being programmed with them - plus the three kinds of learning, the instinct to ask "are we predicting, or claiming a cause?", and a short checklist for when ML is the wrong tool. You will never again nod along to an "AI" pitch you cannot actually evaluate.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: WHAT ML IS ============ -->
+  <section class="section" id="what">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the one big idea</span>
+      <h2>Ordinary software is told the rules. ML learns them. <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Here is the whole distinction in one picture. In classic software, a person works out the rule and writes it down as code. In machine learning, you hand the computer a pile of past examples - inputs paired with the right answers - and it works out the rule for itself. That flip is the entire idea; everything else in this course is detail.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two lanes. Classic software: rules plus data go into a program that produces answers. Machine learning: data plus answers go into training that produces the rules as a model.">
+        <style>
+          .wmL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .wmT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .wmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .wmBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .wmA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#wmAh); }
+        </style>
+        <defs>
+          <marker id="wmAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="wmL" x="30" y="26">Classic software - a person writes the rule</text>
+        <rect class="wmBox" x="30" y="42" width="150" height="42" rx="8"/><text class="wmN" x="48" y="68" style="fill:#1E1633">Rules (if/else)</text>
+        <rect class="wmBox" x="30" y="96" width="150" height="42" rx="8"/><text class="wmN" x="64" y="122" style="fill:#1E1633">Data</text>
+        <line class="wmA" x1="180" y1="90" x2="250" y2="90"/>
+        <rect x="252" y="66" width="140" height="48" rx="10" fill="#7C3AED"/><text class="wmT" x="286" y="95">Program</text>
+        <line class="wmA" x1="392" y1="90" x2="462" y2="90"/>
+        <rect x="464" y="66" width="150" height="48" rx="10" fill="#5B21B6"/><text class="wmT" x="500" y="95">Answers</text>
+
+        <text class="wmL" x="30" y="198">Machine learning - the computer finds the rule</text>
+        <rect class="wmBox" x="30" y="214" width="150" height="42" rx="8"/><text class="wmN" x="64" y="240" style="fill:#1E1633">Data</text>
+        <rect class="wmBox" x="30" y="268" width="150" height="42" rx="8"/><text class="wmN" x="44" y="294" style="fill:#1E1633">Answers (labels)</text>
+        <line class="wmA" x1="180" y1="262" x2="250" y2="262"/>
+        <rect x="252" y="238" width="140" height="48" rx="10" fill="#F7931E"/><text class="wmT" x="292" y="267">Training</text>
+        <line class="wmA" x1="392" y1="262" x2="462" y2="262"/>
+        <rect x="464" y="238" width="150" height="48" rx="10" fill="#5B21B6"/><text class="wmT" x="486" y="267">Rules (a model)</text>
+        <text class="wmN" x="636" y="258" style="fill:#F7931E">← the model IS the</text>
+        <text class="wmN" x="636" y="276" style="fill:#F7931E">learned rule, reusable</text>
+
+        <rect x="30" y="322" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="wmN" x="52" y="333" style="fill:#1E1633">Same ingredients, swapped roles: classic software takes rules and produces answers; ML takes answers and produces the rules.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the one flip that defines machine learning</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>A definition you can actually use in a meeting<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Machine learning is a system that learns its rules from examples, so it can make predictions on new cases it has never seen.</strong> No one writes "if the visitor came from email and spent money last month, they are likely to buy." Instead you show the system thousands of past visitors and whether each one bought, and it discovers that pattern - and many subtler ones - on its own.</p>
+        <ul>
+          <li><strong>Examples</strong> - the past data, each with its known outcome (a visitor, and whether they converted).</li>
+          <li><strong>Training</strong> - the once-off process of finding the pattern in those examples.</li>
+          <li><strong>The model</strong> - the learned rule, saved and reused to score new visitors in real time.</li>
+          <li><strong>Prediction</strong> - the model's best guess for a fresh case, always with some uncertainty.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's team could hand-write rules for "likely buyer" - and they did, for years: "returning customer + added to cart = email them." It caught the obvious cases and missed the rest. A model trained on two years of visits found combinations no one had thought to write down (a particular channel, on desktop, late in the month, with a mid-range prior spend) and roughly doubled the hit rate. Same data the humans had; the machine just read more of it.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why now - what changed to make this work<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The maths behind ML is decades old. Three things made it practical and unavoidable in the last few years:</p>
+        <ul>
+          <li><strong>Data</strong> - businesses now record everything, so there are millions of labelled examples to learn from.</li>
+          <li><strong>Compute</strong> - cheap, fast hardware makes training on that data affordable.</li>
+          <li><strong>Tools</strong> - libraries like scikit-learn (the one the builder track uses) turned a research project into a few lines of code any analyst can run.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The leader's version of "why now"</strong>
+          You do not need the maths. You need to know that the bottleneck has moved: it is rarely the algorithm anymore, it is whether you have good, honest, relevant <em>data</em> - and whether the problem is even a prediction problem. That is where your judgement earns its keep.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: KINDS & LIMITS ============ -->
+  <section class="section" id="kinds">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the map and the guardrails</span>
+      <h2>Three kinds of learning - and when to use none of them <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Almost every ML project you will meet is one of three shapes. Naming the shape tells you what data you need, what the model produces, and how you will judge it. Then the most valuable slide of all: the cases where machine learning is the wrong answer.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three boxes: supervised learning (labelled examples predict a known target), unsupervised learning (no labels, find structure), and reinforcement learning (learn by trial and reward).">
+        <style>
+          .klTitle { font: 800 14px Inter, sans-serif; fill: #FFFFFF; }
+          .klBody { font: 600 11.5px Inter, sans-serif; fill: #1E1633; }
+          .klTag { font: 700 11px Inter, sans-serif; fill: #5B21B6; }
+          .klN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+        </style>
+        <rect x="30" y="40" width="255" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="30" y="40" width="255" height="34" rx="12" fill="#5B21B6"/><text class="klTitle" x="48" y="63">Supervised</text>
+        <text class="klTag" x="48" y="96">learn from labelled examples</text>
+        <text class="klBody" x="48" y="120">You have the answers for the past.</text>
+        <text class="klBody" x="48" y="138">Predict a known target on new cases.</text>
+        <text class="klN" x="48" y="164" style="fill:#5B21B6">Lumen: will this visitor convert?</text>
+        <text class="klN" x="48" y="180" style="fill:#5B21B6">how big will the order be?</text>
+
+        <rect x="312" y="40" width="255" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="312" y="40" width="255" height="34" rx="12" fill="#7C3AED"/><text class="klTitle" x="330" y="63">Unsupervised</text>
+        <text class="klTag" x="330" y="96">no answers - find structure</text>
+        <text class="klBody" x="330" y="120">No labels. Group similar things,</text>
+        <text class="klBody" x="330" y="138">or spot the odd one out.</text>
+        <text class="klN" x="330" y="164" style="fill:#5B21B6">Lumen: cluster customers into</text>
+        <text class="klN" x="330" y="180" style="fill:#5B21B6">segments no one defined yet.</text>
+
+        <rect x="594" y="40" width="256" height="150" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <rect x="594" y="40" width="256" height="34" rx="12" fill="#F7931E"/><text class="klTitle" x="612" y="63">Reinforcement</text>
+        <text class="klTag" x="612" y="96">learn by trial and reward</text>
+        <text class="klBody" x="612" y="120">Act, get feedback, improve.</text>
+        <text class="klBody" x="612" y="138">Powerful, data-hungry, advanced.</text>
+        <text class="klN" x="612" y="164" style="fill:#5B21B6">Robotics, game AI, some</text>
+        <text class="klN" x="612" y="180" style="fill:#5B21B6">pricing - rare in a first project.</text>
+
+        <rect x="30" y="252" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="klN" x="52" y="263" style="fill:#1E1633">This course lives almost entirely in the first box - supervised learning - because that is where 90% of business value and every first project sits.</text>
+        <text class="klN" x="52" y="281" style="fill:#1E1633">We give unsupervised a short taste at the very end; reinforcement learning we only name.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - three kinds of learning, and where this course lives</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Supervised learning: classification vs regression<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Inside supervised learning - the box that matters - there are two flavours, split by what you are predicting:</p>
+        <ul>
+          <li><strong>Classification</strong> - predict a category. "Will this visitor convert: yes or no?" The answer is a label. Lumen's conversion model is a classifier.</li>
+          <li><strong>Regression</strong> - predict a number. "How large will this order be, in dollars?" The answer is a quantity. Lumen's order-value model is a regression.</li>
+        </ul>
+        <p>You will meet both all course long, because they need different metrics to judge (Session 4). Keep the pair in your head: <strong>category = classification, number = regression.</strong></p>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen runs both on the same visitor. The classifier decides <em>who</em> to show a free-shipping offer to (the likely-converters). The regression decides <em>how much</em> of a discount is worth it (the big-order visitors). One question is a yes/no, the other is a how-much - two models, two shapes.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>When machine learning is the wrong tool<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The most senior instinct in the room is knowing when <em>not</em> to reach for ML. Skip it when:</p>
+        <ul>
+          <li><strong>A simple rule already works.</strong> "Flag orders over $500 for review" needs no model. If a human can write the rule in one sentence and it holds, write the rule.</li>
+          <li><strong>You have too few examples.</strong> ML learns from volume. A few dozen past cases will not teach it a reliable pattern - it will just memorise them.</li>
+          <li><strong>The stakes demand an explanation you cannot give.</strong> If a wrong call is dangerous or must be justified by law, a black-box prediction may be unusable however accurate.</li>
+          <li><strong>The world just changed.</strong> A model learns from the past. If the ground shifted (a new product, a pandemic, a new market), the past may no longer predict the future.</li>
+          <li><strong>You actually need a cause, not a prediction.</strong> "Will sales fall?" is ML. "Will this price cut <em>cause</em> sales to rise?" is an experiment - the next course, not this one.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Your one-line filter</strong>
+          Ask: "Is this a repeatable prediction, made often, on lots of similar cases, where being roughly right at scale beats being perfectly right once?" If yes, ML earns its place. If no, a rule, a report, or an experiment probably wins.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 2</span>
+      <h2>This week <span class="tag exercise">◐ 25 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Find one "AI" claim</strong> in your org or inbox. Decide, in one sentence, whether it is really a prediction problem - or whether a rule, a report, or an experiment would do better.</li>
+      <li><strong>Name the shape.</strong> Pick a prediction your team would love to have. Is it classification (a category) or regression (a number)? Write it down; you will defend it in Session 2.</li>
+      <li><strong>Spot the data.</strong> For that same prediction, list what past examples you would need - and whether you actually have them, with honest labels. This is usually the real bottleneck.</li>
+      <li><strong>Optional:</strong> find a case where your team used a model but a simple rule would have been better, or vice versa. Bring the story.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · In one line, what makes machine learning different from ordinary software?</p>
+      <button class="qopt" type="button">A · it runs on more powerful computers</button>
+      <button class="qopt" type="button">B · it learns its rules from examples, instead of being handed the rules by a programmer</button>
+      <button class="qopt" type="button">C · it is always more accurate than a human-written rule</button>
+      <p class="qwhy">The defining flip: classic software is given rules and produces answers; ML is given answers (labelled examples) and produces the rules. More compute helps, but it is not the definition - and ML is not automatically more accurate.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Lumen wants to predict how many dollars an order will be. What shape of problem is that?</p>
+      <button class="qopt" type="button">A · classification - it predicts a category</button>
+      <button class="qopt" type="button">B · unsupervised learning - there are no labels</button>
+      <button class="qopt" type="button">C · regression - it predicts a number</button>
+      <p class="qwhy">Predicting a quantity (dollars) is regression. Predicting a category (convert: yes/no) is classification. There are labels - the past order values - so it is supervised, not unsupervised.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · A manager asks "will cutting the price CAUSE sales to rise?" Why is that not really a machine-learning question?</p>
+      <button class="qopt" type="button">A · because it asks for a cause, which needs an experiment - ML predicts patterns, it does not prove causation</button>
+      <button class="qopt" type="button">B · because prices are too hard to predict</button>
+      <button class="qopt" type="button">C · because there is not enough data about prices</button>
+      <p class="qwhy">ML finds patterns and predicts; it cannot establish that one thing causes another. A cause-and-effect question needs a controlled experiment (an A/B test) - that is the experimentation course, not this one.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This leader session teaches the framing behind the "what is ML" week of the major intro courses - the ~80% a decision-maker needs. The hands-on Python (setting up scikit-learn, building the dataset) lives in Builder Session 1; the sources below go deeper.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">What ML is; the rules-from-examples flip; why now</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Supervised / unsupervised / reinforcement; classification vs regression; when not to use ML</span><span class="note">Part 2</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng / DeepLearning.AI ML Specialization - C1 W1 "Introduction to ML"</span><span class="note">the spine; supervised vs unsupervised</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google Machine Learning Crash Course - ML models intro + when to use ML</span><span class="note">free, fast</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Setting up scikit-learn and building the Lumen dataset in Python</span><span class="note">Builder Session 1 - not covered here by design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The definition</b><span>ML learns its rules from examples, to predict new cases. Classic software is handed the rules; ML is handed the answers and finds the rules.</span></div>
+      <div class="cheat-item"><b>Three kinds</b><span>Supervised (labelled examples, predict a target), unsupervised (no labels, find structure), reinforcement (learn by reward). Business value lives in supervised.</span></div>
+      <div class="cheat-item"><b>Two supervised shapes</b><span>Classification = predict a category (convert: yes/no). Regression = predict a number (order value in $). They need different metrics.</span></div>
+      <div class="cheat-item"><b>Predict ≠ prove</b><span>ML predicts patterns; it never establishes cause. Cause-and-effect needs an experiment (the next course).</span></div>
+      <div class="cheat-item"><b>When to skip ML</b><span>A simple rule works, too few examples, you need an explanation you can't give, the world just changed, or you actually need a cause.</span></div>
+      <div class="cheat-item"><b>The real bottleneck</b><span>Rarely the algorithm - almost always the data. Good, honest, relevant, plentiful labelled examples are the hard part.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 1 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="a2-how-a-model-learns.html">Next: How a model learns →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

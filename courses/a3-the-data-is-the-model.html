@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 3 · The data is the model - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 3 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 3 of 6</div>
+    <h1>The data is the model, <span class="accent">the algorithm is the easy part</span></h1>
+    <p class="sub">Leaders spend their attention on the algorithm - which fancy technique, which vendor. Practitioners know the secret: a model can only be as good as the examples it learns from, and most ML failures are data failures, not algorithm failures. This session, still code-free, gives you the two ideas that catch more bad models than any maths: what features and labels actually are (and why "garbage in, garbage out" is literal here), and data leakage - the silent killer that makes a useless model look brilliant right up until it ships.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Building up</span>
+      <span class="chip audience">Leaders · C-level / PM / marketing</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-22 · Features &amp; labels</span>
+      <span class="a3" style="flex:4">22-40 · Data leakage</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The model is only as good as what you feed it</h2>
+    </div>
+    <p class="lede">There is a comforting myth that machine learning is about clever algorithms, and that a better algorithm rescues a shaky project. It almost never does. A model learns entirely from the examples you hand it, so if those examples are biased, stale, mislabelled, or secretly contain the answer, the model faithfully learns the wrong thing - and does it confidently. When Lumen Skincare's models went wrong, the algorithm was never the culprit; the data was. This session teaches you to look where the failures actually live, so you can interrogate a project before it burns a quarter.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A plain-English grip on features and labels - the inputs and the answer the model learns from - plus the single most valuable audit skill a non-technical leader can have: sniffing out data leakage, the feature that secretly knows the answer. You will be able to look at a model's ingredient list and ask "would we actually know this at the moment we predict?" - the question that quietly kills most too-good-to-be-true models.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: FEATURES & LABELS ============ -->
+  <section class="section" id="features">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the ingredients</span>
+      <h2>Features, labels, and garbage in, garbage out <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Every supervised model is trained on a table. Each row is one example - for Lumen, one website session. The columns split into two kinds. <strong>Features</strong> are the inputs: everything you know about the visitor before the outcome (their channel, whether they are new or returning, their prior spend). The <strong>label</strong> is the answer you want to learn to predict (did they convert?). The model studies how the features relate to the label. And here is the iron law: if the data is biased, stale, or mislabelled, the model learns the garbage faithfully. Garbage in, garbage out is not a slogan here - it is mechanical.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A table of visitor rows with several feature columns and one highlighted label column flows by an arrow into a model.">
+        <style>
+          .a3xL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .a3xH { font: 700 10.5px Inter, sans-serif; fill: #FFFFFF; }
+          .a3xC { font: 600 10.5px Inter, sans-serif; fill: #1E1633; }
+          .a3xT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a3xN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .a3xA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#a3Ah); }
+        </style>
+        <defs>
+          <marker id="a3Ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="a3xL" x="30" y="26">One row = one visitor. Feature columns (inputs) + one label column (the answer).</text>
+
+        <!-- header row: 3 feature cols + 1 label col -->
+        <rect x="30" y="40" width="150" height="30" fill="#7C3AED"/><text class="a3xH" x="40" y="60">channel</text>
+        <rect x="182" y="40" width="150" height="30" fill="#7C3AED"/><text class="a3xH" x="192" y="60">new/returning</text>
+        <rect x="334" y="40" width="150" height="30" fill="#7C3AED"/><text class="a3xH" x="344" y="60">prior 30d spend</text>
+        <rect x="486" y="40" width="150" height="30" fill="#F7931E"/><text class="a3xH" x="496" y="60">converted? (label)</text>
+
+        <!-- data rows -->
+        <rect x="30" y="72" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="40" y="91">email</text>
+        <rect x="182" y="72" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="192" y="91">returning</text>
+        <rect x="334" y="72" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="344" y="91">$120</text>
+        <rect x="486" y="72" width="150" height="28" fill="#FDEBD3" stroke="#F7931E"/><text class="a3xC" x="496" y="91">yes</text>
+
+        <rect x="30" y="102" width="150" height="28" fill="#FFFFFF" stroke="#DDD6FE"/><text class="a3xC" x="40" y="121">social</text>
+        <rect x="182" y="102" width="150" height="28" fill="#FFFFFF" stroke="#DDD6FE"/><text class="a3xC" x="192" y="121">new</text>
+        <rect x="334" y="102" width="150" height="28" fill="#FFFFFF" stroke="#DDD6FE"/><text class="a3xC" x="344" y="121">$8</text>
+        <rect x="486" y="102" width="150" height="28" fill="#FFF6EB" stroke="#F7931E"/><text class="a3xC" x="496" y="121">no</text>
+
+        <rect x="30" y="132" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="40" y="151">paid_search</text>
+        <rect x="182" y="132" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="192" y="151">new</text>
+        <rect x="334" y="132" width="150" height="28" fill="#F5F3FF" stroke="#DDD6FE"/><text class="a3xC" x="344" y="151">$45</text>
+        <rect x="486" y="132" width="150" height="28" fill="#FDEBD3" stroke="#F7931E"/><text class="a3xC" x="496" y="151">no</text>
+
+        <text class="a3xN" x="30" y="182" style="fill:#7C3AED">features = what you know</text>
+        <text class="a3xN" x="486" y="182" style="fill:#F7931E">label = what you predict</text>
+
+        <line class="a3xA" x1="640" y1="115" x2="710" y2="115"/>
+        <rect x="712" y="90" width="138" height="50" rx="10" fill="#5B21B6"/><text class="a3xT" x="740" y="120">Model</text>
+
+        <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="a3xN" x="52" y="303" style="fill:#1E1633">The model learns how the feature columns relate to the label column. Feed it biased or mislabelled rows and it learns the bias, faithfully.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - features are the inputs, the label is the answer</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What a feature is<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>A feature is one input column - one thing you know about the case before the outcome.</strong> Choosing good features (the craft your builders call "feature engineering") matters far more than choosing the algorithm. A model with great features and a plain algorithm beats a fancy algorithm fed weak features almost every time.</p>
+        <ul>
+          <li><strong>Numbers</strong> - like prior 30-day spend, or pages viewed. Often the strongest signals.</li>
+          <li><strong>Categories</strong> - like channel (email, paid search, social...) or device. The model learns which values lean which way.</li>
+          <li><strong>Derived features</strong> - things you compute, like "days since last order." Often where the real signal hides.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen's conversion model runs on a handful of honest features per session: <code>prior_30d_spend</code> (by far the strongest - past spend predicts future buying), <code>new_vs_returning</code> (returning visitors convert about twice as often), <code>channel</code>, <code>product_category</code>, <code>device</code>, and <code>pages_viewed</code>. None of them is exotic. The model's whole skill comes from combining these plain, knowable facts - not from a clever algorithm.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why label quality is everything<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The label is the answer the model learns to copy. So if your labels are wrong, the model learns to reproduce the wrong answers - and no algorithm can fix that, because it has no other source of truth. This is why "garbage in, garbage out" is literal: the model cannot be more correct than the answers you taught it.</p>
+        <ul>
+          <li><strong>Biased labels</strong> - if past approvals favoured one group unfairly, a model trained on them learns to repeat that unfairness, and dresses it up as objective.</li>
+          <li><strong>Stale labels</strong> - answers from a world that no longer exists (pre-launch, pre-pandemic) teach patterns that have expired.</li>
+          <li><strong>Mislabelled examples</strong> - if "converted" was recorded inconsistently, every downstream number is built on sand.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Your leader's question</strong>
+          Before you trust any model, ask where the labels came from and whether they are honest. "Who decided what counts as converted, and were they consistent for two years?" is a more powerful question than anything about the algorithm.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: DATA LEAKAGE ============ -->
+  <section class="section" id="leakage">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the silent killer</span>
+      <h2>Data leakage: the silent killer <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Here is the failure that fools even good teams. <strong>Data leakage</strong> is when a feature secretly contains the answer, or could not actually be known at the moment you predict. The model looks brilliant in testing - because it is quietly peeking at the answer - and then falls apart in production, where that peek is gone. It is the most dangerous mistake in this whole course precisely because the numbers look <em>great</em> right until it ships. And a related trap: more columns is not more signal. Some features are pure noise.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Legitimate features known at prediction time flow cleanly into the model, while a feature from the future carrying the answer sneaks in past a warning marker.">
+        <style>
+          .a3yL { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .a3yT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a3yBad { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a3yN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .a3yBox { fill: #F5F3FF; stroke: #DDD6FE; stroke-width: 1.5; }
+          .a3yA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#a3yh); }
+          .a3yBadA { stroke: #F7931E; stroke-width: 2.5; stroke-dasharray: 6 4; fill: none; marker-end: url(#a3yhb); }
+        </style>
+        <defs>
+          <marker id="a3yh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="a3yhb" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#F7931E" stroke-width="1.8"/></marker>
+        </defs>
+
+        <text class="a3yL" x="30" y="26">Legitimate features - knowable at prediction time</text>
+        <rect class="a3yBox" x="30" y="40" width="180" height="34" rx="8"/><text class="a3yN" x="46" y="62" style="fill:#1E1633">channel, prior spend</text>
+        <rect class="a3yBox" x="30" y="82" width="180" height="34" rx="8"/><text class="a3yN" x="46" y="104" style="fill:#1E1633">new vs returning, device</text>
+        <line class="a3yA" x1="210" y1="78" x2="360" y2="120"/>
+        <line class="a3yA" x1="210" y1="99" x2="360" y2="128"/>
+
+        <rect x="362" y="108" width="150" height="60" rx="12" fill="#5B21B6"/><text class="a3yT" x="404" y="144">Model</text>
+
+        <text class="a3yL" x="560" y="128">looks great in the lab...</text>
+        <line class="a3yA" x1="512" y1="138" x2="560" y2="138"/>
+
+        <text class="a3yL" x="30" y="212" style="fill:#F7931E">A feature from the future - the answer in disguise</text>
+        <rect x="30" y="226" width="230" height="40" rx="8" fill="#FDEBD3" stroke="#F7931E" stroke-width="1.8"/><text class="a3yN" x="46" y="251" style="fill:#1E1633">was_refunded · account_closed_date</text>
+        <line class="a3yBadA" x1="260" y1="246" x2="360" y2="160"/>
+        <rect x="300" y="196" width="18" height="18" rx="4" fill="#F7931E"/><text class="a3yBad" x="305" y="210">!</text>
+        <text class="a3yN" x="326" y="210" style="fill:#F7931E">recorded AFTER the outcome</text>
+
+        <rect x="30" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="a3yN" x="52" y="303" style="fill:#1E1633">If a feature is only known after the answer exists, it cannot be used to predict the answer. In the lab it inflates the score; in production it is simply gone.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - a feature from the future leaks the answer</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>How to smell leakage<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>You do not need to read code to catch leakage. You need one question, asked of every feature: <strong>"would we actually know this at the moment we make the prediction?"</strong> If the honest answer is "no, that gets recorded later," you have found a leak.</p>
+        <ul>
+          <li><strong>Answers in disguise</strong> - a column like <code>was_refunded</code> only exists after a purchase happened. Using it to predict a purchase is circular.</li>
+          <li><strong>Timing violations</strong> - <code>account_closed_date</code> tells you the customer left; using it to predict churn is predicting the past from the future.</li>
+          <li><strong>The tell</strong> - a suspiciously perfect score. Real problems are hard; 99% usually means the model found a shortcut to the answer, not a genuine pattern.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen once built a churn model that hit 99% accuracy - the team was thrilled. One feature was a status flag that only got set <em>after</em> a customer had already cancelled. The model was not predicting churn; it was reading a column that said "this person churned." Brilliant in the lab, worthless live - the flag simply is not there for a customer who has not left yet. Once they removed it, the honest accuracy dropped to something modest and real.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>More features != more signal<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The instinct to "just add every column we have" feels safe and is wrong. Irrelevant features do not sit there harmlessly; they add noise the model can latch onto, making it easier to overfit (Session 2) and harder to trust. Parsimony - the fewest features that carry real signal - beats a kitchen-sink of columns.</p>
+        <ul>
+          <li><strong>Signal features</strong> genuinely relate to the answer, like prior spend to order value.</li>
+          <li><strong>Noise features</strong> have no real relationship; the model may fit their random wiggles as if they mattered.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The Lumen noise feature</strong>
+          Lumen's data includes <code>session_hour</code>, the hour of day a visit happened. It looks plausible - surely evening shoppers differ? In this data it carries essentially no signal; it is deliberately near-useless. Adding it does not help the model and gives it one more way to chase noise. When someone says "let's add more data," ask "more signal, or just more columns?"
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 4</span>
+      <h2>This week <span class="tag exercise">◐ 25 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Audit a feature list.</strong> Find one model in your org and get its list of features. For each, ask "would we know this at the moment we predict?" Flag anything that fails.</li>
+      <li><strong>Hunt a feature from the future.</strong> Look specifically for a column recorded after the outcome - a status, a resolution, a closed date. If you find one in a model's inputs, you have found a likely leak. Bring it to Session 4.</li>
+      <li><strong>Question a trusted metric.</strong> Name one number your org relies on and ask what labels it is built on. If those labels were set inconsistently or by a biased process, the metric may be quietly wrong.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What is data leakage?</p>
+      <button class="qopt" type="button">A · when a dataset is stored in an insecure place</button>
+      <button class="qopt" type="button">B · when a feature secretly contains the answer, or would not be known at the moment you predict</button>
+      <button class="qopt" type="button">C · when a model is trained on too little data</button>
+      <p class="qwhy">Leakage is a feature that leaks the answer - it contains the outcome or is only recorded after it. It makes a model look brilliant in testing and useless in production, where that information is not available yet.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · A model is trained on two years of labels set by a biased past process. What happens?</p>
+      <button class="qopt" type="button">A · the algorithm corrects the bias automatically</button>
+      <button class="qopt" type="button">B · nothing - models only care about numbers</button>
+      <button class="qopt" type="button">C · the model faithfully learns and repeats the bias - garbage in, garbage out</button>
+      <p class="qwhy">A model can only be as good as the examples it learns from. Biased labels teach the model to reproduce the bias, confidently and at scale. The algorithm has no other source of truth to correct against.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Your team wants to add every column you have, including session_hour, to a model. Good idea?</p>
+      <button class="qopt" type="button">A · not necessarily - irrelevant columns like session_hour add noise, not signal, and make overfitting easier</button>
+      <button class="qopt" type="button">B · yes - more columns always means a more accurate model</button>
+      <button class="qopt" type="button">C · yes - the model ignores any column that does not help</button>
+      <p class="qwhy">More features is not more signal. A near-useless column like session_hour adds noise the model can chase, raising the risk of overfitting. Parsimony - the fewest features that carry real signal - wins.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This session teaches the framing behind the data-quality and leakage warnings that every serious ML course hammers - the judgement a decision-maker needs. The hands-on fix in Python (building a Pipeline so transformers are fit on training data only) lives in Builder Session 9; the sources below go deeper.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Features and labels; garbage in, garbage out; why label quality beats algorithm choice</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Data leakage; the "would we know this at predict time?" test; more features != more signal</span><span class="note">Part 2</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn User Guide - "Common Pitfalls and Recommended Practices: Data Leakage"</span><span class="note">the canonical write-up</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The code fix: Pipelines that fit transformers on training data only</span><span class="note">Builder Session 9 - not covered here by design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Data is the model</b><span>A model can only be as good as its examples. Most ML failures are data failures, not algorithm failures.</span></div>
+      <div class="cheat-item"><b>Features vs label</b><span>Features = the inputs you know about a case. Label = the answer you predict. The model learns how features relate to the label.</span></div>
+      <div class="cheat-item"><b>Garbage in, garbage out</b><span>Biased, stale, or mislabelled data produces a biased, stale, wrong model - faithfully and confidently. No algorithm fixes bad labels.</span></div>
+      <div class="cheat-item"><b>Data leakage</b><span>A feature that contains the answer or is only known after the outcome. Looks brilliant in testing, useless in production.</span></div>
+      <div class="cheat-item"><b>The leakage test</b><span>Ask of every feature: "would we actually know this at the moment we predict?" If no, it leaks. Beware suspiciously perfect scores.</span></div>
+      <div class="cheat-item"><b>More columns != more signal</b><span>Irrelevant features (like session_hour) add noise, not insight, and make overfitting easier. Fewest features with real signal wins.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 3 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="a4-reading-the-report-card.html">Next: Reading a model's report card →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

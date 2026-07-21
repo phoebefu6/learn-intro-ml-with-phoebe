@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 7 · Classification metrics in depth - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Builder session 7 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Builder session 7 of 10</div>
+    <h1>Classification metrics, <span class="accent">the ones that tell the truth</span></h1>
+    <p class="sub">Lumen converts at just 3.2%, which means a model that predicts "no buyer" for everyone is 96.8% accurate and completely useless. Accuracy lies on imbalanced data. This session builds the metrics that do not: the confusion matrix and everything derived from it - precision, recall, F1 - plus ROC-AUC and the precision-recall curve. Then you take control of the decision threshold and watch precision trade against recall in a live tool. Same b3 logistic model, same Lumen data, honest scoring at last.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Getting real</span>
+      <span class="chip audience">Builders · DA / DE / DS</span>
+      <span class="chip audience">Python · scikit-learn</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Recap</span>
+      <span class="a2" style="flex:4">3-22 · Beyond accuracy</span>
+      <span class="a3" style="flex:4">22-40 · Metrics in Python</span>
+      <span class="a4" style="flex:1">40-45 · Wrap</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>When accuracy is the wrong score</h2>
+    </div>
+    <p class="lede">You met the accuracy paradox in b3: with a 3.2% base rate, "always predict no" scores 96.8% and catches zero buyers. High accuracy, zero value. The fix is not a better model first - it is a better <em>ruler</em>. Once you measure precision and recall instead of accuracy, the picture snaps into focus, and once you realise the 0.5 decision threshold is a choice rather than a law, you can tune the model to the business cost you actually face. This session is where scoring gets honest.</p>
+    <div class="legend">
+      <span class="pill solid">Live - built in session</span>
+      <span class="pill light">Self-study - run after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      Fluency in the confusion matrix and the metrics it feeds - precision, recall, F1, ROC-AUC - plus the single most empowering idea in classification: the decision threshold is yours to move. You will read a <code>classification_report</code>, compute <code>roc_auc_score</code> (~0.71 on Lumen), and slide the threshold to trade precision for recall by business cost.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: BEYOND ACCURACY ============ -->
+  <section class="section" id="beyond">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the concept</span>
+      <h2>Beyond accuracy <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Every classification score starts from one table: the <strong>confusion matrix</strong>. It cross-tabs what actually happened against what the model predicted, giving four cells - true positives (TP), false positives (FP), false negatives (FN), true negatives (TN). Two ratios pulled from those cells tell the real story. <strong>Precision</strong> reads down the predicted-positive column: of everyone you flagged as a buyer, how many truly were? <strong>Recall</strong> reads across the actual-positive row: of all the real buyers, how many did you catch? <strong>F1</strong> is their harmonic mean, and <strong>ROC-AUC</strong> summarises performance across every threshold at once.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A 2 by 2 confusion matrix with rows for actual buyer and non-buyer and columns for predicted buyer and non-buyer. An arrow down the predicted-buyer column labels precision; an arrow across the actual-buyer row labels recall.">
+        <style>
+          .cmLab { font: 700 12px Inter, sans-serif; fill: #5B21B6; }
+          .cmN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .cmCell { font: 800 13px Inter, sans-serif; fill: #1E1633; }
+          .cmH { font: 700 12px Inter, sans-serif; fill: #1E1633; }
+          .cmA { stroke: #F7931E; stroke-width: 2.5; fill: none; marker-end: url(#cmAh); }
+        </style>
+        <defs>
+          <marker id="cmAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#F7931E" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="cmLab" x="30" y="24">The confusion matrix - four cells every metric is built from</text>
+
+        <!-- column headers -->
+        <text class="cmH" x="300" y="66" text-anchor="middle">Predicted: buyer</text>
+        <text class="cmH" x="470" y="66" text-anchor="middle">Predicted: no</text>
+        <!-- row headers -->
+        <text class="cmH" x="210" y="118" text-anchor="end">Actual: buyer</text>
+        <text class="cmH" x="210" y="198" text-anchor="end">Actual: no</text>
+
+        <!-- cells -->
+        <rect x="230" y="86" width="140" height="64" rx="8" fill="#5B21B6"/>
+        <text class="cmCell" x="300" y="112" text-anchor="middle" style="fill:#FFFFFF">TP</text>
+        <text class="cmN" x="300" y="132" text-anchor="middle" style="fill:#F5F3FF">caught buyer</text>
+        <rect x="400" y="86" width="140" height="64" rx="8" fill="#DDD6FE"/>
+        <text class="cmCell" x="470" y="112" text-anchor="middle">FN</text>
+        <text class="cmN" x="470" y="132" text-anchor="middle" style="fill:#1E1633">missed buyer</text>
+        <rect x="230" y="166" width="140" height="64" rx="8" fill="#DDD6FE"/>
+        <text class="cmCell" x="300" y="192" text-anchor="middle">FP</text>
+        <text class="cmN" x="300" y="212" text-anchor="middle" style="fill:#1E1633">false alarm</text>
+        <rect x="400" y="166" width="140" height="64" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text class="cmCell" x="470" y="192" text-anchor="middle">TN</text>
+        <text class="cmN" x="470" y="212" text-anchor="middle">correct pass</text>
+
+        <!-- precision: down the predicted-buyer column -->
+        <line class="cmA" x1="300" y1="238" x2="300" y2="286"/>
+        <text class="cmLab" x="300" y="306" text-anchor="middle" style="fill:#F7931E">Precision = TP / (TP + FP)</text>
+        <text class="cmN" x="300" y="324" text-anchor="middle" style="fill:#1E1633">down the "predicted buyer" column</text>
+
+        <!-- recall: across the actual-buyer row -->
+        <line class="cmA" x1="556" y1="118" x2="620" y2="118"/>
+        <text class="cmLab" x="636" y="114" style="fill:#F7931E">Recall = TP / (TP + FN)</text>
+        <text class="cmN" x="636" y="132" style="fill:#1E1633">across the "actual buyer" row</text>
+
+        <text class="cmN" x="636" y="176" style="fill:#1E1633; font-weight:700">F1</text>
+        <text class="cmN" x="636" y="194" style="fill:#1E1633">harmonic mean of the two</text>
+        <text class="cmN" x="636" y="220" style="fill:#1E1633; font-weight:700">ROC-AUC</text>
+        <text class="cmN" x="636" y="238" style="fill:#1E1633">summarises every threshold at once</text>
+
+        <rect x="30" y="332" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="cmN" x="52" y="343" style="fill:#1E1633">Precision reads a column, recall reads a row - same TP cell, different denominators. That is why moving the threshold trades one for the other.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - precision reads a column, recall reads a row</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Precision vs recall<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>They answer different questions, and the difference is the whole game:</p>
+        <ul>
+          <li><strong>Precision</strong> = TP / (TP + FP). Of everyone you <em>predicted</em> is a buyer, what share truly are? High precision means few false alarms - when you flag someone, you are usually right.</li>
+          <li><strong>Recall</strong> = TP / (TP + FN). Of all the <em>actual</em> buyers, what share did you catch? High recall means you miss few real buyers, even if you raise some false alarms doing it.</li>
+        </ul>
+        <p>You almost never get both at once. Chase recall and precision falls; chase precision and recall falls. <strong>F1</strong>, their harmonic mean, is a single number for when you want to balance the two - but the right balance depends on cost, which is where the threshold comes in.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The threshold is yours to move<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A classifier does not output a class - it outputs a <em>probability</em>. The 0.5 cutoff that turns that probability into a yes/no is a default, not a law. Lower it and you flag more sessions as buyers: recall climbs (you catch more real buyers) while precision falls (more false alarms). Raise it and the reverse happens.</p>
+        <p>So the threshold is a business dial, not a modelling detail. You set it by the relative cost of a false positive versus a false negative - and no algorithm can pick that for you, because it depends on your economics, not your data.</p>
+      </div>
+    </details>
+
+    <p class="lede">Feel it for yourself. The tool below runs Lumen's logistic model and lets you drag the decision threshold - watch the confusion matrix and the precision/recall numbers move in real time, and see why 96.8% accuracy hides a model that catches no one.</p>
+
+    <div class="ml-live" data-tool="threshold"></div>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="section-kicker">
+      <span class="klabel">★ everyone builds · score honestly</span>
+      <h2>Compute the honest metrics in Python <span class="tag demo">18 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We refit the b3 logistic model on Lumen's numeric features - scaled on the training set only - then score it the honest way: classification report, confusion matrix, ROC-AUC, and finally a moved threshold.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Reload, split, and refit the b3 model.</strong> Scale on train only (fit the scaler on train, apply to test) to avoid leakage - the pipeline version lands in b9.</p>
+        <div class="prompt-box good">
+          <span class="label">setup.py</span>
+<pre>import numpy as np, pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+df = pd.read_parquet("lumen_sessions.parquet")
+num = ["prior_30d_spend", "pages_viewed", "session_hour"]
+X, y = df[num], df["converted"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)
+
+scaler = StandardScaler().fit(X_train)           # fit on TRAIN only
+clf = LogisticRegression(max_iter=1000).fit(scaler.transform(X_train), y_train)
+proba = clf.predict_proba(scaler.transform(X_test))[:, 1]   # P(buyer)</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <p><strong>Read the classification report and confusion matrix.</strong> At the default 0.5 threshold, precision is low and recall is moderate - accuracy alone would have hidden both.</p>
+        <div class="prompt-box good">
+          <span class="label">report.py</span>
+<pre>from sklearn.metrics import classification_report, confusion_matrix
+
+pred = (proba &gt;= 0.5).astype(int)
+print(confusion_matrix(y_test, pred))            # [[TN, FP], [FN, TP]]
+print(classification_report(y_test, pred, digits=3))
+# accuracy looks ~96-97% (the paradox) while precision/recall for the buyer class are modest</pre>
+        </div>
+        <p>Notice the buyer-class precision and recall in the report - both far below the headline accuracy. That gap <em>is</em> the accuracy paradox, now measured instead of just described.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Score across all thresholds with ROC-AUC.</strong> One number that does not depend on where you set the cutoff.</p>
+        <div class="prompt-box good">
+          <span class="label">auc.py</span>
+<pre>from sklearn.metrics import roc_auc_score, roc_curve
+import matplotlib.pyplot as plt
+
+print("ROC-AUC = %.2f" % roc_auc_score(y_test, proba))   # -> ~ 0.71
+
+fpr, tpr, _ = roc_curve(y_test, proba)
+plt.plot(fpr, tpr, label="Lumen logistic")
+plt.plot([0, 1], [0, 1], "--", color="grey", label="random")
+plt.xlabel("false positive rate"); plt.ylabel("true positive rate"); plt.legend()
+plt.show()</pre>
+        </div>
+        <p>ROC-AUC lands at <strong>~0.71</strong> - a real but modest signal, comfortably above the 0.5 of random guessing but nowhere near perfect. Because AUC averages over all thresholds, it is the fairest single summary of this model on imbalanced data.</p>
+      </div>
+
+      <div class="step">
+        <p><strong>Move the threshold and re-score.</strong> Drop it from 0.5 to 0.2 and watch recall climb while precision falls; plot the full precision-recall curve to see the whole trade.</p>
+        <div class="prompt-box good">
+          <span class="label">threshold.py</span>
+<pre>from sklearn.metrics import precision_score, recall_score, precision_recall_curve
+
+for t in [0.5, 0.2]:
+    p = (proba &gt;= t).astype(int)
+    print("t=%.1f  precision=%.2f  recall=%.2f" % (
+        t, precision_score(y_test, p), recall_score(y_test, p)))
+# lower t -> recall up, precision down
+
+prec, rec, _ = precision_recall_curve(y_test, proba)
+plt.plot(rec, prec); plt.xlabel("recall"); plt.ylabel("precision"); plt.show()</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>Lumen set the threshold by weighing two costs: a false positive is a wasted free-shipping offer sent to someone who was never going to buy, while a false negative is a genuine high-value buyer they failed to nudge. Because a missed big spender hurt more than a wasted coupon, they lowered the threshold to buy recall - accepting more false alarms to catch more real buyers. The maths gave them the curve; the business chose the point on it.</p>
+        </div>
+        <div class="callout tip">
+          <strong>Notice what did the work</strong>
+          Not a fancier model - a better ruler and a moved threshold. The same logistic regression from b3, scored honestly and tuned to the cost you actually face, is worth more than a black box you cannot reason about.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Before Session 8</span>
+      <h2>This week <span class="tag exercise">◐ 40 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Build the confusion matrix by hand.</strong> Take <code>proba</code> at two thresholds (say 0.5 and 0.2) and count TP/FP/FN/TN yourself with boolean masks. Confirm your counts match <code>confusion_matrix</code>.</li>
+      <li><strong>Find the F1-maximising threshold.</strong> Sweep the threshold from 0.05 to 0.95 and compute F1 at each. Where does F1 peak, and how does that point compare to 0.5?</li>
+      <li><strong>Explain the cost call.</strong> In one paragraph, describe a situation where you would deliberately prefer high recall over high precision - and one where you would prefer the reverse.</li>
+      <li><strong>Optional:</strong> compare the ROC curve to the precision-recall curve. On data this imbalanced, which one tells the more honest story, and why?</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What does precision measure?</p>
+      <button class="qopt" type="button">A · of all the actual buyers, the share the model caught</button>
+      <button class="qopt" type="button">B · of everyone predicted a buyer, the share who truly are buyers</button>
+      <button class="qopt" type="button">C · the overall share of correct predictions</button>
+      <p class="qwhy">Precision = TP / (TP + FP) - it reads down the predicted-positive column: of everyone you flagged as a buyer, how many really were. Catching actual buyers is recall; overall correctness is accuracy.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · What does recall measure?</p>
+      <button class="qopt" type="button">A · of all the actual buyers, the share the model caught</button>
+      <button class="qopt" type="button">B · of everyone predicted a buyer, the share who truly are buyers</button>
+      <button class="qopt" type="button">C · the area under the ROC curve</button>
+      <p class="qwhy">Recall = TP / (TP + FN) - it reads across the actual-positive row: of all the real buyers, how many did you catch. The predicted-column version is precision.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · You lower the decision threshold from 0.5 to 0.2. What happens?</p>
+      <button class="qopt" type="button">A · both precision and recall rise</button>
+      <button class="qopt" type="button">B · recall falls and precision rises</button>
+      <button class="qopt" type="button">C · recall rises and precision falls</button>
+      <p class="qwhy">A lower threshold flags more sessions as buyers, so you catch more real buyers (recall up) but raise more false alarms (precision down). The threshold is a business dial, set by the cost of a false positive vs a false negative.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This builder session covers classification metrics in depth on the Lumen dataset - the confusion matrix and everything derived from it - building on b3's accuracy paradox. Regression metrics come next in b8.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Confusion matrix; precision / recall / F1; ROC-AUC; precision-recall curve; moving the threshold by business cost</span><span class="note">Part 1 + demo</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">scikit-learn - classification metrics and tuning the decision threshold</span><span class="note">the API spine</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">StatQuest - confusion matrix and ROC / AUC</span><span class="note">the intuition</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder Session 7 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Confusion matrix</b><span>The four cells TP/FP/FN/TN. Every classification metric is derived from it - it is the source of truth. <code>confusion_matrix(y, pred)</code>.</span></div>
+      <div class="cheat-item"><b>Precision</b><span>TP / (TP + FP). Of everyone predicted a buyer, the share truly positive. Reads down the predicted-positive column.</span></div>
+      <div class="cheat-item"><b>Recall</b><span>TP / (TP + FN). Of all actual buyers, the share caught. Reads across the actual-positive row.</span></div>
+      <div class="cheat-item"><b>F1 &amp; ROC-AUC</b><span>F1 = harmonic mean of precision and recall. ROC-AUC ~0.71 on Lumen summarises performance across every threshold at once.</span></div>
+      <div class="cheat-item"><b>The threshold</b><span>0.5 is a default, not a law. Lower it -&gt; recall up, precision down. Set it by the cost of a false positive vs a false negative.</span></div>
+      <div class="cheat-item"><b>The Lumen result</b><span>3.2% base rate -&gt; ~96.8% accuracy means nothing. ROC-AUC ~0.71; the honest score is precision/recall at a cost-chosen threshold.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 7 of 10 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b8-regression-metrics.html">Next: Regression metrics →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/ml-live.js?v=3"></script>
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

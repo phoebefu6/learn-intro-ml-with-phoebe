@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 6 · Putting ML to work responsibly - learn intro to machine learning with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-intro-ml-with-phoebe</a> / Leader session 6 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe · Leader session 6 of 6</div>
+    <h1>Putting ML to work responsibly, <span class="accent">long after the launch</span></h1>
+    <p class="sub">Shipping a model is the start, not the finish. The day a model goes live is the day it begins to rot - the world drifts, yesterday's pattern stops holding, and a model no one is watching quietly gets worse. A leader governs the whole lifecycle: monitor, retrain, guard against bias, decide buy-versus-build, and ask the data team the handful of questions that separate a responsible deployment from a liability. This capstone pulls the whole leader track together by having you read a real Lumen model card the way an exec should. No code - just the judgement to own a model for its entire life.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Capstone</span>
+      <span class="chip level">Capstone</span>
+      <span class="chip audience">Leaders</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Setup</span>
+      <span class="a2" style="flex:4">3-22 · The lifecycle after launch</span>
+      <span class="a3" style="flex:4">22-40 · Fairness &amp; governing</span>
+      <span class="a4" style="flex:1">40-45 · Capstone</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The launch is the middle, not the end</h2>
+    </div>
+    <p class="lede">Most organisations treat a model launch like a finish line - the demo works, the deck lands, everyone moves on. That is exactly when the risk begins. A model learns from the past, and the past is always going away: Lumen adds a product line, a season turns, a pandemic upends how people shop, and the pattern the model learned last year no longer holds. If no one is watching, the model degrades silently and keeps making confident, wrong calls. A leader's job is to govern the whole life of the model - and this final session gives you the checklist to do it.</p>
+    <div class="legend">
+      <span class="pill solid">Live - covered in session</span>
+      <span class="pill light">Self-study - read after</span>
+      <span class="pill amber">★ The one big idea</span>
+      <span class="pill inkpill">The case: Lumen Skincare</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A mental model of the full ML lifecycle - frame, data, train, evaluate, ship, monitor, retrain - and why models rot. Plus the fairness questions to ask, the buy-versus-build decision, the five questions every leader should put to a data team, and the ability to read a model card and judge a deployment like the exec who is accountable for it.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE LIFECYCLE AFTER LAUNCH ============ -->
+  <section class="section" id="lifecycle">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the loop</span>
+      <h2>The lifecycle after launch <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">A model is not a project with an end date; it is a loop that keeps turning. You frame the question, get and split the data, train, evaluate, and ship - and then the two steps everyone forgets: monitor the live performance, and retrain when it slips. The arrow runs back to the start, because the world never stops moving.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The ML lifecycle drawn as a loop of seven stages: frame the question, get and split data, train, evaluate, ship, monitor, retrain. Arrows connect each stage to the next, and a return arrow runs from monitor and retrain back to frame, showing the cycle repeating as the world drifts.">
+        <style>
+          .lcT { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .lcN { font: 600 10.5px Inter, sans-serif; fill: #5E5470; }
+          .lcTtl { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+          .lcA { stroke: #CBC2E0; stroke-width: 2.5; fill: none; marker-end: url(#lcAh); }
+          .lcBack { stroke: #F7931E; stroke-width: 2.5; fill: none; marker-end: url(#lcAo); stroke-dasharray: 6 5; }
+        </style>
+        <defs>
+          <marker id="lcAh" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#CBC2E0" stroke-width="1.8"/></marker>
+          <marker id="lcAo" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#F7931E" stroke-width="1.8"/></marker>
+        </defs>
+        <text class="lcTtl" x="40" y="34">The loop that never really ends</text>
+
+        <rect x="40" y="60" width="150" height="52" rx="10" fill="#5B21B6"/><text class="lcT" x="70" y="91">1 · Frame</text>
+        <line class="lcA" x1="190" y1="86" x2="248" y2="86"/>
+        <rect x="250" y="60" width="150" height="52" rx="10" fill="#7C3AED"/><text class="lcT" x="272" y="84">2 · Get + split</text><text class="lcT" x="300" y="102" style="font-size:11px">data</text>
+        <line class="lcA" x1="400" y1="86" x2="458" y2="86"/>
+        <rect x="460" y="60" width="150" height="52" rx="10" fill="#7C3AED"/><text class="lcT" x="500" y="91">3 · Train</text>
+        <line class="lcA" x1="610" y1="86" x2="668" y2="86"/>
+        <rect x="670" y="60" width="160" height="52" rx="10" fill="#7C3AED"/><text class="lcT" x="700" y="91">4 · Evaluate</text>
+
+        <line class="lcA" x1="750" y1="112" x2="750" y2="168"/>
+        <rect x="670" y="170" width="160" height="52" rx="10" fill="#5B21B6"/><text class="lcT" x="712" y="201">5 · Ship</text>
+        <line class="lcA" x1="670" y1="196" x2="612" y2="196"/>
+        <rect x="450" y="170" width="160" height="52" rx="10" fill="#F7931E"/><text class="lcT" x="482" y="201">6 · Monitor</text>
+        <line class="lcA" x1="450" y1="196" x2="392" y2="196"/>
+        <rect x="230" y="170" width="160" height="52" rx="10" fill="#F7931E"/><text class="lcT" x="262" y="201">7 · Retrain</text>
+
+        <path class="lcBack" d="M230,196 C120,196 90,150 100,118"/>
+        <text class="lcN" x="80" y="150" style="fill:#F7931E">the world drifts →</text>
+        <text class="lcN" x="70" y="250" style="fill:#1E1633">Steps 6 and 7 are the ones organisations skip - and the reason good models quietly go bad.</text>
+
+        <rect x="40" y="330" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="lcN" x="62" y="341" style="fill:#1E1633">A model is a loop, not a launch. The dashed arrow back to "frame" is the whole point: yesterday's pattern expires, so the cycle repeats for as long as the model is live.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the ML lifecycle as a loop that keeps turning</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Drift: why a good model goes bad<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A model learns the world as it was during training. When the world changes, the model does not - it keeps applying an expired pattern, confidently. That slow decay is called <strong>drift</strong>, and it is not a bug; it is the default fate of every deployed model.</p>
+        <ul>
+          <li><strong>The inputs shift.</strong> Lumen launches a new product line or a new channel; the mix of visitors no longer looks like the training data.</li>
+          <li><strong>The relationships shift.</strong> A season turns, a competitor changes pricing, a pandemic rewrites shopping behaviour - and "returning customers buy more" stops being as true as it was.</li>
+          <li><strong>The model cannot tell.</strong> It will report the same confidence while quietly getting more wrong, because it has no idea the ground moved.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The leader's expectation</strong>
+          Assume every model degrades. The only question is how fast, and whether anyone will notice before a customer does. "How will we know when this model has gone stale?" is a question you should ask before it ever ships.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Monitoring is not optional<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Because drift is inevitable, monitoring is not a nice-to-have - it is the price of running a model in production. You watch the live performance the same way you watch any other business metric, and you retrain when it slips past a line you set in advance.</p>
+        <ul>
+          <li><strong>Watch the outcome.</strong> Track the model's real-world hit rate over time - for Lumen, weekly conversion among the sessions it flagged - not just the score it got at launch.</li>
+          <li><strong>Watch the inputs.</strong> If the incoming data starts looking different from the training data, that is an early warning the model is drifting.</li>
+          <li><strong>Set the trigger in advance.</strong> Decide the threshold at which you retrain before you are in the middle of a fire, and name who owns pulling that trigger.</li>
+        </ul>
+        <p>Retraining is simply feeding the model recent data so it relearns the current world. It is routine maintenance, not failure - and skipping it is how a launch-day success becomes next quarter's liability.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: FAIRNESS, BUY VS BUILD, GOVERNING ============ -->
+  <section class="section" id="govern">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · the guardrails</span>
+      <h2>Fairness, buy-vs-build, and governing the work <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">A model inherits the world it was trained on, including its biases. It can quietly disadvantage a group without anyone intending it to. Governing ML means facing that squarely, choosing well between buying a model and building one, and asking the data team the handful of questions that surface risk before it reaches a customer.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The anatomy of a model card, drawn as six labelled rows: task, data, metric and baseline, known limits, monitoring, and owner. Each row names what an exec should look for.">
+        <style>
+          .mkT { font: 800 12.5px Inter, sans-serif; fill: #FFFFFF; }
+          .mkH { font: 700 12px Inter, sans-serif; fill: #1E1633; }
+          .mkN { font: 600 11px Inter, sans-serif; fill: #5E5470; }
+          .mkTtl { font: 700 13px Inter, sans-serif; fill: #1E1633; }
+        </style>
+        <text class="mkTtl" x="40" y="34">A model card, the way an exec reads it</text>
+
+        <rect x="40" y="52" width="200" height="40" rx="8" fill="#5B21B6"/><text class="mkT" x="60" y="77">Task</text>
+        <text class="mkN" x="260" y="77" style="fill:#1E1633">what it predicts, and for whom</text>
+
+        <rect x="40" y="100" width="200" height="40" rx="8" fill="#7C3AED"/><text class="mkT" x="60" y="125">Data</text>
+        <text class="mkN" x="260" y="125" style="fill:#1E1633">what it learned from - and who might be missing</text>
+
+        <rect x="40" y="148" width="200" height="40" rx="8" fill="#7C3AED"/><text class="mkT" x="60" y="173">Metric + baseline</text>
+        <text class="mkN" x="260" y="173" style="fill:#1E1633">the score, next to the "do nothing" number</text>
+
+        <rect x="40" y="196" width="200" height="40" rx="8" fill="#F7931E"/><text class="mkT" x="60" y="221">Known limits</text>
+        <text class="mkN" x="260" y="221" style="fill:#1E1633">where it is weak, and what it must not be used for</text>
+
+        <rect x="40" y="244" width="200" height="40" rx="8" fill="#A78BFA"/><text class="mkH" x="60" y="269">Monitoring</text>
+        <text class="mkN" x="260" y="269" style="fill:#1E1633">what is watched, and the retrain trigger</text>
+
+        <rect x="40" y="292" width="200" height="40" rx="8" fill="#1E1633"/><text class="mkT" x="60" y="317">Owner</text>
+        <text class="mkN" x="260" y="317" style="fill:#1E1633">the named person accountable for it</text>
+
+        <rect x="640" y="292" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="mkN" x="662" y="304" style="fill:#1E1633">If a model has no card, it has</text>
+        <text class="mkN" x="662" y="322" style="fill:#1E1633">no owner - and no one accountable.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the anatomy of a model card</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Fairness and bias in one page<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A model has no values of its own. It faithfully reproduces whatever is in its training data - including patterns of disadvantage no one wrote down and no one intended.</p>
+        <ul>
+          <li><strong>Bias enters through the data.</strong> If the past treated a group unfairly, a model trained on that past will learn to treat them unfairly too, and call it a pattern.</li>
+          <li><strong>Protected groups need explicit checks.</strong> A model can perform well on average and badly for a specific group. Average accuracy hides it; you have to look per group.</li>
+          <li><strong>Proxies are sneaky.</strong> Even without a sensitive attribute in the data, a model can reconstruct it from correlated features - a postcode standing in for something it should never use.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p>A company built a model to target its best hiring or marketing prospects and trained it on years of historical outcomes. Because those historical outcomes already favoured one group, the model quietly learned to score that group higher and steer opportunity away from everyone else - no one intended it, and the average metrics looked fine. Only a per-group check exposed the harm baked into the data.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The five questions to ask your data team<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>You do not need to read code to govern a model. You need five questions, asked every time, before anything ships:</p>
+        <ul>
+          <li><strong>1 · What data did it learn from?</strong> And who or what might be missing or misrepresented in it?</li>
+          <li><strong>2 · What is the baseline?</strong> How does it compare to doing nothing, or to a simple rule? A score alone means nothing.</li>
+          <li><strong>3 · How was it tested?</strong> On held-out data it never saw? Checked per group, not just on average?</li>
+          <li><strong>4 · What could go wrong?</strong> Where is it weak, what must it never be used for, and what does a confident wrong answer cost?</li>
+          <li><strong>5 · Who is accountable?</strong> Who owns it, watches it, and decides when to retrain or retire it?</li>
+        </ul>
+        <p>On <strong>buy versus build</strong>: a bought vendor model is faster and cheaper to start, but you inherit its data, its biases, and its blind spots - and you often cannot see inside it. Building your own costs more and takes longer, but you own the data, the card, and the accountability. The five questions apply either way; a vendor who cannot answer them is a red flag.</p>
+        <div class="callout tip">
+          <strong>The leader's habit</strong>
+          Ask the same five questions of every model, bought or built. Consistency is what turns governance from a slogan into a practice - and it is the fastest way to find the model no one is really watching.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ CAPSTONE ============ -->
+  <section class="section" id="capstone">
+    <div class="section-kicker">
+      <span class="klabel">Capstone</span>
+      <h2>Read a Lumen model card <span class="tag demo">◐ demo</span></h2>
+    </div>
+    <p class="lede">Here is everything the leader track taught, on one page. Below is a model card for Lumen's conversion model - the artefact a responsible team hands you before shipping. Read it the way the accountable exec should: not admiring the score, but interrogating the baseline, the limits, and the owner. Walk each row and ask "does this survive the five questions?"</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Row</th><th>What the card says</th><th>How an exec reads it</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Task</strong></td>
+          <td>Predict whether a checkout session will convert (buy). A classifier, scored per session.</td>
+          <td>A prediction problem, correctly framed. It predicts who is likely to buy - it does not tell us what would make them buy.</td>
+        </tr>
+        <tr>
+          <td><strong>Features</strong></td>
+          <td>Prior 30-day spend, new-vs-returning, channel, product category, device, pages viewed, session hour.</td>
+          <td>Prior spend and returning status carry the signal; session hour is near-useless noise. All are knowable at prediction time - no leakage.</td>
+        </tr>
+        <tr>
+          <td><strong>Metric + baseline</strong></td>
+          <td>ROC-AUC ~ 0.71. Beats the 96.8% "always predict no" baseline on <strong>recall</strong>, not on accuracy.</td>
+          <td>The honest comparison. Accuracy would have flattered a useless model; recall against the base rate shows it actually finds buyers.</td>
+        </tr>
+        <tr>
+          <td><strong>Known limits</strong></td>
+          <td>A real but modest signal - it ranks, it does not certify. Predicts conversion; does not prove any feature causes it.</td>
+          <td>Sets expectations. Use it to prioritise outreach, never to claim a lever. Causal questions go to an experiment.</td>
+        </tr>
+        <tr>
+          <td><strong>Monitoring</strong></td>
+          <td>Watch weekly conversion among flagged sessions and input drift; retrain when performance slips past the set line.</td>
+          <td>The lifecycle is owned, not assumed. There is a trigger and someone watching for drift, so the model will not rot in silence.</td>
+        </tr>
+        <tr>
+          <td><strong>Owner</strong></td>
+          <td>A named person on the data team, accountable for performance, fairness checks, and retrain decisions.</td>
+          <td>The most important row. A model with an owner has accountability; one without has none.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <strong>The capstone read</strong>
+      A good model card is not the one with the highest score - it is the one that is honest about its baseline, clear about its limits, watched for drift, and owned by a name. If you can read this card and decide whether to trust the model, you have the whole leader track in your hands.
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">After the leader track</span>
+      <h2>This week <span class="tag exercise">◐ 30 min total</span></h2>
+    </div>
+    <ul>
+      <li><strong>Audit a real one.</strong> Pick one ML use in your org - live or proposed - and run it through the five questions: what data, what baseline, how tested, what could go wrong, who is accountable.</li>
+      <li><strong>Fill in a model card.</strong> Using the six-row template above, write the card for that same use. The gaps you cannot fill are exactly where the risk lives.</li>
+      <li><strong>Find the unwatched model.</strong> Ask which live models in your org are being monitored for drift, and who owns them. If the answer is "no one", you found your first governance win.</li>
+      <li><strong>Optional:</strong> decide one buy-versus-build question your team faces, and defend it with the five questions rather than gut feel.</li>
+    </ul>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · A conversion model worked well at launch but is quietly getting worse months later. What is going on?</p>
+      <button class="qopt" type="button">A · models are perfect once trained, so this cannot happen</button>
+      <button class="qopt" type="button">B · the model has run out of predictions to make</button>
+      <button class="qopt" type="button">C · the world has drifted since training, so the model needs monitoring and retraining</button>
+      <p class="qwhy">This is drift. A model learns the world as it was; when the world changes (new products, seasons, a pandemic), the old pattern degrades. That is why monitoring and retraining are part of the lifecycle, not optional extras.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · How can a model end up treating a protected group unfairly even when no one intended it?</p>
+      <button class="qopt" type="button">A · it inherits bias from training data that reflects past unfairness</button>
+      <button class="qopt" type="button">B · models randomly pick a group to disadvantage</button>
+      <button class="qopt" type="button">C · fairness is only a problem for very large models</button>
+      <p class="qwhy">A model faithfully reproduces the patterns in its data. If the historical data encoded disadvantage, the model learns it and calls it a pattern - which is why per-group fairness checks matter, not just average accuracy.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · Before shipping a model, what is the most important thing a leader should establish?</p>
+      <button class="qopt" type="button">A · that it uses the newest, most complex algorithm available</button>
+      <button class="qopt" type="button">B · how it was tested, what the baseline is, and what could go wrong</button>
+      <button class="qopt" type="button">C · that its accuracy is above 90%</button>
+      <p class="qwhy">The five questions - especially how it was tested, against what baseline, and what could go wrong - are what tell you whether a model is trustworthy. A high accuracy number alone (remember the 96.8% paradox) proves nothing.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ OFFICIAL SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>What this session covers</h2>
+    </div>
+    <p class="lede">This capstone teaches the framing behind the "ML in production and responsible AI" week of the major intro courses - the lifecycle, drift, fairness, and governance. The hands-on monitoring and MLOps tooling is deliberately beyond an intro; the sources below go deeper.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The lifecycle after launch; drift; monitoring and retraining</span><span class="note">Part 1</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Fairness and bias; buy vs build; the five questions; reading a model card</span><span class="note">Part 2 + capstone</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google Machine Learning Crash Course - "ML fairness" + "production ML systems"</span><span class="note">free, and the clearest primer</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Andrew Ng - responsible AI and the deployment lifecycle</span><span class="note">the exec framing behind this session</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Hands-on MLOps and monitoring tooling</span><span class="note">beyond an intro by design - a next course</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader Session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The lifecycle</b><span>Frame, data, train, evaluate, ship, monitor, retrain - and back to frame. A model is a loop, not a launch.</span></div>
+      <div class="cheat-item"><b>Drift</b><span>The world changes, so a good model degrades. Assume every deployed model rots; the only question is how fast.</span></div>
+      <div class="cheat-item"><b>Monitoring is not optional</b><span>Watch live performance and input drift, set the retrain trigger in advance, and name who owns pulling it.</span></div>
+      <div class="cheat-item"><b>Fairness</b><span>Models inherit bias from their data and can harm a group no one intended. Check per group, not just on average.</span></div>
+      <div class="cheat-item"><b>The five questions</b><span>What data, what baseline, how tested, what could go wrong, who is accountable. Ask them of every model, bought or built.</span></div>
+      <div class="cheat-item"><b>Read the model card</b><span>Trust the honest one - clear baseline, named limits, watched for drift, owned by a person - not the highest score.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 6 of 6 · learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="../courses/b1-setup-and-first-dataset.html">Next: try the builder track →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

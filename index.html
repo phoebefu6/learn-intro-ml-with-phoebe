@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>learn intro to machine learning with phoebe - leader + builder tracks</title>
+<link rel="stylesheet" href="assets/style.css?v=2">
+<style>
+  .stats-row { display: flex; gap: 2.4rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .stat b { display: block; font-size: 2.1rem; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: .72rem; opacity: .85; text-transform: uppercase; letter-spacing: .09em; font-weight: 600; }
+
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .course-card {
+    border: 1px solid var(--hairline);
+    border-top: 4px solid var(--diff, var(--indigo));
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fff;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .course-card:hover { border-color: var(--indigo-soft); border-top-color: var(--diff, var(--indigo)); box-shadow: 0 8px 28px rgba(124,58,237,.16); transform: translateY(-3px); }
+  .course-card .cicon { font-size: 1.7rem; line-height: 1; }
+  .course-card .cnum { font-size: .72rem; font-weight: 700; color: var(--indigo); text-transform: uppercase; letter-spacing: .1em; }
+  .course-card h3 { font-size: 1.05rem; font-weight: 800; line-height: 1.3; }
+  .course-card p { font-size: .85rem; color: var(--muted); flex: 1; }
+  .course-card .meta { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+  .diff-legend { display: flex; gap: 1rem; margin-top: 1.6rem; font-size: .74rem; color: var(--muted); font-weight: 600; flex-wrap: wrap; }
+  .diff-legend i { display: inline-block; width: .85rem; height: .35rem; border-radius: 999px; margin-right: .35rem; vertical-align: middle; }
+
+  .paths { margin-top: 2.6rem; }
+  .paths h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+  .paths .plede { color: var(--muted); font-size: .92rem; margin-bottom: .8rem; }
+  .path { display: flex; gap: .55rem; align-items: center; padding: .75rem 0; border-bottom: .5px solid var(--hairline); flex-wrap: wrap; }
+  .path:last-child { border-bottom: none; }
+  .path b { min-width: 15.5rem; font-size: .9rem; }
+  .path .pstep { background: var(--indigo-50); color: var(--indigo); border-radius: 999px; padding: .16rem .68rem; font-weight: 700; font-size: .8rem; text-decoration: none; transition: all .12s ease; }
+  .path .pstep:hover { background: var(--indigo); color: #fff; }
+  .path .parr { color: var(--faint); font-weight: 700; }
+
+  .play-section { margin-top: 2.6rem; }
+  .play-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+  .play-section .plede { color: var(--muted); font-size: .92rem; margin-bottom: .4rem; }
+
+  .mm-section { margin-top: 1.6rem; }
+  .mm-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .2rem; }
+  .mm-section .mm-lede { color: var(--muted); font-size: .92rem; margin-bottom: .4rem; }
+  .mm-wrap { border: 1px solid var(--hairline); border-radius: var(--radius); background: linear-gradient(180deg,#fff, #F2F9FD); padding: .6rem; overflow-x: auto; }
+  .mm-svg { width: 100%; height: auto; display: block; max-width: 60rem; margin: 0 auto; min-width: 34rem; }
+  .mm-link { cursor: pointer; text-decoration: none; }
+  .mm-node rect { transition: opacity .15s ease, filter .15s ease; }
+  .mm-node text { pointer-events: none; }
+  .mm-link:hover .mm-node rect { filter: brightness(1.06); }
+  .mm-edge { transition: opacity .15s ease; }
+
+  .noteband { margin-top: 2.4rem; background: var(--indigo-50); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1rem 1.2rem; font-size: .9rem; color: var(--ink); }
+  .noteband b { color: var(--indigo); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Intro to Machine Learning with Phoebe</div>
+    <h1>Your first models, and <span class="accent">how to know they are any good</span>.</h1>
+    <p class="sub">Two tracks, one running brand. The 6-session leader track teaches executives, PMs, and marketers what machine learning can and cannot do, how to read a model's report card without being fooled by a big accuracy number, and how to commission and govern an ML project - no code. The 10-session builder track takes practitioners through scikit-learn end to end: the sacred train/test split and the leakage trap, a first classifier and a first regressor, over- and under-fitting, the bias-variance tradeoff, cross-validation and tuning, the metrics that actually matter, and pipelines that keep you honest - finishing with a model-comparison capstone. This is the middle link in the Data Science ladder: statistics gave you the math, this gives you the models, experimentation gives you cause. Learn it all on Lumen Skincare.</p>
+    <div class="stats-row">
+      <div class="stat"><b data-count="16">16</b><span>sessions, 2 tracks</span></div>
+      <div class="stat"><b data-count="2">2</b><span>models: convert + order value</span></div>
+      <div class="stat"><b data-count="3">3</b><span>live in-browser ML tools</span></div>
+      <div class="stat"><b data-count="1">1</b><span>running brand: Lumen</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section">
+    <div class="paths" style="margin-top:0">
+      <h2>The leader track 🤝 <span style="font-size:.85rem;font-weight:600;color:var(--muted)">· for execs, PMs &amp; marketers · 6 x 45 min · no code</span></h2>
+      <p class="plede">A model is only as trustworthy as the reading you give it. This track teaches you to tell a real ML use case from a fad, to read a confusion matrix and an ROC curve, to catch the accuracy paradox before it fools your team, and to commission ML work responsibly - all without opening a notebook. A friendly on-ramp for LinkedIn readers, too.</p>
+    </div>
+    <div class="course-grid">
+      <a class="course-card" href="courses/a1-what-ml-is.html" style="--diff:#34D399">
+        <span class="cicon">🧭</span>
+        <span class="cnum">Leader session 1 · start here</span>
+        <h3>What ML actually is (and isn't)</h3>
+        <p>Machine learning vs rules and dashboards, the three kinds of learning, prediction vs causation, and when NOT to use ML. The workflow every model follows, in plain language.</p>
+        <span class="meta"><span class="pill amber">▶ Start here</span><span class="pill light">No code</span></span>
+      </a>
+      <a class="course-card" href="courses/a2-how-a-model-learns.html" style="--diff:#34D399">
+        <span class="cicon">📉</span>
+        <span class="cnum">Leader session 2</span>
+        <h3>How a model learns, and how it goes wrong</h3>
+        <p>Learning from examples, the train/test idea, and the two ways every model fails - overfitting and underfitting - plus the bias-variance tradeoff, seen live, with no math to do.</p>
+        <span class="meta"><span class="pill light">Over/underfit</span></span>
+      </a>
+      <a class="course-card" href="courses/a3-the-data-is-the-model.html" style="--diff:#FBBF24">
+        <span class="cicon">🧱</span>
+        <span class="cnum">Leader session 3</span>
+        <h3>The data is the model</h3>
+        <p>Features and labels, garbage-in-garbage-out, and data leakage - the silent killer where a feature secretly contains the answer. Why more columns is not more signal.</p>
+        <span class="meta"><span class="pill light">Data &amp; leakage</span></span>
+      </a>
+      <a class="course-card" href="courses/a4-reading-the-report-card.html" style="--diff:#FBBF24">
+        <span class="cicon">🩺</span>
+        <span class="cnum">Leader session 4</span>
+        <h3>Reading a model's report card</h3>
+        <p>The accuracy paradox, the confusion matrix, precision vs recall, ROC-AUC, and RMSE in dollars - what every model metric means and which one to ask for. Threshold as a business choice.</p>
+        <span class="meta"><span class="pill light">Metrics</span></span>
+      </a>
+      <a class="course-card" href="courses/a5-prediction-is-not-proof.html" style="--diff:#FB923C">
+        <span class="cicon">🔗</span>
+        <span class="cnum">Leader session 5</span>
+        <h3>Prediction is not proof</h3>
+        <p>The model zoo at a glance - regression, trees, ensembles, neural nets, clustering - and the line every leader must hold: a model predicts, it does not prove cause. The bridge to experimentation.</p>
+        <span class="meta"><span class="pill light">Model zoo</span></span>
+      </a>
+      <a class="course-card" href="courses/a6-ml-responsibly.html" style="--diff:#FB923C">
+        <span class="cicon">⚖️</span>
+        <span class="cnum">Leader session 6</span>
+        <h3>Putting ML to work responsibly</h3>
+        <p>The lifecycle after launch - monitoring and drift - fairness and bias, buy vs build, and the questions to ask your data team. Capstone: read a Lumen model card like an exec.</p>
+        <span class="meta"><span class="pill light">Capstone</span></span>
+      </a>
+    </div>
+
+    <div class="paths">
+      <h2>The builder track 🛠️ <span style="font-size:.85rem;font-weight:600;color:var(--muted)">· for practitioners · 10 x 45 min · Python + scikit-learn</span></h2>
+      <p class="plede">For DA, DE, DS, and anyone who needs to actually train and judge a model. One running brand - Lumen Skincare - carried across every session: simulate it, split it, fit a first classifier and a first regressor, diagnose over- and under-fitting, cross-validate, measure it honestly, pipeline the preprocessing to kill leakage, and finish by comparing models and picking one. Built with scikit-learn, numpy, and pandas.</p>
+    </div>
+    <div class="course-grid">
+      <a class="course-card" href="courses/b1-setup-and-first-dataset.html" style="--diff:#34D399">
+        <span class="cicon">⚙️</span>
+        <span class="cnum">Builder session 1 · start here</span>
+        <h3>Setup and your first dataset</h3>
+        <p>scikit-learn, pandas, numpy - and the Lumen dataset built once with seed 42 (reused all course long). Meet the <code>fit</code> / <code>predict</code> estimator API that every model shares.</p>
+        <span class="meta"><span class="pill amber">▶ Start here</span><span class="pill light">Python</span></span>
+      </a>
+      <a class="course-card" href="courses/b2-train-test-split.html" style="--diff:#34D399">
+        <span class="cicon">✂️</span>
+        <span class="cnum">Builder session 2</span>
+        <h3>The train/test split (and the leakage trap)</h3>
+        <p><code>train_test_split</code>, <code>stratify</code> for imbalanced targets, and the rule you never break: fit on train only. The scaler-on-test disaster, shown in real numbers.</p>
+        <span class="meta"><span class="pill light">Split it right</span></span>
+      </a>
+      <a class="course-card" href="courses/b3-first-model-end-to-end.html" style="--diff:#FBBF24">
+        <span class="cicon">🚀</span>
+        <span class="cnum">Builder session 3</span>
+        <h3>Your first model, end to end</h3>
+        <p><code>LogisticRegression</code> to predict who converts - <code>fit</code>, <code>predict</code>, <code>predict_proba</code>, first accuracy read - and the moment the accuracy paradox appears on a 3.2% base rate.</p>
+        <span class="meta"><span class="pill light">First classifier</span></span>
+      </a>
+      <a class="course-card" href="courses/b4-over-and-underfitting.html" style="--diff:#FBBF24">
+        <span class="cicon">📉</span>
+        <span class="cnum">Builder session 4</span>
+        <h3>Over- and under-fitting</h3>
+        <p>A <code>DecisionTree</code> at rising <code>max_depth</code>, train vs test score, and the U-shaped test-error curve - bias and variance made concrete. The single most important picture in ML.</p>
+        <span class="meta"><span class="pill light">The U-curve</span></span>
+      </a>
+      <a class="course-card" href="courses/b5-bias-variance-regularization.html" style="--diff:#FBBF24">
+        <span class="cicon">🎚️</span>
+        <span class="cnum">Builder session 5</span>
+        <h3>Bias-variance and regularization</h3>
+        <p>The tradeoff formalized, then <code>Ridge</code> and <code>Lasso</code> - how an L2 or L1 penalty dials model complexity down and why Lasso can zero a feature out entirely.</p>
+        <span class="meta"><span class="pill light">Regularize</span></span>
+      </a>
+      <a class="course-card" href="courses/b6-cross-validation-and-tuning.html" style="--diff:#FB923C">
+        <span class="cicon">🔁</span>
+        <span class="cnum">Builder session 6</span>
+        <h3>Cross-validation and tuning</h3>
+        <p><code>cross_val_score</code> (5-fold), mean ± std, and <code>GridSearchCV</code> plus the validation curve - how to pick <code>max_depth</code> honestly, without ever touching the test set.</p>
+        <span class="meta"><span class="pill light">k-fold CV</span></span>
+      </a>
+      <a class="course-card" href="courses/b7-classification-metrics.html" style="--diff:#FB923C">
+        <span class="cicon">🩺</span>
+        <span class="cnum">Builder session 7</span>
+        <h3>Classification metrics in depth</h3>
+        <p><code>confusion_matrix</code>, precision / recall / F1, <code>classification_report</code>, <code>roc_auc_score</code>, and the precision-recall curve - and moving the threshold to trade one error for the other.</p>
+        <span class="meta"><span class="pill light">Judge a classifier</span></span>
+      </a>
+      <a class="course-card" href="courses/b8-regression-metrics.html" style="--diff:#FB923C">
+        <span class="cicon">📐</span>
+        <span class="cnum">Builder session 8</span>
+        <h3>Regression metrics + the model</h3>
+        <p><code>LinearRegression</code> on order value, MAE / MSE / RMSE / R², the predict-the-mean baseline, and single vs multi-feature - watch R² climb from 0.36 to 0.45 as you add signal.</p>
+        <span class="meta"><span class="pill light">Judge a regressor</span></span>
+      </a>
+      <a class="course-card" href="courses/b9-pipelines-and-features.html" style="--diff:#F87171">
+        <span class="cicon">🧱</span>
+        <span class="cnum">Builder session 9</span>
+        <h3>Feature prep and Pipelines</h3>
+        <p><code>ColumnTransformer</code> with <code>OneHotEncoder</code> and <code>StandardScaler</code>, wrapped in a <code>Pipeline</code> that kills leakage for good - plus <code>coef_</code> and <code>feature_importances_</code>, and exposing <code>session_hour</code> as noise.</p>
+        <span class="meta"><span class="pill light">Pipelines</span></span>
+      </a>
+      <a class="course-card" href="courses/b10-capstone-compare-models.html" style="--diff:#F87171">
+        <span class="cicon">🏁</span>
+        <span class="cnum">Builder session 10</span>
+        <h3>Capstone: compare models</h3>
+        <p>Put it together - logistic vs tree vs random forest, picked by CV, scored once on held-out test, written up as a model card. Then a short <code>KMeans</code> segmentation taste that tees up what comes next.</p>
+        <span class="meta"><span class="pill light">Capstone</span></span>
+      </a>
+    </div>
+    <div class="diff-legend">
+      <span><i style="background:#34D399"></i>start here - foundations</span>
+      <span><i style="background:#FBBF24"></i>building up - the core craft</span>
+      <span><i style="background:#FB923C"></i>getting real - evaluation</span>
+      <span><i style="background:#F87171"></i>hardest - pipelines &amp; capstone</span>
+    </div>
+
+    <div class="paths">
+      <h2>Choose your path 🗺️</h2>
+      <p class="plede">Leaders start at Leader session 1; practitioners start at Builder session 1. The fast-tracks fit a specific gap.</p>
+      <div class="path"><b>🤝 Leader journey (no code)</b>
+        <a class="pstep" href="courses/a1-what-ml-is.html">A1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a2-how-a-model-learns.html">A2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a3-the-data-is-the-model.html">A3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a4-reading-the-report-card.html">A4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a5-prediction-is-not-proof.html">A5</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a6-ml-responsibly.html">A6</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b1-setup-and-first-dataset.html">curious? Builder session 1</a>
+      </div>
+      <div class="path"><b>🛠️ Full builder journey</b>
+        <a class="pstep" href="courses/b1-setup-and-first-dataset.html">1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b2-train-test-split.html">2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b3-first-model-end-to-end.html">3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b4-over-and-underfitting.html">4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b5-bias-variance-regularization.html">5</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b6-cross-validation-and-tuning.html">6</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b7-classification-metrics.html">7</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b8-regression-metrics.html">8</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b9-pipelines-and-features.html">9</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b10-capstone-compare-models.html">10</a>
+      </div>
+      <div class="path"><b>⚡ Evaluation fast-track</b>
+        <a class="pstep" href="courses/b2-train-test-split.html">2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b4-over-and-underfitting.html">4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b6-cross-validation-and-tuning.html">6</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b7-classification-metrics.html">7</a>
+      </div>
+      <div class="path"><b>🎯 First-model fast-track</b>
+        <a class="pstep" href="courses/b1-setup-and-first-dataset.html">1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b2-train-test-split.html">2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b3-first-model-end-to-end.html">3</a>
+      </div>
+      <div class="path"><b>👔 Leader crash course (60 min)</b>
+        <a class="pstep" href="courses/a1-what-ml-is.html">A1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a4-reading-the-report-card.html">A4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a6-ml-responsibly.html">A6</a>
+      </div>
+    </div>
+
+    <section class="play-section">
+      <h2>Try the ML playground 🎛️</h2>
+      <p class="plede">Three live tools, no install, seeded from Lumen's real numbers. Split the data, slide a tree from underfit to overfit, and move a classifier's threshold to watch the accuracy paradox in action - the same tools are embedded in the sessions that teach them.</p>
+      <div class="ml-live" data-tool="split"></div>
+      <div class="ml-live" data-tool="fit"></div>
+      <div class="ml-live" data-tool="threshold"></div>
+    </section>
+
+    <div class="noteband">
+      <b>One brand, both tracks.</b> Every session works on <b>Lumen Skincare</b> - a synthetic $18M direct-to-consumer skincare label reused from the statistics and experimentation courses. We build two models on it: a <b>classifier</b> for whether a checkout session converts (a ~3.2% base rate, so the accuracy paradox is unavoidable) and a <b>regressor</b> for how large the order will be (mean ~$74, right-skewed). Prior-30-day spend correlates ~0.6 with order value - the same number the statistics course fit - so every figure reconciles across all three courses.
+    </div>
+
+    <div class="noteband">
+      <b>Honest about scope.</b> Sessions distill the leading foundational material - Andrew Ng / DeepLearning.AI's Machine Learning Specialization (the spine), Google's Machine Learning Crash Course, StatQuest, 365 Data Science, and the scikit-learn documentation. Certificates, graded exams, and lecture videos stay with their official sources. Deep learning, ensemble methods in depth, SVMs, heavy feature engineering, and unsupervised depth are pointed to their own sibling courses. This is an applied intro: the workflow and the judgement, not a zoo of algorithms. Content verified July 2026.
+    </div>
+  </section>
+
+  <section class="section mm-section">
+    <h2>The knowledge map 🧠</h2>
+    <p class="mm-lede">The builder track at a glance - hover a session to spotlight its concepts, click any node to jump in.</p>
+    <div class="mm-wrap"><div id="mindmap"></div></div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a> · in the ladder: <a href="https://phoebefu6.github.io/learn-statistics-with-phoebe/">learn-statistics</a> → <b>intro-ml</b> → <a href="https://phoebefu6.github.io/learn-experimentation-with-phoebe/">learn-experimentation</a></span>
+  </footer>
+</main>
+
+<script>
+window.MINDMAP_DATA = {
+  title: "Intro\nto ML",
+  centerColor: "#5B21B6",
+  sessions: [
+    { label: "Setup +\nfirst data", href: "courses/b1-setup-and-first-dataset.html", color: "#34D399",
+      concepts: [
+        { label: "fit / predict API", href: "courses/b1-setup-and-first-dataset.html" },
+        { label: "Build Lumen (seed 42)", href: "courses/b1-setup-and-first-dataset.html" },
+        { label: "Features + labels", href: "courses/b1-setup-and-first-dataset.html" } ] },
+    { label: "Train/test\nsplit", href: "courses/b2-train-test-split.html", color: "#34D399",
+      concepts: [
+        { label: "train_test_split", href: "courses/b2-train-test-split.html" },
+        { label: "Fit on train only", href: "courses/b2-train-test-split.html" },
+        { label: "The leakage trap", href: "courses/b2-train-test-split.html" } ] },
+    { label: "First model\nend to end", href: "courses/b3-first-model-end-to-end.html", color: "#FBBF24",
+      concepts: [
+        { label: "LogisticRegression", href: "courses/b3-first-model-end-to-end.html" },
+        { label: "predict_proba", href: "courses/b3-first-model-end-to-end.html" },
+        { label: "Accuracy paradox", href: "courses/b3-first-model-end-to-end.html" } ] },
+    { label: "Over- +\nunder-fit", href: "courses/b4-over-and-underfitting.html", color: "#FBBF24",
+      concepts: [
+        { label: "Tree max_depth", href: "courses/b4-over-and-underfitting.html" },
+        { label: "Train vs test gap", href: "courses/b4-over-and-underfitting.html" },
+        { label: "The U-curve", href: "courses/b4-over-and-underfitting.html" } ] },
+    { label: "Bias-variance\n+ regularize", href: "courses/b5-bias-variance-regularization.html", color: "#FBBF24",
+      concepts: [
+        { label: "The tradeoff", href: "courses/b5-bias-variance-regularization.html" },
+        { label: "Ridge (L2)", href: "courses/b5-bias-variance-regularization.html" },
+        { label: "Lasso (L1)", href: "courses/b5-bias-variance-regularization.html" } ] },
+    { label: "Cross-val\n+ tuning", href: "courses/b6-cross-validation-and-tuning.html", color: "#FB923C",
+      concepts: [
+        { label: "5-fold CV", href: "courses/b6-cross-validation-and-tuning.html" },
+        { label: "GridSearchCV", href: "courses/b6-cross-validation-and-tuning.html" },
+        { label: "Never touch test", href: "courses/b6-cross-validation-and-tuning.html" } ] },
+    { label: "Classification\nmetrics", href: "courses/b7-classification-metrics.html", color: "#FB923C",
+      concepts: [
+        { label: "Confusion matrix", href: "courses/b7-classification-metrics.html" },
+        { label: "Precision / recall / F1", href: "courses/b7-classification-metrics.html" },
+        { label: "ROC-AUC", href: "courses/b7-classification-metrics.html" } ] },
+    { label: "Regression\nmetrics", href: "courses/b8-regression-metrics.html", color: "#FB923C",
+      concepts: [
+        { label: "MAE / RMSE / R²", href: "courses/b8-regression-metrics.html" },
+        { label: "Predict-mean baseline", href: "courses/b8-regression-metrics.html" },
+        { label: "LinearRegression", href: "courses/b8-regression-metrics.html" } ] },
+    { label: "Pipelines\n+ features", href: "courses/b9-pipelines-and-features.html", color: "#F87171",
+      concepts: [
+        { label: "ColumnTransformer", href: "courses/b9-pipelines-and-features.html" },
+        { label: "OneHot + scale", href: "courses/b9-pipelines-and-features.html" },
+        { label: "Feature importance", href: "courses/b9-pipelines-and-features.html" } ] },
+    { label: "Capstone:\ncompare", href: "courses/b10-capstone-compare-models.html", color: "#F87171",
+      concepts: [
+        { label: "Compare + pick by CV", href: "courses/b10-capstone-compare-models.html" },
+        { label: "Final held-out test", href: "courses/b10-capstone-compare-models.html" },
+        { label: "KMeans taste", href: "courses/b10-capstone-compare-models.html" } ] }
+  ]
+};
+</script>
+<script src="assets/ml-live.js?v=3"></script>
+<script src="assets/mindmap.js?v=2"></script>
+<script src="assets/app.js?v=2"></script>
+</body>
+</html>
