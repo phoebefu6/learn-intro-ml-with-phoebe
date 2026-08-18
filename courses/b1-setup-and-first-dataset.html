@@ -151,6 +151,56 @@ pip install scikit-learn pandas numpy matplotlib pyarrow</pre>
     </div>
     <p class="lede">We simulate 40,000 Lumen checkout sessions with a fixed seed so your numbers match mine - and match every later builder session. The signal is deliberately realistic: prior spend and returning-customer status drive conversion, prior spend and product category drive order value, and <code>session_hour</code> is pure noise we planted to prove later that more columns is not more signal.</p>
 
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diverging bar chart of the conversion lift each channel adds in the b1 build code: email plus 0.8, direct plus 0.5, organic plus 0.3, referral plus 0.2, sms plus 0.1, paid search minus 0.1, social minus 0.2, affiliate minus 0.3, display minus 0.5. Email traffic is planted to convert best and display worst.">
+        <style>
+          .b1chT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+          .b1chK { font: 600 11.5px Inter, sans-serif; fill: #12222B; }
+          .b1chL { font: 600 12px Inter, sans-serif; fill: #12222B; }
+          .b1chV { font: 700 12px Inter, sans-serif; fill: #12222B; }
+          .b1chN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+        </style>
+        <rect x="0" y="0" width="880" height="372" fill="#EAF6FC"/>
+        <text class="b1chT" x="40" y="28">The planted channel signal - lift added to the conversion score z</text>
+        <rect x="40" y="42" width="14" height="14" rx="3" fill="#2C86BD"/>
+        <text class="b1chK" x="60" y="54">adds to conversion</text>
+        <rect x="220" y="42" width="14" height="14" rx="3" fill="#F7931E"/>
+        <text class="b1chK" x="240" y="54">subtracts from conversion</text>
+        <line x1="430" y1="66" x2="430" y2="344" stroke="#B4D4E2" stroke-width="1.5"/>
+
+        <text class="b1chL" x="170" y="90" text-anchor="end">email</text>
+        <rect x="430" y="76" width="280" height="20" rx="4" fill="#2C86BD"/>
+        <text class="b1chV" x="718" y="90">+0.8</text>
+        <text class="b1chL" x="170" y="120" text-anchor="end">direct</text>
+        <rect x="430" y="106" width="175" height="20" rx="4" fill="#2C86BD"/>
+        <text class="b1chV" x="613" y="120">+0.5</text>
+        <text class="b1chL" x="170" y="150" text-anchor="end">organic</text>
+        <rect x="430" y="136" width="105" height="20" rx="4" fill="#2C86BD"/>
+        <text class="b1chV" x="543" y="150">+0.3</text>
+        <text class="b1chL" x="170" y="180" text-anchor="end">referral</text>
+        <rect x="430" y="166" width="70" height="20" rx="4" fill="#2C86BD"/>
+        <text class="b1chV" x="508" y="180">+0.2</text>
+        <text class="b1chL" x="170" y="210" text-anchor="end">sms</text>
+        <rect x="430" y="196" width="35" height="20" rx="4" fill="#2C86BD"/>
+        <text class="b1chV" x="473" y="210">+0.1</text>
+        <text class="b1chL" x="170" y="240" text-anchor="end">paid_search</text>
+        <rect x="395" y="226" width="35" height="20" rx="4" fill="#F7931E"/>
+        <text class="b1chV" x="387" y="240" text-anchor="end">-0.1</text>
+        <text class="b1chL" x="170" y="270" text-anchor="end">social</text>
+        <rect x="360" y="256" width="70" height="20" rx="4" fill="#F7931E"/>
+        <text class="b1chV" x="352" y="270" text-anchor="end">-0.2</text>
+        <text class="b1chL" x="170" y="300" text-anchor="end">affiliate</text>
+        <rect x="325" y="286" width="105" height="20" rx="4" fill="#F7931E"/>
+        <text class="b1chV" x="317" y="300" text-anchor="end">-0.3</text>
+        <text class="b1chL" x="170" y="330" text-anchor="end">display</text>
+        <rect x="255" y="316" width="175" height="20" rx="4" fill="#F7931E"/>
+        <text class="b1chV" x="247" y="330" text-anchor="end">-0.5</text>
+
+        <text class="b1chN" x="40" y="360">The exact channel signal planted in build_lumen.py - the lift each channel adds to the conversion score z.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - email is built to convert best, display worst</figcaption>
+    </figure>
+
     <div class="steps">
       <div class="step">
         <p><strong>Build the dataset (seed 42).</strong> Run this once; it saves <code>lumen_sessions.parquet</code>, which b2 through b10 reload.</p>
