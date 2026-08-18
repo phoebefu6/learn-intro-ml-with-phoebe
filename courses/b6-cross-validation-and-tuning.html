@@ -126,6 +126,45 @@
       <div class="body">
         <p>The test set has exactly one job: to give you an honest, one-time estimate of performance on truly unseen data. The moment you use it to <em>choose</em> something - a depth, an alpha, a feature set - it stops being unseen. You have leaked information from it into your model choices, and the score it reports is now optimistic.</p>
         <p>That is why tuning lives entirely on cross-validation (or a separate validation split). CV is your sandbox for trying settings; the test set is the sealed envelope you open once, at the very end, to report the number you will actually stand behind. Spend it early and you have nothing honest left to report.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A three-step protocol timeline. Step one tunes on 5-fold cross-validation using the training rows only. Step two picks the winning max_depth of 3 to 4, matching b4's sweet spot. Step three opens the held-out test set exactly once and reports that score.">
+    <style>
+      .b6pfS { font: 700 10px Inter, sans-serif; fill: #52707E; text-anchor: middle; }
+      .b6pfL { font: 600 12px Inter, sans-serif; fill: #12222B; text-anchor: middle; }
+      .b6pfB { font: 700 9.5px Inter, sans-serif; fill: #FFFFFF; letter-spacing: .04em; }
+      .b6pfT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b6pfN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="250" fill="#EAF6FC"/>
+    <text class="b6pfT" x="40" y="28">Tune on CV, then open the test set exactly once</text>
+    <line x1="70" y1="120" x2="810" y2="120" stroke="#DCEDF4" stroke-width="2"/>
+
+    <text class="b6pfS" x="70" y="102">STEP 1</text>
+    <circle cx="70" cy="120" r="7" fill="#2C86BD"/>
+    <rect x="26" y="132" width="88" height="17" rx="8" fill="#2C86BD"/>
+    <text class="b6pfB" x="70" y="144" text-anchor="middle">TUNE HERE</text>
+    <text class="b6pfL" x="70" y="168">5-fold CV</text>
+    <text class="b6pfL" x="70" y="184">on train rows</text>
+
+    <text class="b6pfS" x="440" y="102">STEP 2</text>
+    <circle cx="440" cy="120" r="7" fill="#1B5F8C"/>
+    <rect x="396" y="132" width="88" height="17" rx="8" fill="#1B5F8C"/>
+    <text class="b6pfB" x="440" y="144" text-anchor="middle">WINNER</text>
+    <text class="b6pfL" x="440" y="168">max_depth 3-4</text>
+    <text class="b6pfL" x="440" y="184">b4's sweet spot</text>
+
+    <text class="b6pfS" x="810" y="102">STEP 3</text>
+    <circle cx="810" cy="120" r="7" fill="#F7931E"/>
+    <rect x="766" y="132" width="88" height="17" rx="8" fill="#F7931E"/>
+    <text class="b6pfB" x="810" y="144" text-anchor="middle">OPEN ONCE</text>
+    <text class="b6pfL" x="810" y="168">held-out test</text>
+    <text class="b6pfL" x="810" y="184">score, then stop</text>
+
+    <text class="b6pfN" x="40" y="222">Tune on cross-validation only; the test set opens once, at the end, to report the real score.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the test set has one job: report the number you will stand behind</figcaption>
+</figure>
+
       </div>
     </details>
   </section>
@@ -172,6 +211,36 @@ print("mean R2 = %.2f  +/- %.2f" % (scores.mean(), scores.std()))
 # -> mean ~ 0.40  +/- ~ 0.06</pre>
         </div>
         <p>The mean lands around <strong>R² ~ 0.40</strong> with a spread of about <strong>+/- 0.06</strong>, folds ranging roughly 0.33 to 0.50. That spread is the point: a single unlucky split could have handed you 0.33 and made a fine model look weak. The average is steadier, and the range is information you keep.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A whisker plot on a 0 to 0.6 R-squared scale. The five cross-validation folds range from 0.33 to 0.50, with the mean at 0.40 marked as a dot in the middle of that range.">
+    <style>
+      .b6wsT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b6wsM { font: 700 12px Inter, sans-serif; fill: #1B5F8C; text-anchor: middle; }
+      .b6wsE { font: 400 11px Inter, sans-serif; fill: #52707E; text-anchor: middle; }
+      .b6wsA { font: 400 10px Inter, sans-serif; fill: #52707E; }
+      .b6wsN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="220" fill="#EAF6FC"/>
+    <text class="b6wsT" x="40" y="28">5-fold CV: a mean you can trust, plus its spread</text>
+
+    <line x1="120" y1="123" x2="760" y2="123" stroke="#DCEDF4" stroke-width="2"/>
+    <text class="b6wsA" x="120" y="150">0</text>
+    <text class="b6wsA" x="748" y="150">0.60</text>
+
+    <line x1="472" y1="123" x2="653" y2="123" stroke="#4FB0DE" stroke-width="4"/>
+    <line x1="472" y1="113" x2="472" y2="133" stroke="#52707E" stroke-width="2"/>
+    <line x1="653" y1="113" x2="653" y2="133" stroke="#52707E" stroke-width="2"/>
+    <text class="b6wsE" x="472" y="150">0.33</text>
+    <text class="b6wsE" x="653" y="150">0.50</text>
+
+    <circle cx="547" cy="123" r="7" fill="#1B5F8C"/>
+    <text class="b6wsM" x="547" y="100">mean 0.40</text>
+
+    <text class="b6wsN" x="40" y="196">Mean R² 0.40 across 5 folds, ranging 0.33 to 0.50 - report the spread, not just the average.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - a wide fold spread is a warning that one split could mislead you</figcaption>
+</figure>
+
       </div>
 
       <div class="step">

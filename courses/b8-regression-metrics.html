@@ -181,6 +181,28 @@ print("baseline RMSE $%.0f" % rmse0)           # ~ $41 (= the SD)
 print("baseline R2  %.2f" % r2_score(y_te, pred0))   # 0.00</pre>
         </div>
         <p>RMSE ~$41 and R-squared 0. That $41 is the standard deviation of order value - the baseline error is literally how much order value bounces around on its own. Every model from here has to beat it.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A gauge showing R-squared at 0.52 for the full model against a threshold tick at 0, the score of predicting the mean order value for every row. The filled bar reaches well past the do-nothing baseline.">
+    <style>
+      .b8grT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b8grV { font: 700 20px Inter, sans-serif; fill: #12222B; }
+      .b8grTick { font: 700 11px Inter, sans-serif; fill: #5A3606; text-anchor: middle; }
+      .b8grN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="220" fill="#EAF6FC"/>
+    <text class="b8grT" x="40" y="28">R² 0.52 clears the do-nothing baseline of 0</text>
+
+    <rect x="120" y="97" width="640" height="26" rx="13" fill="#DCEDF4"/>
+    <rect x="120" y="97" width="555" height="26" rx="13" fill="#2C86BD"/>
+    <line x1="120" y1="79" x2="120" y2="139" stroke="#F7931E" stroke-width="2.5"/>
+    <text class="b8grTick" x="150" y="71">0 = mean baseline</text>
+    <text class="b8grV" x="687" y="118">0.52</text>
+
+    <text class="b8grN" x="40" y="196">R-squared 0 means no better than guessing the mean; the full model reaches 0.52.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - R² of 0 is the floor every model has to beat, not a score of failure</figcaption>
+</figure>
+
       </div>
 
       <div class="step">
@@ -217,6 +239,38 @@ print("RMSE $%.0f" % (mean_squared_error(y_te, p) ** 0.5))   # ~ $28
 print("MAE  $%.0f" % mean_absolute_error(y_te, p))  # ~ $20</pre>
         </div>
         <p>R-squared ~0.52, RMSE ~$28, MAE ~$20. Notice MAE &lt; RMSE - always true, and the gap is wide here because the right-skewed big orders inflate RMSE. The everyday miss is about $20; the big-order risk is what pushes RMSE to $28.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A four-row bar chart of order value error in dollars. The predict-the-mean baseline is 41 dollars RMSE. Adding prior spend alone drops it to 32 dollars RMSE. The full model reaches 28 dollars RMSE and 20 dollars MAE, shrinking bars showing the error falling as real signal is added.">
+    <style>
+      .b8rbT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b8rbL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b8rbW { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+      .b8rbN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b8rbT" x="40" y="28">The error shrinks as real signal replaces the baseline</text>
+
+    <text class="b8rbL" x="240" y="90">BASELINE (PREDICT MEAN)</text>
+    <rect x="260" y="70" width="480" height="30" rx="4" fill="#52707E"/>
+    <text class="b8rbW" x="278" y="90">$41 RMSE</text>
+
+    <text class="b8rbL" x="240" y="142">PRIOR SPEND ONLY</text>
+    <rect x="260" y="122" width="375" height="30" rx="4" fill="#4FB0DE"/>
+    <text class="b8rbW" x="278" y="142">$32 RMSE</text>
+
+    <text class="b8rbL" x="240" y="194">FULL MODEL - RMSE</text>
+    <rect x="260" y="174" width="328" height="30" rx="4" fill="#2C86BD"/>
+    <text class="b8rbW" x="278" y="194">$28 RMSE</text>
+
+    <text class="b8rbL" x="240" y="246">FULL MODEL - MAE</text>
+    <rect x="260" y="226" width="234" height="30" rx="4" fill="#1B5F8C"/>
+    <text class="b8rbW" x="278" y="246">$20 MAE</text>
+
+    <text class="b8rbN" x="40" y="284">Error keeps shrinking: $41 baseline to $32 with one feature to $28 RMSE / $20 MAE full model.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - every feature added should shrink this bar, or it is not earning its place</figcaption>
+</figure>
+
       </div>
 
       <div class="step">

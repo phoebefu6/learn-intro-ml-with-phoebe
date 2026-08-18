@@ -128,6 +128,32 @@
       <summary><span class="mode self">Self-study</span>Bias vs variance<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>The U-curve has a name for each side. A too-simple model has high <em>bias</em>: it makes systematic errors because it cannot represent the real pattern (the underfit, left side). A too-complex model has high <em>variance</em>: it swings wildly to fit whatever noise happens to be in the training sample (the overfit, right side).</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels naming the two sides of the U-curve. High bias, the underfit left side, misses the real pattern with systematic errors, seen at depth 1 with train R-squared 0.31 and test 0.22. High variance, the overfit right side, chases noise in the training rows, seen at depth 15 with train R-squared 0.84 and a negative test score.">
+    <style>
+      .b4bvH { font: 700 13px Inter, sans-serif; }
+      .b4bvB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b4bvN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FEF2F2" stroke="#991B1B" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFF4E6" stroke="#F7931E" stroke-width="1.5"/>
+
+    <text class="b4bvH" x="58" y="84" fill="#991B1B">HIGH BIAS - UNDERFIT</text>
+    <text class="b4bvB" x="58" y="114">misses the real pattern in the data</text>
+    <text class="b4bvB" x="58" y="134">systematic errors, not noise</text>
+    <text class="b4bvB" x="58" y="154">train 0.31, test 0.22 (depth 1)</text>
+
+    <text class="b4bvH" x="468" y="84" fill="#5A3606">HIGH VARIANCE - OVERFIT</text>
+    <text class="b4bvB" x="468" y="114">chases noise in the training rows</text>
+    <text class="b4bvB" x="468" y="134">swings wildly on new data</text>
+    <text class="b4bvB" x="468" y="154">train 0.84, test negative (depth 15)</text>
+
+    <text class="b4bvN" x="40" y="264">Neither extreme is right - the sweet spot sits between them: depth 3, test R² 0.36.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - bias and variance are two failure modes, not two choices</figcaption>
+</figure>
+
         <p>You cannot drive both to zero - lowering one tends to raise the other. The goal is not perfection on either side but the minimum of their sum, which is exactly where the test-error U bottoms out. The formal treatment and how <em>regularization</em> lets you tune this trade-off deliberately is the b5 story; today you just need to feel the shape.</p>
       </div>
     </details>
@@ -179,7 +205,56 @@ for d, tr, te in rows:
 
       <div class="step">
         <p><strong>Read the table - it must match canon.</strong> This is the U in numbers.</p>
-        <table class="clean">
+        
+<figure class="zoomable">
+  <svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three small panels comparing train and test R-squared at tree depth 1, 3 and 15 on Lumen order value. Depth 1 is 0.31 train and 0.22 test, both low. Depth 3 is 0.46 train and 0.36 test, the peak. Depth 15 is 0.84 train and a negative test score, shown as a red bar dipping below the zero line.">
+    <style>
+      .b4smT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b4smC { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: middle; }
+      .b4smV { font: 700 10px Inter, sans-serif; fill: #12222B; text-anchor: middle; }
+      .b4smD1 { font: 700 11px Inter, sans-serif; fill: #52707E; text-anchor: middle; }
+      .b4smD2 { font: 700 11px Inter, sans-serif; fill: #1B5F8C; text-anchor: middle; }
+      .b4smD3 { font: 700 11px Inter, sans-serif; fill: #991B1B; text-anchor: middle; }
+      .b4smL { font: 700 11px Inter, sans-serif; fill: #12222B; }
+      .b4smN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="280" fill="#EAF6FC"/>
+    <text class="b4smT" x="40" y="28">The U-curve in your own numbers: depth 1, 3, 15</text>
+
+    <rect x="560" y="32" width="14" height="14" fill="#2C86BD"/>
+    <text class="b4smL" x="578" y="43">train R²</text>
+    <rect x="680" y="32" width="14" height="14" fill="#F7931E"/>
+    <text class="b4smL" x="698" y="43">test R²</text>
+
+    <rect x="330" y="55" width="220" height="160" rx="10" fill="#A5D8EF" opacity=".3"/>
+    <line x1="60" y1="170" x2="820" y2="170" stroke="#DCEDF4" stroke-width="1.5"/>
+
+    <text class="b4smC" x="170" y="70">DEPTH 1: UNDERFIT</text>
+    <rect x="125" y="145" width="30" height="25" fill="#2C86BD"/>
+    <text class="b4smV" x="140" y="141">0.31</text>
+    <rect x="185" y="152" width="30" height="18" fill="#F7931E"/>
+    <text class="b4smV" x="200" y="148">0.22</text>
+    <text class="b4smD1" x="170" y="222">underfit</text>
+
+    <text class="b4smC" x="440" y="70">DEPTH 3: PEAK FIT</text>
+    <rect x="395" y="133" width="30" height="37" fill="#2C86BD"/>
+    <text class="b4smV" x="410" y="129">0.46</text>
+    <rect x="455" y="141" width="30" height="29" fill="#F7931E"/>
+    <text class="b4smV" x="470" y="137">0.36</text>
+    <text class="b4smD2" x="440" y="222">sweet spot</text>
+
+    <text class="b4smC" x="710" y="70">DEPTH 15: OVERFIT</text>
+    <rect x="665" y="103" width="30" height="67" fill="#2C86BD"/>
+    <text class="b4smV" x="680" y="99">0.84</text>
+    <rect x="725" y="170" width="30" height="18" fill="#991B1B"/>
+    <text class="b4smV" x="740" y="200">negative</text>
+    <text class="b4smD3" x="710" y="222">overfit</text>
+
+    <text class="b4smN" x="40" y="256">Test R² peaks at depth 3 (0.36); by depth 15 it turns negative - worse than the mean baseline.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - test R² is the only score that tells you when to stop adding depth</figcaption>
+</figure>
+<table class="clean">
           <thead>
             <tr><th>max_depth</th><th>Train R²</th><th>Test R²</th><th>Diagnosis</th></tr>
           </thead>

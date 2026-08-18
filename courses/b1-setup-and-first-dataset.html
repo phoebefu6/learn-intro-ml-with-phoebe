@@ -45,6 +45,43 @@
       <h2>A model is only as good as the data you feed it</h2>
     </div>
     <p class="lede">Every machine-learning project starts the same way: turn the messy real world into a rectangle of numbers - rows are examples, columns are features, and one column is the answer you want to predict. This session builds that rectangle for Lumen Skincare, and the reason we simulate it (with a fixed seed) rather than download it is honesty: you will know exactly what signal is in the data, so when a model finds it - or fails to - you understand why. That is a far better way to learn than a black-box CSV.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A stacked diagram showing the messy real world becoming a structured rectangle of numbers. The upper bar is X plus y, where rows are examples, columns are features, and one column is the target y. Three chips above it label the three ideas: rows equal examples, columns equal features, one column equals the answer. The lower bar is the messy real world before that structure exists. Together they equal data that is ready for model.fit(X, y).">
+    <style>
+      .b1dsT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b1dsB { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+      .b1dsS { font: 400 11.5px Inter, sans-serif; fill: rgba(255,255,255,.84); }
+      .b1dsC { font: 700 11px Inter, sans-serif; fill: #1B5F8C; }
+      .b1dsE { font: 700 11.5px Inter, sans-serif; fill: #12222B; }
+      .b1dsN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b1dsT" x="40" y="28">Turn the messy real world into a rectangle of numbers</text>
+
+    <rect x="40" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b1dsC" x="125" y="80" text-anchor="middle">rows = examples</text>
+    <rect x="230" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b1dsC" x="315" y="80" text-anchor="middle">columns = features</text>
+    <rect x="420" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b1dsC" x="505" y="80" text-anchor="middle">1 column = the answer</text>
+
+    <rect x="40" y="104" width="660" height="52" rx="10" fill="#2C86BD"/>
+    <text class="b1dsB" x="60" y="128">X (FEATURES) + y (TARGET)</text>
+    <text class="b1dsS" x="60" y="146">rows = examples, cols = features</text>
+
+    <rect x="40" y="196" width="660" height="52" rx="10" fill="#52707E"/>
+    <text class="b1dsB" x="60" y="220">THE MESSY REAL WORLD</text>
+    <text class="b1dsS" x="60" y="238">no structure to model yet</text>
+
+    <path d="M716,104 h14 v144 h-14" fill="none" stroke="#12222B" stroke-width="1.6"/>
+    <text class="b1dsE" x="740" y="174">= ready to</text>
+    <text class="b1dsE" x="740" y="190">fit(X, y)</text>
+
+    <text class="b1dsN" x="40" y="276">Every ML project starts here: rows are examples, columns are features, one column is the answer.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the rectangle of numbers is the whole project, before any model</figcaption>
+</figure>
+
     <div class="legend">
       <span class="pill solid">Live - built in session</span>
       <span class="pill light">Self-study - run after</span>

@@ -120,6 +120,32 @@
       <summary><span class="mode live">Live</span>Ridge (L2) vs Lasso (L1)<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>Both add a penalty to the least-squares loss, but they measure "coefficient size" differently, and that one difference changes everything:</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels contrasting Ridge and Lasso on the planted noise feature session_hour. Ridge shrinks every coefficient smoothly toward zero and keeps session_hour in the model, just quieter. Lasso can push weak coefficients to exactly zero and drops session_hour completely, performing feature selection.">
+    <style>
+      .b5rfH { font: 700 13px Inter, sans-serif; }
+      .b5rfB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b5rfN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#2C86BD" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFF4E6" stroke="#F7931E" stroke-width="1.5"/>
+
+    <text class="b5rfH" x="58" y="84" fill="#1B5F8C">RIDGE (L2)</text>
+    <text class="b5rfB" x="58" y="114">shrinks every coefficient smoothly</text>
+    <text class="b5rfB" x="58" y="134">session_hour gets quieter, not gone</text>
+    <text class="b5rfB" x="58" y="154">keeps all features in the model</text>
+
+    <text class="b5rfH" x="468" y="84" fill="#5A3606">LASSO (L1)</text>
+    <text class="b5rfB" x="468" y="114">can push weak coefficients to zero</text>
+    <text class="b5rfB" x="468" y="134">drops session_hour completely</text>
+    <text class="b5rfB" x="468" y="154">performs feature selection</text>
+
+    <text class="b5rfN" x="40" y="264">Both reach R² ~0.52; Lasso alone zeroes out the planted noise column, session_hour.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - Lasso does not just shrink the noise feature, it deletes it</figcaption>
+</figure>
+
         <ul>
           <li><strong>Ridge (L2)</strong> penalises the sum of <em>squared</em> coefficients. It shrinks every coefficient smoothly toward zero but never quite to zero - all features stay in the model, just quieter. Great when many features each carry a little signal.</li>
           <li><strong>Lasso (L1)</strong> penalises the sum of <em>absolute</em> coefficients. Its geometry lets it push weak coefficients to <em>exactly</em> zero, so it performs feature selection - it decides which columns to keep. Great when you suspect some features are useless (like <code>session_hour</code>).</li>
@@ -191,6 +217,35 @@ for name, model in [
 # all three land near ~0.52 - regularization stabilises here, it does not transform</pre>
         </div>
         <p>All three sit near the canonical full-model <strong>R² ~ 0.52</strong>. That is the honest result: on clean, well-behaved data the penalty buys robustness, not a headline jump. The difference shows up in the coefficients, not the score.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A three-row bar chart showing plain linear regression, Ridge and Lasso all landing near the same R-squared of 0.52 on Lumen order value, near-identical bar lengths showing the penalty barely moves the headline score.">
+    <style>
+      .b5rlT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b5rlL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b5rlD { font: 700 12px Inter, sans-serif; fill: #12222B; }
+      .b5rlW { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+      .b5rlN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="260" fill="#EAF6FC"/>
+    <text class="b5rlT" x="40" y="28">Linear, Ridge and Lasso land in the same place</text>
+
+    <text class="b5rlL" x="240" y="78">LINEAR REGRESSION</text>
+    <rect x="260" y="60" width="250" height="30" rx="4" fill="#A5D8EF"/>
+    <text class="b5rlD" x="278" y="80">R² ~0.52</text>
+
+    <text class="b5rlL" x="240" y="138">RIDGE (L2)</text>
+    <rect x="260" y="120" width="250" height="30" rx="4" fill="#4FB0DE"/>
+    <text class="b5rlD" x="278" y="140">R² ~0.52</text>
+
+    <text class="b5rlL" x="240" y="198">LASSO (L1)</text>
+    <rect x="260" y="180" width="250" height="30" rx="4" fill="#2C86BD"/>
+    <text class="b5rlW" x="278" y="200">R² ~0.52</text>
+
+    <text class="b5rlN" x="40" y="236">Linear, Ridge and Lasso all land near R² 0.52 - regularization buys robustness, not a jump.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the penalty barely moves the score; it moves the coefficients</figcaption>
+</figure>
+
       </div>
 
       <div class="step">

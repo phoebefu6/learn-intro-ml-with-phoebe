@@ -129,6 +129,42 @@
       <summary><span class="mode self">Self-study</span>stratify for imbalanced targets<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>Lumen converts only ~3.2% of the time. A plain random split can, by bad luck, put too few buyers in the test set - so your metrics are computed on a handful of positives and swing wildly. Passing <code>stratify=y</code> tells scikit-learn to preserve the class proportions in both halves:</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three horizontal bars, each split into a converts segment and a does-not-convert segment. The full dataset, the 75% train split, and the 25% test split all keep the same 3.2% convert share, showing that a stratified split preserves the rare class in both halves.">
+    <style>
+      .b2sbT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b2sbL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b2sbV { font: 700 11.5px Inter, sans-serif; fill: #1B5F8C; }
+      .b2sbW { font: 700 11px Inter, sans-serif; fill: #12222B; }
+      .b2sbN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b2sbT" x="40" y="28">Stratify keeps the rare 3.2% convert rate in every split</text>
+
+    <text class="b2sbL" x="240" y="94">FULL DATASET (n=40,000)</text>
+    <rect x="260" y="76" width="15" height="30" fill="#2C86BD"/>
+    <rect x="275" y="76" width="465" height="30" fill="#DCEDF4"/>
+    <line x1="267" y1="76" x2="330" y2="50" stroke="#52707E" stroke-width="1"/>
+    <text class="b2sbV" x="332" y="48">3.2% convert</text>
+    <text class="b2sbW" x="500" y="96">96.8% no</text>
+
+    <text class="b2sbL" x="240" y="164">TRAIN (75%, stratified)</text>
+    <rect x="260" y="146" width="15" height="30" fill="#2C86BD"/>
+    <rect x="275" y="146" width="465" height="30" fill="#DCEDF4"/>
+    <text class="b2sbV" x="285" y="140">3.2% convert</text>
+    <text class="b2sbW" x="500" y="166">96.8% no</text>
+
+    <text class="b2sbL" x="240" y="234">TEST (25%, stratified)</text>
+    <rect x="260" y="216" width="15" height="30" fill="#2C86BD"/>
+    <rect x="275" y="216" width="465" height="30" fill="#DCEDF4"/>
+    <text class="b2sbV" x="285" y="210">3.2% convert</text>
+    <text class="b2sbW" x="500" y="236">96.8% no</text>
+
+    <text class="b2sbN" x="40" y="276">stratify=y carries the 3.2% convert share into both the 75% train and 25% test rows.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - stratify=y stops the rare class from drifting between splits</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">stratify.py</span>
 <pre>from sklearn.model_selection import train_test_split
@@ -207,6 +243,32 @@ print("correct test MSE   :", round(mean_squared_error(y_test, model.predict(X_t
 #   wrong  (forgot to transform / leaked)    -> test MSE 62.80</pre>
         </div>
         <p>Why does the wrong way flatter the score? When the scaler is fit on all the data, the test rows help set the mean and standard deviation used to normalise training - so the model is quietly tuned to statistics of the very rows it will be graded on. The offline number looks great because the test set was never truly unseen. In scikit-learn's example the mirror-image mistake - a transform inconsistently applied - blows the honest MSE of <strong>0.90</strong> up to <strong>62.80</strong>. Either way, the lesson is one line: whatever you fit, fit on train only.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two horizontal bars comparing scikit-learn's own worked example of scaling leakage. Scaling on the training rows only gives an honest mean squared error of 0.90, drawn as a near-invisible bar. Scaling on all rows before splitting gives a fantasy mean squared error of 62.80, drawn as a bar spanning the full width, seventy times larger.">
+    <style>
+      .b2lkT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b2lkL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b2lkV { font: 700 12px Inter, sans-serif; fill: #1B5F8C; }
+      .b2lkW { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+      .b2lkN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b2lkT" x="40" y="28">scikit-learn's own example: fit order changes the score 70x</text>
+
+    <text class="b2lkL" x="240" y="104">RIGHT - scale train only</text>
+    <rect x="260" y="86" width="7" height="34" rx="3" fill="#2C86BD"/>
+    <text class="b2lkV" x="278" y="107">MSE 0.90</text>
+
+    <text class="b2lkL" x="240" y="194">WRONG - scale before split</text>
+    <rect x="260" y="176" width="480" height="34" rx="3" fill="#991B1B"/>
+    <text class="b2lkW" x="278" y="198">MSE 62.80</text>
+
+    <text class="b2lkN" x="40" y="240">Fitting the scaler on every row before splitting turns an honest 0.90 into a fantasy 62.80.</text>
+    <text class="b2lkN" x="40" y="260">Fit whatever you fit on the training rows only - always.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - scaling before the split inflates error 70x, not down</figcaption>
+</figure>
+
       </div>
 
       <div class="step">

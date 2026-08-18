@@ -111,6 +111,32 @@
       <summary><span class="mode live">Live</span>Why one object, not a pile of steps<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>You could scale, encode, and fit as three separate lines - and thousands of leaked models prove why you should not. The danger is fitting any transformer on data the model will later be tested on:</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels contrasting loose prep steps with one Pipeline object. Loose steps let the scaler see test rows early, giving a score that looks great then leaks, and risk train serve skew in production. One Pipeline fits prep on train rows only, replays it exactly at predict time, and ships the same object to production.">
+    <style>
+      .b9laH { font: 700 13px Inter, sans-serif; }
+      .b9laB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b9laN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FEF2F2" stroke="#991B1B" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#2C86BD" stroke-width="1.5"/>
+
+    <text class="b9laH" x="58" y="84" fill="#991B1B">✗ LOOSE STEPS</text>
+    <text class="b9laB" x="58" y="114">scaler can see test rows early</text>
+    <text class="b9laB" x="58" y="134">score looks great, then leaks</text>
+    <text class="b9laB" x="58" y="154">train/serve skew in production</text>
+
+    <text class="b9laH" x="468" y="84" fill="#1B5F8C">✓ ONE PIPELINE</text>
+    <text class="b9laB" x="468" y="114">fits prep on train rows only</text>
+    <text class="b9laB" x="468" y="134">predict replays it exactly</text>
+    <text class="b9laB" x="468" y="154">same object ships to production</text>
+
+    <text class="b9laN" x="40" y="264">A Pipeline makes the correct order structural - you cannot leak prep by accident.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - leakage never throws an error, it just quietly inflates the score</figcaption>
+</figure>
+
         <ul>
           <li><strong>Loose steps leak.</strong> Fit a scaler on all rows, then split, and the test rows have already shaped the mean and SD the model trained against. The score is optimistic and wrong.</li>
           <li><strong>A Pipeline binds prep to model.</strong> <code>Pipeline([('pre', ct), ('model', ...)])</code> is one estimator: calling <code>fit</code> fits the ColumnTransformer on the training rows only, and <code>predict</code> replays those exact transforms.</li>
@@ -206,6 +232,30 @@ print(rank.head(6).round(3))
 
       <div class="step">
         <p><strong>Prove it: drop the noise.</strong> Remove <code>session_hour</code> and re-score. If it carried signal the number would drop; it does not budge.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two bars of identical length, both at ROC-AUC 0.71: one for the pipeline with session_hour included, one with session_hour removed, proving the planted noise column carried no signal.">
+    <style>
+      .b9nbT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b9nbL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b9nbW { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+      .b9nbN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="220" fill="#EAF6FC"/>
+    <text class="b9nbT" x="40" y="28">Same score with or without the noise column</text>
+
+    <text class="b9nbL" x="240" y="90">WITH session_hour</text>
+    <rect x="260" y="70" width="341" height="30" rx="4" fill="#2C86BD"/>
+    <text class="b9nbW" x="278" y="90">0.71</text>
+
+    <text class="b9nbL" x="240" y="160">WITHOUT session_hour</text>
+    <rect x="260" y="140" width="341" height="30" rx="4" fill="#1B5F8C"/>
+    <text class="b9nbW" x="278" y="160">0.71</text>
+
+    <text class="b9nbN" x="40" y="196">Dropping the noise column does not budge ROC-AUC - session_hour never carried signal.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - a feature that changes nothing when removed was never signal</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">drop_noise.py</span>
 <pre>num2 = ["prior_30d_spend", "pages_viewed"]     # session_hour removed

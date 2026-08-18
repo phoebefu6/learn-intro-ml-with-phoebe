@@ -115,6 +115,32 @@
       <summary><span class="mode self">Self-study</span>the default 0.5 threshold is arbitrary<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>The 0.5 cutoff is a convenient default, not a business decision. When conversion is rare and a buyer is worth far more than the cost of a wasted email, you often want to catch more buyers - so you lower the threshold, accepting more false positives to raise recall:</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels contrasting predict and predict_proba. Calling predict alone returns only a hard 0 or 1 at the 0.5 cutoff and hides the probability ranking, which is how the accuracy paradox catches people. Calling predict_proba first returns a probability per row, so you can rank buyers and choose your own threshold.">
+    <style>
+      .b3ppH { font: 700 13px Inter, sans-serif; }
+      .b3ppB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b3ppN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#2C86BD" stroke-width="1.5"/>
+
+    <text class="b3ppH" x="58" y="84" fill="#991B1B">✗ predict() only</text>
+    <text class="b3ppB" x="58" y="114">returns hard 0/1 at the 0.5 cutoff</text>
+    <text class="b3ppB" x="58" y="134">hides the probability ranking</text>
+    <text class="b3ppB" x="58" y="154">the accuracy paradox catches you</text>
+
+    <text class="b3ppH" x="468" y="84" fill="#1B5F8C">✓ predict_proba() first</text>
+    <text class="b3ppB" x="468" y="114">returns P(convert) per row</text>
+    <text class="b3ppB" x="468" y="134">ranks buyers by likelihood</text>
+    <text class="b3ppB" x="468" y="154">you choose the threshold</text>
+
+    <text class="b3ppN" x="40" y="264">predict() alone hides the ranking; predict_proba() lets you set the threshold deliberately.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - predict_proba first, decide the threshold second</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">threshold.py</span>
 <pre>proba = clf.predict_proba(X_te)[:, 1]     # P(convert) for each row
@@ -175,6 +201,35 @@ print("accuracy: %.3f" % accuracy_score(y_te, preds))   # ~ 0.968</pre>
 
       <div class="step">
         <p><strong>Compare to the dumb baseline - the accuracy paradox.</strong> A model that always predicts 0 (no conversion) scores the same, because 96.8% of sessions really are "no".</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A three-row bar chart. The trained model scores 96.8% accuracy and a dumb always-predict-no baseline ties it at 96.8%, the same length bar. The honest number, ROC-AUC, is only 0.71, a shorter bar, showing accuracy hides the real signal on this imbalanced data.">
+    <style>
+      .b3apT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b3apL { font: 700 12px Inter, sans-serif; fill: #12222B; text-anchor: end; }
+      .b3apW { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+      .b3apD { font: 700 12px Inter, sans-serif; fill: #12222B; }
+      .b3apN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b3apT" x="40" y="28">Accuracy ties the dumb baseline - ROC-AUC is the honest score</text>
+
+    <text class="b3apL" x="240" y="74">MODEL ACCURACY</text>
+    <rect x="260" y="56" width="465" height="30" rx="4" fill="#52707E"/>
+    <text class="b3apW" x="275" y="76">96.8%</text>
+
+    <text class="b3apL" x="240" y="144">ALWAYS PREDICT NO</text>
+    <rect x="260" y="126" width="465" height="30" rx="4" fill="#B4D4E2" stroke="#991B1B" stroke-width="2"/>
+    <text class="b3apD" x="275" y="146">96.8%</text>
+
+    <text class="b3apL" x="240" y="214">ROC-AUC (HONEST)</text>
+    <rect x="260" y="196" width="341" height="30" rx="4" fill="#2C86BD"/>
+    <text class="b3apW" x="275" y="216">0.71</text>
+
+    <text class="b3apN" x="40" y="264">Model accuracy ties the do-nothing baseline at 96.8% - the honest number is ROC-AUC 0.71.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - a tied accuracy score is a warning sign, not a win</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">paradox.py</span>
 <pre>from sklearn.dummy import DummyClassifier

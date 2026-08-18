@@ -170,6 +170,43 @@ X_tr, X_te, y_tr, y_te = train_test_split(
 
       <div class="step">
         <p><strong>Cross-validate three candidates.</strong> Same splits, same metric (ROC-AUC), each inside the same Pipeline. Print mean and spread per model.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A stacked diagram showing what makes a model comparison fair. The upper bar is a fair comparison where only the model changes, built from three chips: same splits, same metric, same prep. The lower bar is changing any of them, which means you are comparing conditions, not models, so the winner cannot be trusted.">
+    <style>
+      .b10fcT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b10fcB { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+      .b10fcS { font: 400 11.5px Inter, sans-serif; fill: rgba(255,255,255,.84); }
+      .b10fcC { font: 700 11px Inter, sans-serif; fill: #1B5F8C; }
+      .b10fcE { font: 700 11.5px Inter, sans-serif; fill: #12222B; }
+      .b10fcN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <text class="b10fcT" x="40" y="28">A fair comparison changes only the model</text>
+
+    <rect x="40" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b10fcC" x="125" y="80" text-anchor="middle">same splits</text>
+    <rect x="230" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b10fcC" x="315" y="80" text-anchor="middle">same metric</text>
+    <rect x="420" y="60" width="170" height="30" rx="8" fill="#A5D8EF"/>
+    <text class="b10fcC" x="505" y="80" text-anchor="middle">same prep</text>
+
+    <rect x="40" y="104" width="660" height="52" rx="10" fill="#2C86BD"/>
+    <text class="b10fcB" x="60" y="128">FAIR COMPARISON</text>
+    <text class="b10fcS" x="60" y="146">one thing changes: the model</text>
+
+    <rect x="40" y="196" width="660" height="52" rx="10" fill="#52707E"/>
+    <text class="b10fcB" x="60" y="220">CHANGE ANY OF THEM</text>
+    <text class="b10fcS" x="60" y="238">comparing conditions, not models</text>
+
+    <path d="M716,104 h14 v144 h-14" fill="none" stroke="#12222B" stroke-width="1.6"/>
+    <text class="b10fcE" x="740" y="174">= trust the</text>
+    <text class="b10fcE" x="740" y="190">winner picked</text>
+
+    <text class="b10fcN" x="40" y="276">Change the splits, metric or prep between candidates and you compare conditions, not models.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the winner only means something if nothing else moved</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">compare.py</span>
 <pre>from sklearn.pipeline import Pipeline
@@ -237,6 +274,32 @@ print(card.to_string(index=False))</pre>
 
       <div class="step">
         <p><strong>A taste of unsupervised.</strong> Everything so far had a label. KMeans has none - it groups similar customers on its own, from spend and order value alone.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels contrasting supervised and unsupervised learning. Every session so far was supervised: each row has a known label, converted or order_value, and the model learns to predict it. KMeans is unsupervised: it has no label and groups Lumen sessions by similarity using spend and order value alone.">
+    <style>
+      .b10suH { font: 700 13px Inter, sans-serif; }
+      .b10suB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b10suN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#2C86BD" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFF4E6" stroke="#F7931E" stroke-width="1.5"/>
+
+    <text class="b10suH" x="58" y="84" fill="#1B5F8C">SUPERVISED (SO FAR)</text>
+    <text class="b10suB" x="58" y="114">every row has a label y</text>
+    <text class="b10suB" x="58" y="134">converted or order_value known</text>
+    <text class="b10suB" x="58" y="154">model learns to predict it</text>
+
+    <text class="b10suH" x="468" y="84" fill="#5A3606">UNSUPERVISED (KMEANS)</text>
+    <text class="b10suB" x="468" y="114">no label to learn from</text>
+    <text class="b10suB" x="468" y="134">groups sessions by similarity</text>
+    <text class="b10suB" x="468" y="154">spend and order value only</text>
+
+    <text class="b10suN" x="40" y="264">KMeans needs no labelled target - it groups similar Lumen sessions on its own.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the same dataset, minus the answer column, is a different kind of problem</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">kmeans.py</span>
 <pre>from sklearn.cluster import KMeans

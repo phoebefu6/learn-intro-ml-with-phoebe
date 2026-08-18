@@ -207,10 +207,58 @@ plt.xlabel("false positive rate"); plt.ylabel("true positive rate"); plt.legend(
 plt.show()</pre>
         </div>
         <p>ROC-AUC lands at <strong>~0.71</strong> - a real but modest signal, comfortably above the 0.5 of random guessing but nowhere near perfect. Because AUC averages over all thresholds, it is the fairest single summary of this model on imbalanced data.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A gauge showing ROC-AUC at 0.71 against a threshold tick at 0.5, the score a random guess would get. The filled bar clears the tick with real room to spare.">
+    <style>
+      .b7gaT { font: 700 13px Inter, sans-serif; fill: #12222B; }
+      .b7gaV { font: 700 20px Inter, sans-serif; fill: #12222B; }
+      .b7gaTick { font: 700 11px Inter, sans-serif; fill: #5A3606; text-anchor: middle; }
+      .b7gaN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="220" fill="#EAF6FC"/>
+    <text class="b7gaT" x="40" y="28">ROC-AUC 0.71 clears the 0.5 line of random guessing</text>
+
+    <rect x="120" y="97" width="640" height="26" rx="13" fill="#DCEDF4"/>
+    <rect x="120" y="97" width="454" height="26" rx="13" fill="#2C86BD"/>
+    <line x1="440" y1="79" x2="440" y2="139" stroke="#F7931E" stroke-width="2.5"/>
+    <text class="b7gaTick" x="440" y="71">random guess</text>
+    <text class="b7gaV" x="586" y="118">0.71</text>
+
+    <text class="b7gaN" x="40" y="196">ROC-AUC 0.71 sits well above the 0.5 a coin flip would score - a real, if modest, signal.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - 0.71 beats a coin flip; it is not a headline win</figcaption>
+</figure>
+
       </div>
 
       <div class="step">
         <p><strong>Move the threshold and re-score.</strong> Drop it from 0.5 to 0.2 and watch recall climb while precision falls; plot the full precision-recall curve to see the whole trade.</p>
+<figure class="zoomable">
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two panels contrasting the default 0.5 decision threshold with Lumen's lowered threshold near 0.2. At 0.5, fewer sessions are flagged, precision is higher and recall is lower. Lowered to about 0.2, more sessions are flagged, recall climbs and precision falls, catching more high-value buyers.">
+    <style>
+      .b7thH { font: 700 13px Inter, sans-serif; }
+      .b7thB { font: 400 12.5px Inter, sans-serif; fill: #12222B; }
+      .b7thN { font: 400 12px Inter, sans-serif; fill: #52707E; }
+    </style>
+    <rect x="0" y="0" width="880" height="300" fill="#EAF6FC"/>
+    <rect x="40" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#B4D4E2" stroke-width="1.5"/>
+    <rect x="450" y="50" width="390" height="180" rx="12" fill="#FFFFFF" stroke="#2C86BD" stroke-width="1.5"/>
+
+    <text class="b7thH" x="58" y="84" fill="#52707E">DEFAULT THRESHOLD 0.5</text>
+    <text class="b7thB" x="58" y="114">fewer sessions flagged as buyers</text>
+    <text class="b7thB" x="58" y="134">precision higher, recall lower</text>
+    <text class="b7thB" x="58" y="154">misses more real buyers</text>
+
+    <text class="b7thH" x="468" y="84" fill="#1B5F8C">LOWERED TO ~0.2</text>
+    <text class="b7thB" x="468" y="114">more sessions flagged as buyers</text>
+    <text class="b7thB" x="468" y="134">recall higher, precision lower</text>
+    <text class="b7thB" x="468" y="154">catches more high-value buyers</text>
+
+    <text class="b7thN" x="40" y="264">Lumen lowered the threshold on purpose: a missed big spender cost more than a wasted coupon.</text>
+  </svg>
+  <figcaption>🔍 Click to zoom - the threshold is a business dial, not a modelling detail</figcaption>
+</figure>
+
         <div class="prompt-box good">
           <span class="label">threshold.py</span>
 <pre>from sklearn.metrics import precision_score, recall_score, precision_recall_curve
