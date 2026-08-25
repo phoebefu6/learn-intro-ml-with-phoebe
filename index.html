@@ -77,6 +77,349 @@
 
   .noteband { margin-top: 2.4rem; background: var(--indigo-50); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1rem 1.2rem; font-size: .9rem; color: var(--ink); }
   .noteband b { color: var(--indigo); }
+
+.vposter{
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  transform-origin:top left;
+}
+.vposter{width:1400px;background:var(--paper);font-family:var(--sans);color:var(--ink);
+       -webkit-font-smoothing:antialiased}
+.vposter .vp-sheet{padding:34px 38px 0}
+.vposter .vp-top{display:flex;align-items:flex-end;gap:28px;border-bottom:3px solid var(--indigo-deep);
+       padding-bottom:18px;margin-bottom:20px}
+.vposter .vp-top h1{font-size:54px;font-weight:800;letter-spacing:-.03em;line-height:.95;color:var(--indigo-deep)}
+.vposter .vp-subs{flex:1;padding-bottom:4px}
+.vposter .vp-s1{font-size:20px;font-weight:700;color:var(--indigo);line-height:1.25}
+.vposter .vp-s2{font-size:14.5px;color:var(--muted);margin-top:5px;font-weight:500}
+.vposter .vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vposter .vp-mod{border:1px solid var(--hairline);border-radius:12px;background:#fff;overflow:hidden;
+       display:flex;flex-direction:column}
+.vposter .vp-mod > h2{background:var(--indigo-deep);color:#fff;font-size:14px;font-weight:800;
+       letter-spacing:.06em;padding:9px 14px;display:flex;align-items:baseline;gap:10px}
+.vposter .vp-mod > h2 b{font-family:var(--sans);font-size:11.5px;font-weight:800;color:var(--indigo-soft);
+       letter-spacing:.1em}
+.vposter .vp-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;
+       justify-content:space-between}
+.vposter .vp-span2{grid-column:span 2}
+.vposter .vp-note{font-size:12.5px;color:var(--muted);line-height:1.45}
+.vposter .vp-flag{background:var(--amber-50);border:1px solid var(--amber);border-radius:7px;
+        padding:8px 11px;font-size:12.5px;color:var(--amber-ink);font-weight:600;line-height:1.4}
+.vposter .vp-tracks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vposter .vp-tk h3{font-size:11px;font-weight:800;letter-spacing:.05em;color:#fff;background:var(--indigo);
+        padding:6px 9px;border-radius:6px;line-height:1.3}
+.vposter .vp-tk.vp-lead h3{background:var(--indigo-deep)}
+.vposter .vp-tk ol{list-style:none;margin-top:7px;display:flex;flex-direction:column;gap:3px}
+.vposter .vp-tk li{display:flex;gap:7px;align-items:baseline;font-size:12.5px;line-height:1.3}
+.vposter .vp-tk li i{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--indigo);
+        background:var(--indigo-50);border-radius:4px;padding:2px 5px;font-style:normal;min-width:29px;
+        text-align:center;flex:none}
+.vposter .vp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;
+        border-top:1px solid var(--hairline);padding-top:11px}
+.vposter .vp-stats div{text-align:center}
+.vposter .vp-stats b{display:block;font-size:23px;font-weight:800;color:var(--indigo-deep);line-height:1;
+        font-variant-numeric:tabular-nums}
+.vposter .vp-stats span{display:block;font-size:10.5px;font-weight:700;color:var(--muted);
+        text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.vposter .vp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.vposter .vp-tbl{border:1px solid var(--indigo-soft);border-radius:8px;overflow:hidden;background:var(--indigo-50)}
+.vposter .vp-tbl h4{display:flex;justify-content:space-between;align-items:center;background:var(--indigo);
+        color:#fff;font-family:var(--mono);font-size:12.5px;font-weight:700;padding:5px 9px;gap:8px}
+.vposter .vp-tbl h4 span{font-family:var(--sans);font-size:11.5px;font-weight:800;color:var(--amber)}
+.vposter .vp-tbl ul{list-style:none;padding:7px 9px;display:flex;flex-direction:column;gap:1px}
+.vposter .vp-tbl li{font-family:var(--mono);font-size:11.5px;color:var(--ink);line-height:1.42;
+        overflow-wrap:anywhere}
+.vposter .vp-tbl li.vp-key{font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-lad{display:flex;flex-direction:column-reverse;gap:3px}
+.vposter .vp-lad2{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;align-content:start}
+.vposter .vp-lad2 .vp-rung{margin:0}
+.vposter .vp-rung{display:flex;align-items:stretch;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.vposter .vp-rung i{font-family:var(--mono);font-size:11.5px;font-weight:700;background:var(--indigo-deep);
+        color:#fff;display:flex;align-items:center;padding:0 8px;font-style:normal;flex:none}
+.vposter .vp-kw{flex:1;padding:5px 8px;font-size:11.5px;line-height:1.32}
+.vposter .vp-kw b{font-family:var(--mono);font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-kw em{font-style:normal;color:var(--muted);display:block;margin-top:1px;font-size:11px}
+.vposter .vp-rung u{background:var(--amber);color:var(--amber-ink);font-family:var(--mono);font-size:11.5px;
+        font-weight:700;text-decoration:none;display:flex;align-items:center;padding:0 8px;flex:none}
+.vposter .vp-ord{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vposter .vp-ord h3{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--indigo-deep);
+        text-align:center;padding-bottom:6px;border-bottom:1px solid var(--hairline);margin-bottom:7px}
+.vposter .vp-ord ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.vposter .vp-ord li{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--indigo-soft);
+        border-radius:6px;padding:4px 8px;font-family:var(--mono);font-size:12px;font-weight:700;
+        color:var(--indigo-deep);background:#fff;gap:6px}
+.vposter .vp-ord li s{text-decoration:none;font-family:var(--sans);font-size:10.5px;font-weight:800;
+        color:var(--amber-ink);background:var(--amber-50);border:1px solid var(--amber);
+        border-radius:99px;min-width:17px;height:17px;display:grid;place-items:center;flex:none}
+.vposter .vp-jn{display:flex;flex-direction:column;gap:8px}
+.vposter .vp-row{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--hairline);
+        border-radius:7px;padding:7px 9px}
+.vposter .vp-row i{font-family:var(--mono);font-size:11.5px;font-weight:700;color:#fff;background:var(--indigo);
+        border-radius:6px;padding:3px 7px;font-style:normal;flex:none;margin-top:1px}
+.vposter .vp-row b{font-family:var(--mono);font-size:11.5px;color:var(--indigo-deep);display:block}
+.vposter .vp-row span{font-size:11.5px;color:var(--muted);line-height:1.35;display:block;margin-top:1px}
+.vposter .vp-traps{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:9px}
+.vposter .vp-trap{background:var(--amber-50);border:1px solid var(--amber);border-radius:8px;padding:9px 11px}
+.vposter .vp-trap b{font-size:12.5px;color:var(--amber-ink);font-weight:800;display:block;line-height:1.3}
+.vposter .vp-trap span{font-size:12px;color:var(--muted);line-height:1.4;display:block;margin-top:3px}
+.vposter .vp-trap span i{font-style:normal;font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-fun{display:flex;flex-direction:column;gap:4px}
+.vposter .vp-step{display:flex;gap:9px;align-items:flex-start;background:var(--indigo-50);border-radius:6px;padding:6px 9px}
+.vposter .vp-step i{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--indigo);
+        border-radius:99px;min-width:18px;height:18px;display:grid;place-items:center;font-style:normal;
+        flex:none;margin-top:1px}
+.vposter .vp-step b{font-size:11.5px;font-weight:800;color:var(--indigo-deep);letter-spacing:.02em;display:block;line-height:1.3}
+.vposter .vp-step span{font-size:11.5px;color:var(--muted);display:block;line-height:1.32}
+.vposter .vp-conseq{border-top:1px solid var(--hairline);padding-top:10px}
+.vposter .vp-body > .vp-conseq:first-child{border-top:0;padding-top:0}
+.vposter .vp-conseq > b{font-size:10.5px;font-weight:800;color:var(--indigo-deep);letter-spacing:.06em;
+        text-transform:uppercase;display:block;margin-bottom:6px}
+.vposter .vp-code{font-family:var(--mono);font-size:11.5px;line-height:1.5;background:var(--code-bg);
+        color:var(--code-ink);border-radius:6px;padding:7px 9px;white-space:pre;overflow:hidden}
+.vposter .vp-code u{text-decoration:none;color:var(--amber);font-weight:700}
+.vposter .vp-code s{text-decoration:none;color:var(--indigo-soft);font-weight:700}
+.vposter .vp-conseq p{font-size:11.5px;color:var(--muted);line-height:1.4;margin:5px 0 7px}
+.vposter .vp-conseq p:last-child{margin-bottom:0}
+.vposter .vp-foot{margin:20px -38px 0;background:var(--indigo-deep);color:#fff;padding:13px 38px;
+        display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;gap:16px}
+.vposter .vp-mid{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--indigo-soft);letter-spacing:.01em}
+.vposter /* Register: blueprint ledger (style card SV-033). Flat editorial, .vposter not banded panels. Ruled grid ground, .vposter serif display against monospace labels, .vposter single-weight indigo contours with no heavy fills. maker is design-build by definition: the type is load-bearing, .vposter so this register never goes near a diffusion run. */ body{background:#FDFDFB;
+       background-image:linear-gradient(var(--hairline) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+       background-size:100% 28px, 28px 100%;
+       background-position:-1px -1px, -1px -1px}
+.vposter .vp-sheet{background:transparent}
+.vposter .vp-top{border-bottom:2px solid var(--indigo-deep)}
+.vposter .vp-top h1{font-family:Georgia,"Iowan Old Style",serif;font-weight:700;letter-spacing:-.015em}
+.vposter .vp-s1{font-family:Georgia,serif;font-style:italic;font-weight:400}
+.vposter .vp-s2{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;text-transform:uppercase}
+.vposter .vp-mod{background:rgba(255,255,255,.82);border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-mod > h2{background:transparent;color:var(--indigo-deep);
+       border-bottom:1px solid var(--indigo-soft);
+       font-family:Georgia,serif;font-size:15px;font-weight:700;letter-spacing:0;
+       text-transform:none;padding:8px 14px 7px}
+.vposter .vp-mod > h2 b{font-family:var(--mono);font-size:10.5px;color:var(--indigo);
+       letter-spacing:.1em;font-weight:400}
+.vposter .vp-tk h3{background:transparent;color:var(--indigo-deep);border:1px solid var(--indigo-soft);
+       border-radius:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em}
+.vposter .vp-tk.vp-lead h3{background:var(--indigo-50)}
+.vposter .vp-tk li i{background:transparent;border:1px solid var(--indigo-soft);border-radius:0;
+       color:var(--indigo-deep)}
+.vposter .vp-tbl{border:1px solid var(--indigo-soft);border-radius:0;background:transparent}
+.vposter .vp-tbl h4{background:var(--indigo-50);color:var(--indigo-deep);
+       border-bottom:1px solid var(--indigo-soft)}
+.vposter .vp-tbl h4 span{color:var(--indigo-deep)}
+.vposter .vp-rung{border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-rung i{background:transparent;color:var(--indigo-deep);
+       border-right:1px solid var(--indigo-soft);font-family:var(--mono)}
+.vposter .vp-rung u{background:var(--indigo-50);color:var(--indigo-deep);
+       border-left:1px solid var(--indigo-soft)}
+.vposter .vp-ord li{border:1px solid var(--indigo-soft);border-radius:0;background:transparent}
+.vposter .vp-ord li s{background:transparent;border:1px solid var(--indigo);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-row{border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-row i{background:transparent;border:1px solid var(--indigo-soft);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-step{background:transparent;border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-step i{background:transparent;border:1px solid var(--indigo);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-trap{background:transparent;border:1px solid var(--amber);border-radius:0}
+.vposter .vp-flag{border-radius:0}
+.vposter .vp-stats b{font-family:Georgia,serif}
+.vposter .vp-conseq > b{font-family:var(--mono);font-weight:400}
+.vposter .vp-foot{background:transparent;color:var(--indigo-deep);
+       border-top:2px solid var(--indigo-deep);padding-top:11px}
+.vposter .vp-foot span{color:var(--indigo-deep)}
+.vposter .vp-mid{color:var(--indigo);font-family:var(--mono);font-size:12.5px}
+
+  /* The poster lives at the foot of this page, below the knowledge map, rather than on a
+     page of its own. It holds its authored width and either scales to fit or scrolls,
+     because a reference sheet that reflows stops being a reference sheet. */
+  .poster-section { margin-top: 2.2rem; padding-top: 1.5rem; border-top: 1px solid var(--hairline); }
+  /* The sheet is authored wider than the course's reading column, so inside that column it
+     would fit at 0.67 and render 11.5px type at 7.7px. Break the section out to full width
+     and it fits near 1:1 on a desktop instead. */
+  /* Break out of the reading column, but only where it buys something. Below 1100px the
+     sheet is already at actual size and scrolling inside its frame, so the negative margins
+     would add a page-level scrollbar for no gain. 100vw also counts the scrollbar, so --sbw
+     is measured in script and taken back off. */
+  @media (min-width: 1100px) {
+    .poster-section { margin-left: calc(50% - 50vw + (var(--sbw, 0px) / 2));
+                      margin-right: calc(50% - 50vw + (var(--sbw, 0px) / 2));
+                      padding-left: clamp(1rem, 4vw, 4rem); padding-right: clamp(1rem, 4vw, 4rem); }
+  }
+  .poster-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .2rem; }
+  .poster-section .ps-lede { color: var(--muted); font-size: .92rem; margin-bottom: .7rem; }
+  .poster-bar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .7rem; }
+  .poster-bar .pb-note { font-size: .82rem; color: var(--muted); min-width: 0; flex: 1; }
+  .poster-btn {
+    font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer;
+    border: 1px solid var(--hairline); background: #fff; color: var(--indigo-deep);
+    border-radius: 999px; padding: .5rem 1rem; min-height: 44px;
+    display: inline-flex; align-items: center; gap: .4rem; text-decoration: none;
+    transition: all .12s ease;
+  }
+  .poster-btn:hover { background: var(--indigo-50); border-color: var(--indigo-soft); }
+  .poster-btn[aria-pressed="true"] { background: var(--indigo-deep); color: #fff; border-color: var(--indigo-deep); }
+  .poster-frame {
+    border: 1px solid var(--hairline); border-radius: var(--radius);
+    background: var(--paper); overflow: auto; -webkit-overflow-scrolling: touch;
+  }
+  .poster-stage { position: relative; margin: 0 auto; }
+  .poster-frame > .poster-stage > img { display: block; width: 100%; height: auto; }
+.vposter{
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  transform-origin:top left;
+}
+.vposter{width:1400px;background:var(--paper);font-family:var(--sans);color:var(--ink);
+       -webkit-font-smoothing:antialiased}
+.vposter .vp-sheet{padding:34px 38px 0}
+.vposter .vp-top{display:flex;align-items:flex-end;gap:28px;border-bottom:3px solid var(--indigo-deep);
+       padding-bottom:18px;margin-bottom:20px}
+.vposter .vp-top h1{font-size:54px;font-weight:800;letter-spacing:-.03em;line-height:.95;color:var(--indigo-deep)}
+.vposter .vp-subs{flex:1;padding-bottom:4px}
+.vposter .vp-s1{font-size:20px;font-weight:700;color:var(--indigo);line-height:1.25}
+.vposter .vp-s2{font-size:14.5px;color:var(--muted);margin-top:5px;font-weight:500}
+.vposter .vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vposter .vp-mod{border:1px solid var(--hairline);border-radius:12px;background:#fff;overflow:hidden;
+       display:flex;flex-direction:column}
+.vposter .vp-mod > h2{background:var(--indigo-deep);color:#fff;font-size:14px;font-weight:800;
+       letter-spacing:.06em;padding:9px 14px;display:flex;align-items:baseline;gap:10px}
+.vposter .vp-mod > h2 b{font-family:var(--sans);font-size:11.5px;font-weight:800;color:var(--indigo-soft);
+       letter-spacing:.1em}
+.vposter .vp-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;
+       justify-content:space-between}
+.vposter .vp-span2{grid-column:span 2}
+.vposter .vp-note{font-size:12.5px;color:var(--muted);line-height:1.45}
+.vposter .vp-flag{background:var(--amber-50);border:1px solid var(--amber);border-radius:7px;
+        padding:8px 11px;font-size:12.5px;color:var(--amber-ink);font-weight:600;line-height:1.4}
+.vposter .vp-tracks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vposter .vp-tk h3{font-size:11px;font-weight:800;letter-spacing:.05em;color:#fff;background:var(--indigo);
+        padding:6px 9px;border-radius:6px;line-height:1.3}
+.vposter .vp-tk.vp-lead h3{background:var(--indigo-deep)}
+.vposter .vp-tk ol{list-style:none;margin-top:7px;display:flex;flex-direction:column;gap:3px}
+.vposter .vp-tk li{display:flex;gap:7px;align-items:baseline;font-size:12.5px;line-height:1.3}
+.vposter .vp-tk li i{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--indigo);
+        background:var(--indigo-50);border-radius:4px;padding:2px 5px;font-style:normal;min-width:29px;
+        text-align:center;flex:none}
+.vposter .vp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;
+        border-top:1px solid var(--hairline);padding-top:11px}
+.vposter .vp-stats div{text-align:center}
+.vposter .vp-stats b{display:block;font-size:23px;font-weight:800;color:var(--indigo-deep);line-height:1;
+        font-variant-numeric:tabular-nums}
+.vposter .vp-stats span{display:block;font-size:10.5px;font-weight:700;color:var(--muted);
+        text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.vposter .vp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.vposter .vp-tbl{border:1px solid var(--indigo-soft);border-radius:8px;overflow:hidden;background:var(--indigo-50)}
+.vposter .vp-tbl h4{display:flex;justify-content:space-between;align-items:center;background:var(--indigo);
+        color:#fff;font-family:var(--mono);font-size:12.5px;font-weight:700;padding:5px 9px;gap:8px}
+.vposter .vp-tbl h4 span{font-family:var(--sans);font-size:11.5px;font-weight:800;color:var(--amber)}
+.vposter .vp-tbl ul{list-style:none;padding:7px 9px;display:flex;flex-direction:column;gap:1px}
+.vposter .vp-tbl li{font-family:var(--mono);font-size:11.5px;color:var(--ink);line-height:1.42;
+        overflow-wrap:anywhere}
+.vposter .vp-tbl li.vp-key{font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-lad{display:flex;flex-direction:column-reverse;gap:3px}
+.vposter .vp-lad2{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;align-content:start}
+.vposter .vp-lad2 .vp-rung{margin:0}
+.vposter .vp-rung{display:flex;align-items:stretch;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.vposter .vp-rung i{font-family:var(--mono);font-size:11.5px;font-weight:700;background:var(--indigo-deep);
+        color:#fff;display:flex;align-items:center;padding:0 8px;font-style:normal;flex:none}
+.vposter .vp-kw{flex:1;padding:5px 8px;font-size:11.5px;line-height:1.32}
+.vposter .vp-kw b{font-family:var(--mono);font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-kw em{font-style:normal;color:var(--muted);display:block;margin-top:1px;font-size:11px}
+.vposter .vp-rung u{background:var(--amber);color:var(--amber-ink);font-family:var(--mono);font-size:11.5px;
+        font-weight:700;text-decoration:none;display:flex;align-items:center;padding:0 8px;flex:none}
+.vposter .vp-ord{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vposter .vp-ord h3{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--indigo-deep);
+        text-align:center;padding-bottom:6px;border-bottom:1px solid var(--hairline);margin-bottom:7px}
+.vposter .vp-ord ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.vposter .vp-ord li{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--indigo-soft);
+        border-radius:6px;padding:4px 8px;font-family:var(--mono);font-size:12px;font-weight:700;
+        color:var(--indigo-deep);background:#fff;gap:6px}
+.vposter .vp-ord li s{text-decoration:none;font-family:var(--sans);font-size:10.5px;font-weight:800;
+        color:var(--amber-ink);background:var(--amber-50);border:1px solid var(--amber);
+        border-radius:99px;min-width:17px;height:17px;display:grid;place-items:center;flex:none}
+.vposter .vp-jn{display:flex;flex-direction:column;gap:8px}
+.vposter .vp-row{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--hairline);
+        border-radius:7px;padding:7px 9px}
+.vposter .vp-row i{font-family:var(--mono);font-size:11.5px;font-weight:700;color:#fff;background:var(--indigo);
+        border-radius:6px;padding:3px 7px;font-style:normal;flex:none;margin-top:1px}
+.vposter .vp-row b{font-family:var(--mono);font-size:11.5px;color:var(--indigo-deep);display:block}
+.vposter .vp-row span{font-size:11.5px;color:var(--muted);line-height:1.35;display:block;margin-top:1px}
+.vposter .vp-traps{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:9px}
+.vposter .vp-trap{background:var(--amber-50);border:1px solid var(--amber);border-radius:8px;padding:9px 11px}
+.vposter .vp-trap b{font-size:12.5px;color:var(--amber-ink);font-weight:800;display:block;line-height:1.3}
+.vposter .vp-trap span{font-size:12px;color:var(--muted);line-height:1.4;display:block;margin-top:3px}
+.vposter .vp-trap span i{font-style:normal;font-weight:700;color:var(--indigo-deep)}
+.vposter .vp-fun{display:flex;flex-direction:column;gap:4px}
+.vposter .vp-step{display:flex;gap:9px;align-items:flex-start;background:var(--indigo-50);border-radius:6px;padding:6px 9px}
+.vposter .vp-step i{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--indigo);
+        border-radius:99px;min-width:18px;height:18px;display:grid;place-items:center;font-style:normal;
+        flex:none;margin-top:1px}
+.vposter .vp-step b{font-size:11.5px;font-weight:800;color:var(--indigo-deep);letter-spacing:.02em;display:block;line-height:1.3}
+.vposter .vp-step span{font-size:11.5px;color:var(--muted);display:block;line-height:1.32}
+.vposter .vp-conseq{border-top:1px solid var(--hairline);padding-top:10px}
+.vposter .vp-body > .vp-conseq:first-child{border-top:0;padding-top:0}
+.vposter .vp-conseq > b{font-size:10.5px;font-weight:800;color:var(--indigo-deep);letter-spacing:.06em;
+        text-transform:uppercase;display:block;margin-bottom:6px}
+.vposter .vp-code{font-family:var(--mono);font-size:11.5px;line-height:1.5;background:var(--code-bg);
+        color:var(--code-ink);border-radius:6px;padding:7px 9px;white-space:pre;overflow:hidden}
+.vposter .vp-code u{text-decoration:none;color:var(--amber);font-weight:700}
+.vposter .vp-code s{text-decoration:none;color:var(--indigo-soft);font-weight:700}
+.vposter .vp-conseq p{font-size:11.5px;color:var(--muted);line-height:1.4;margin:5px 0 7px}
+.vposter .vp-conseq p:last-child{margin-bottom:0}
+.vposter .vp-foot{margin:20px -38px 0;background:var(--indigo-deep);color:#fff;padding:13px 38px;
+        display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;gap:16px}
+.vposter .vp-mid{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--indigo-soft);letter-spacing:.01em}
+.vposter /* Register: blueprint ledger (style card SV-033). Flat editorial, .vposter not banded panels. Ruled grid ground, .vposter serif display against monospace labels, .vposter single-weight indigo contours with no heavy fills. maker is design-build by definition: the type is load-bearing, .vposter so this register never goes near a diffusion run. */ body{background:#FDFDFB;
+       background-image:linear-gradient(var(--hairline) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+       background-size:100% 28px, 28px 100%;
+       background-position:-1px -1px, -1px -1px}
+.vposter .vp-sheet{background:transparent}
+.vposter .vp-top{border-bottom:2px solid var(--indigo-deep)}
+.vposter .vp-top h1{font-family:Georgia,"Iowan Old Style",serif;font-weight:700;letter-spacing:-.015em}
+.vposter .vp-s1{font-family:Georgia,serif;font-style:italic;font-weight:400}
+.vposter .vp-s2{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;text-transform:uppercase}
+.vposter .vp-mod{background:rgba(255,255,255,.82);border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-mod > h2{background:transparent;color:var(--indigo-deep);
+       border-bottom:1px solid var(--indigo-soft);
+       font-family:Georgia,serif;font-size:15px;font-weight:700;letter-spacing:0;
+       text-transform:none;padding:8px 14px 7px}
+.vposter .vp-mod > h2 b{font-family:var(--mono);font-size:10.5px;color:var(--indigo);
+       letter-spacing:.1em;font-weight:400}
+.vposter .vp-tk h3{background:transparent;color:var(--indigo-deep);border:1px solid var(--indigo-soft);
+       border-radius:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em}
+.vposter .vp-tk.vp-lead h3{background:var(--indigo-50)}
+.vposter .vp-tk li i{background:transparent;border:1px solid var(--indigo-soft);border-radius:0;
+       color:var(--indigo-deep)}
+.vposter .vp-tbl{border:1px solid var(--indigo-soft);border-radius:0;background:transparent}
+.vposter .vp-tbl h4{background:var(--indigo-50);color:var(--indigo-deep);
+       border-bottom:1px solid var(--indigo-soft)}
+.vposter .vp-tbl h4 span{color:var(--indigo-deep)}
+.vposter .vp-rung{border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-rung i{background:transparent;color:var(--indigo-deep);
+       border-right:1px solid var(--indigo-soft);font-family:var(--mono)}
+.vposter .vp-rung u{background:var(--indigo-50);color:var(--indigo-deep);
+       border-left:1px solid var(--indigo-soft)}
+.vposter .vp-ord li{border:1px solid var(--indigo-soft);border-radius:0;background:transparent}
+.vposter .vp-ord li s{background:transparent;border:1px solid var(--indigo);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-row{border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-row i{background:transparent;border:1px solid var(--indigo-soft);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-step{background:transparent;border:1px solid var(--indigo-soft);border-radius:0}
+.vposter .vp-step i{background:transparent;border:1px solid var(--indigo);color:var(--indigo-deep);
+       border-radius:0}
+.vposter .vp-trap{background:transparent;border:1px solid var(--amber);border-radius:0}
+.vposter .vp-flag{border-radius:0}
+.vposter .vp-stats b{font-family:Georgia,serif}
+.vposter .vp-conseq > b{font-family:var(--mono);font-weight:400}
+.vposter .vp-foot{background:transparent;color:var(--indigo-deep);
+       border-top:2px solid var(--indigo-deep);padding-top:11px}
+.vposter .vp-foot span{color:var(--indigo-deep)}
+.vposter .vp-mid{color:var(--indigo);font-family:var(--mono);font-size:12.5px}
 </style>
 </head>
 <body>
@@ -295,6 +638,151 @@
     <div class="mm-wrap"><div id="mindmap"></div></div>
   </section>
 
+
+
+
+  <section class="section poster-section" id="poster">
+    <h2>The whole course on one sheet 📐</h2>
+    <p class="ps-lede">Seven modules: both tracks, the most dangerous number in machine learning, the builder ladder from a clean split to a capstone, the traps that fake a great score, which metric tells the truth, and the one picture the whole craft turns on.</p>
+    <div class="poster-bar">
+      <button class="poster-btn" id="zoomToggle" type="button" aria-pressed="false">Actual size</button>
+      <a class="poster-btn" href="assets/poster/learn-intro-ml-with-phoebe-poster.png" download>Download for print (2800px)</a>
+      <span class="pb-note">Every word here is real selectable text, so it stays sharp however far you zoom.</span>
+    </div>
+    <div class="poster-frame" id="frame">
+      <div class="poster-stage" id="stage">
+        <div class="vposter" id="vp">
+<div class="vp-sheet">
+
+  <div class="vp-top">
+    <h1>learn intro to ML<br>with phoebe</h1>
+    <div class="vp-subs">
+      <div class="vp-s1">Your first models, and how to know they are any good</div>
+      <div class="vp-s2">16 SESSIONS · TWO TRACKS · ONE RUNNING BRAND, LUMEN · PYTHON AND SCIKIT-LEARN</div>
+    </div>
+  </div>
+
+  <div class="vp-grid">
+    <section class="vp-mod">
+      <h2><b>SEC-01</b> Two tracks</h2>
+      <div class="vp-body">
+        <div class="vp-tracks">
+<div class="vp-tk vp-lead"><h3>LEADER TRACK / NO CODE</h3><ol>
+<li><i>a1</i>What ML actually is, and is not</li>
+<li><i>a2</i>How a model learns, and goes wrong</li>
+<li><i>a3</i>The data is the model</li>
+<li><i>a4</i>Reading a model's report card</li>
+<li><i>a5</i>Prediction is not proof</li>
+<li><i>a6</i>Putting ML to work responsibly</li>
+</ol></div>
+<div class="vp-tk"><h3>BUILDER TRACK / SCIKIT-LEARN</h3><ol>
+<li><i>b1</i>Setup and the dataset</li>
+<li><i>b2</i>Train/test split, and leakage</li>
+<li><i>b3</i>Your first real model</li>
+<li><i>b4</i>Over- and under-fitting</li>
+<li><i>b5</i>Bias-variance, and the dial</li>
+<li><i>b6</i>Cross-validation and tuning</li>
+<li><i>b7</i>Classification metrics</li>
+<li><i>b8</i>Regression metrics</li>
+<li><i>b9</i>Feature prep and Pipelines</li>
+<li><i>b10</i>Capstone: compare fairly</li>
+</ol></div>
+</div>
+        <div class="vp-stats"><div><b>16</b><span>sessions</span></div><div><b>6</b><span>leader</span></div><div><b>10</b><span>builder</span></div><div><b>1</b><span>dataset</span></div></div>
+      </div>
+    </section>
+    <section class="vp-mod">
+      <h2><b>SEC-02</b> The most dangerous number</h2>
+      <div class="vp-body">
+        <div class="vp-conseq"><b>From session b3</b><div class="vp-code">model accuracy        <u>96.8%</u>
+
+always answers "no"    <u>96.8%</u>
+buyers actually caught  <u>0</u></div><p>The two models score the same. One of them is not a model.</p></div>
+        <div class="vp-flag">The most dangerous number in ML is a high accuracy.</div>
+        <div class="vp-conseq"><b>What to ask for instead</b><p>ROC-AUC tells the honest story here, and precision and recall arrive in b7. A single headline score cannot distinguish a model from a shrug.</p></div>
+      </div>
+    </section>
+    <section class="vp-mod">
+      <h2><b>SEC-03</b> Which metric tells the truth</h2>
+      <div class="vp-body">
+        <div class="vp-jn">
+<div class="vp-row"><i>b7</i><div><b>ROC-AUC</b><span>Ranks rather than labels. Survives an imbalanced class where accuracy does not.</span></div></div>
+<div class="vp-row"><i>b7</i><div><b>precision</b><span>Of the ones we flagged, how many were real?</span></div></div>
+<div class="vp-row"><i>b7</i><div><b>recall</b><span>Of the real ones, how many did we catch?</span></div></div>
+<div class="vp-row"><i>b8</i><div><b>RMSE</b><span>For a number-predictor, judged in the units the business already uses.</span></div></div>
+</div>
+        <div class="vp-note">Session b8 judges a regression in dollars, because a metric nobody can price is a metric nobody acts on.</div>
+        <div class="vp-conseq"><b>Pick the metric before you train</b><p>Choosing the score after seeing the results is how a mediocre model gets promoted. Decide what good means while the question is still about the business, not about the run you just did.</p></div>
+      </div>
+    </section>
+    <section class="vp-mod vp-span2">
+      <h2><b>SEC-04</b> The builder ladder</h2>
+      <div class="vp-body">
+        <div class="vp-lad2">
+<div class="vp-rung"><i>1</i><div class="vp-kw"><b>setup, the dataset</b> <em>one dataset, modelled all course long</em></div><u>b1</u></div>
+<div class="vp-rung"><i>2</i><div class="vp-kw"><b>train/test split</b> <em>clean, stratified, and leak-free</em></div><u>b2</u></div>
+<div class="vp-rung"><i>3</i><div class="vp-kw"><b>first real model</b> <em>logistic regression, scored honestly</em></div><u>b3</u></div>
+<div class="vp-rung"><i>4</i><div class="vp-kw"><b>over- and under-fitting</b> <em>the single most important picture in ML</em></div><u>b4</u></div>
+<div class="vp-rung"><i>5</i><div class="vp-kw"><b>bias-variance</b> <em>and the dial that controls it</em></div><u>b5</u></div>
+<div class="vp-rung"><i>6</i><div class="vp-kw"><b>cross-validation</b> <em>how to tune without cheating</em></div><u>b6</u></div>
+<div class="vp-rung"><i>7</i><div class="vp-kw"><b>classification metrics</b> <em>the ones that tell the truth</em></div><u>b7</u></div>
+<div class="vp-rung"><i>8</i><div class="vp-kw"><b>regression metrics</b> <em>judging a number-predictor in dollars</em></div><u>b8</u></div>
+<div class="vp-rung"><i>9</i><div class="vp-kw"><b>Pipelines</b> <em>feature prep that makes leakage impossible</em></div><u>b9</u></div>
+<div class="vp-rung"><i>10</i><div class="vp-kw"><b>capstone</b> <em>compare fairly, pick with CV, score once</em></div><u>b10</u></div>
+</div>
+        <div class="vp-conseq"><b>How to climb it</b><p>Rungs 2 and 9 are the same lesson twice: leakage is not a mistake you make once and fix, it is a property of how you arranged the work. Rung 4 is the picture everything above it is a response to.</p></div>
+      </div>
+    </section>
+    <section class="vp-mod">
+      <h2><b>SEC-05</b> The score is not the proof</h2>
+      <div class="vp-body">
+        <div class="vp-conseq"><b>From the leader track</b><p>Prediction is not proof, and simple usually wins. A model that forecasts well has still not told you why, and cannot tell you what to change.</p></div>
+        <div class="vp-fun">
+<div class="vp-step"><i>1</i><div><b>COMPARE FAIRLY</b><span>same split, same preparation, same rules</span></div></div>
+<div class="vp-step"><i>2</i><div><b>PICK WITH CV</b><span>not with the test set</span></div></div>
+<div class="vp-step"><i>3</i><div><b>SCORE ONCE</b><span>the test set is spent the moment you look twice</span></div></div>
+<div class="vp-step"><i>4</i><div><b>WRITE IT UP</b><span>the number, and what it does not establish</span></div></div>
+</div>
+      </div>
+    </section>
+    <section class="vp-mod vp-span2">
+      <h2><b>SEC-06</b> Four ways a great score lies</h2>
+      <div class="vp-body">
+        <div class="vp-traps">
+<div class="vp-trap"><b>Leakage</b><span>Something from the future, or from the answer, is in the features. <i>Ask: could this column exist at prediction time?</i></span></div>
+<div class="vp-trap"><b>An imbalanced class</b><span>Always answering no scores 96.8 percent and catches nobody. <i>Ask: what does the trivial model score?</i></span></div>
+<div class="vp-trap"><b>Tuning on the test set</b><span>Every peek spends a little of the only honest estimate you have. <i>Ask: how many times has this set been looked at?</i></span></div>
+<div class="vp-trap"><b>Overfitting</b><span>The model learned the sample rather than the pattern. <i>Ask: how far apart are train and validation?</i></span></div>
+</div>
+        <div class="vp-flag">Sessions b2 and b9 exist because leakage is arrangement, not carelessness. A Pipeline makes it structurally impossible rather than merely unlikely.</div>
+        <div class="vp-conseq"><b>The common thread</b><p>None of these produce an error. Every one of them produces a number that looks better than the truth, which is why the leader track spends a whole session on reading a report card rather than on how models work.</p></div>
+      </div>
+    </section>
+    <section class="vp-mod">
+      <h2><b>SEC-07</b> The one picture</h2>
+      <div class="vp-body">
+        <div class="vp-note">Session b4 calls it the single most important picture in machine learning, and the rest of the builder track is a response to it.</div>
+        <div class="vp-jn">
+<div class="vp-row"><i>under</i><div><b>too simple</b><span>Wrong on the training data and wrong on new data. The model has not learned enough.</span></div></div>
+<div class="vp-row"><i>right</i><div><b>the middle</b><span>Where training and validation error are both low and close together.</span></div></div>
+<div class="vp-row"><i>over</i><div><b>too complex</b><span>Right on the training data, wrong on new data. The model memorised the sample.</span></div></div>
+</div>
+        <div class="vp-flag">Bias-variance is the dial. Regularization, cross-validation and honest scoring are how you find where to set it.</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="vp-foot">
+    <span>learn intro to ML with phoebe</span>
+    <span class="vp-mid">96.8% · the number that means nothing · and the four that do</span>
+    <span>by Phoebe Fu</span>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="pagefoot">
     <span>learn-intro-ml-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a> · in the ladder: <a href="https://phoebefu6.github.io/learn-statistics-with-phoebe/">learn-statistics</a> → <b>intro-ml</b> → <a href="https://phoebefu6.github.io/learn-experimentation-with-phoebe/">learn-experimentation</a></span>
   </footer>
@@ -361,5 +849,42 @@ window.MINDMAP_DATA = {
 <script src="assets/ml-live.js?v=8"></script>
 <script src="assets/mindmap.js?v=8"></script>
 <script src="assets/app.js?v=8"></script>
+
+
+<script>
+(function () {
+  var vp = document.getElementById('vp');
+  if (!vp) return;
+  var W = 1400, MIN_FIT = 0.8;
+  var frame = document.getElementById('frame'), stage = document.getElementById('stage'),
+      btn = document.getElementById('zoomToggle');
+  var userChose = false, actual = false;
+  function sbw() {
+    var w = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--sbw', (w > 0 ? w : 0) + 'px');
+  }
+  function full() { vp.style.transform = 'none'; stage.style.height = ''; stage.style.width = W + 'px'; }
+  function apply() {
+    var avail = frame.clientWidth;
+    if (!avail || avail < 40) { full(); return; }   // a hidden frame must never scale to nothing
+    var s = avail / W;
+    if (!userChose) actual = s < MIN_FIT;           // below 0.8 the labels stop being readable
+    if (actual || s >= 1) full();
+    else {
+      vp.style.transform = 'scale(' + s + ')';
+      stage.style.width = W + 'px';
+      stage.style.height = Math.ceil(vp.offsetHeight * s) + 'px';
+    }
+    btn.setAttribute('aria-pressed', actual ? 'true' : 'false');
+    btn.textContent = actual ? 'Fit to width' : 'Actual size';
+  }
+  btn.addEventListener('click', function () {
+    userChose = true; actual = !actual; apply(); if (actual) frame.scrollLeft = 0;
+  });
+  window.addEventListener('resize', function () { sbw(); apply(); });
+  if (typeof ResizeObserver === 'function') new ResizeObserver(apply).observe(frame);
+  sbw(); apply();
+})();
+</script>
 </body>
 </html>
